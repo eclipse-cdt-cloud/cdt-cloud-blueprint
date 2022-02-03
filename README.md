@@ -75,6 +75,12 @@ yarn electron package:preview
 
 The packaged application is located in `applications/electron/dist`.
 
+### Additionals for a demo
+
+- To use the trace view download and start the [TraceCompassServer](https://download.eclipse.org/tracecompass.incubator/trace-server/rcp/)
+- Example traces can be found here: [TraceCompassTutorialTraces](https://github.com/tuxology/tracevizlab/blob/master/labs/TraceCompassTutorialTraces.tgz)
+- An example workspace including a trace can be found [here](https://github.com/eclipsesource/cdtcloud-alpha/tree/master/example/workspace)
+
 ### Running E2E Tests
 
 The E2E tests basic UI tests of the actual application.
