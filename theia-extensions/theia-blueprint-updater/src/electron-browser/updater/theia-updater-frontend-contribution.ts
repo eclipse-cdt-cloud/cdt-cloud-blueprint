@@ -14,7 +14,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { BrowserWindow, Menu, remote } from '@theia/core/shared/electron';
+import * as electronRemote from '@theia/core/electron-shared/@electron/remote';
+import Electron from '@theia/core/electron-shared/electron';
 import {
     Command,
     CommandContribution,
@@ -23,15 +24,17 @@ import {
     MenuContribution,
     MenuModelRegistry,
     MenuPath,
-    MessageService
+    MessageService,
+    Progress
 } from '@theia/core/lib/common';
 import { PreferenceScope, PreferenceService } from '@theia/core/lib/browser/preferences';
-import { TheiaUpdater, TheiaUpdaterClient } from '../../common/updater/theia-updater';
+import { TheiaUpdater, TheiaUpdaterClient, UpdaterError } from '../../common/updater/theia-updater';
 import { inject, injectable, postConstruct } from '@theia/core/shared/inversify';
-
-import { CommonMenus } from '@theia/core/lib/browser';
+import { CommonMenus, OpenerService } from '@theia/core/lib/browser';
 import { ElectronMainMenuFactory } from '@theia/core/lib/electron-browser/menu/electron-main-menu-factory';
 import { isOSX } from '@theia/core/lib/common/os';
+import { setInterval, clearInterval } from 'timers';
+import URI from '@theia/core/lib/common/uri';
 
 export namespace TheiaUpdaterCommands {
 
@@ -66,7 +69,7 @@ export class TheiaUpdaterClientImpl implements TheiaUpdaterClient {
     protected readonly onUpdateAvailableEmitter = new Emitter<boolean>();
     readonly onUpdateAvailable = this.onUpdateAvailableEmitter.event;
 
-    protected readonly onErrorEmitter = new Emitter<string>();
+    protected readonly onErrorEmitter = new Emitter<UpdaterError>();
     readonly onError = this.onErrorEmitter.event;
 
     notifyReadyToInstall(): void {
@@ -84,7 +87,7 @@ export class TheiaUpdaterClientImpl implements TheiaUpdaterClient {
                         if (reportOnStart) {
                             this.onUpdateAvailableEmitter.fire(available);
                         }
-                     }, 10000 );
+                    }, 10000);
                 });
         } else {
             this.onUpdateAvailableEmitter.fire(available);
@@ -92,7 +95,7 @@ export class TheiaUpdaterClientImpl implements TheiaUpdaterClient {
 
     }
 
-    reportError(error: string): void {
+    reportError(error: UpdaterError): void {
         this.onErrorEmitter.fire(error);
     }
 
@@ -109,9 +112,9 @@ export class ElectronMenuUpdater {
         this.setMenu();
     }
 
-    private setMenu(menu: Menu | null = this.factory.createMenuBar(), electronWindow: BrowserWindow = remote.getCurrentWindow()): void {
+    private setMenu(menu: Electron.Menu | null = this.factory.createElectronMenuBar(), electronWindow: Electron.BrowserWindow = electronRemote.getCurrentWindow()): void {
         if (isOSX) {
-            remote.Menu.setApplicationMenu(menu);
+            electronRemote.Menu.setApplicationMenu(menu);
         } else {
             electronWindow.setMenu(menu);
         }
@@ -137,7 +140,13 @@ export class TheiaUpdaterFrontendContribution implements CommandContribution, Me
     @inject(PreferenceService)
     private readonly preferenceService: PreferenceService;
 
+    @inject(OpenerService)
+    protected readonly openerService: OpenerService;
+
     protected readyToUpdate = false;
+
+    private progress: Progress | undefined;
+    private intervalId: NodeJS.Timeout | undefined;
 
     @postConstruct()
     protected init(): void {
@@ -189,6 +198,17 @@ export class TheiaUpdaterFrontendContribution implements CommandContribution, Me
             return;
         }
         if (answer === 'Yes') {
+            this.stopProgress();
+            this.progress = await this.messageService.showProgress({
+                text: 'Blueprint Update'
+            });
+            let dots = 0;
+            this.intervalId = setInterval(() => {
+                if (this.progress !== undefined) {
+                    dots = (dots + 1) % 4;
+                    this.progress.report({ message: 'Downloading' + '.'.repeat(dots) });
+                }
+            }, 1000);
             this.updater.downloadUpdate();
         }
     }
@@ -198,14 +218,39 @@ export class TheiaUpdaterFrontendContribution implements CommandContribution, Me
     }
 
     protected async handleUpdatesAvailable(): Promise<void> {
+        if (this.progress !== undefined) {
+            this.progress.report({ work: { done: 1, total: 1 } });
+            this.stopProgress();
+        }
         const answer = await this.messageService.info('Ready to update. Do you want to update now? (This will restart the application)', 'No', 'Yes');
         if (answer === 'Yes') {
             this.updater.onRestartToUpdateRequested();
         }
     }
 
-    protected async handleError(error: string): Promise<void> {
-        this.messageService.error(error);
+    protected async handleError(error: UpdaterError): Promise<void> {
+        this.stopProgress();
+        if (error.errorLogPath) {
+            const viewLogAction = 'View Error Log';
+            const answer = await this.messageService.error(error.message, viewLogAction);
+            if (answer === viewLogAction) {
+                const uri = new URI(error.errorLogPath);
+                const opener = await this.openerService.getOpener(uri);
+                opener.open(uri);
+            }
+        } else {
+            this.messageService.error(error.message);
+        }
     }
 
+    private stopProgress(): void {
+        if (this.intervalId !== undefined) {
+            clearInterval(this.intervalId);
+            this.intervalId = undefined;
+        }
+        if (this.progress !== undefined) {
+            this.progress.cancel();
+            this.progress = undefined;
+        }
+    }
 }

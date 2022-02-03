@@ -13,6 +13,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
+
 import { JsonRpcServer } from '@theia/core/lib/common/messaging/proxy-factory';
 
 export const TheiaUpdaterPath = '/services/theia-updater';
@@ -25,8 +26,14 @@ export interface TheiaUpdater extends JsonRpcServer<TheiaUpdaterClient> {
 }
 
 export const TheiaUpdaterClient = Symbol('TheiaUpdaterClient');
+
+export interface UpdaterError {
+    message: string;
+    errorLogPath?: string;
+}
+
 export interface TheiaUpdaterClient {
     updateAvailable(available: boolean, startupCheck: boolean): void;
     notifyReadyToInstall(): void;
-    reportError(error: string): void;
+    reportError(error: UpdaterError): void;
 }
