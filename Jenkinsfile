@@ -152,18 +152,17 @@ spec:
                         }
                     }
                 }
-                // deactivate because of failing mac signing
-//                stage('Sign, Notarize and Upload Mac') {
-//                    agent any
-//                    steps {
-//                        unstash 'mac'
-//                        script {
-//                            signInstaller('dmg', 'macsign')
-//                            notarizeInstaller('dmg')
-//                            uploadInstaller('macos')
-//                        }
-//                    }
-//                }
+                stage('Sign, Notarize and Upload Mac') {
+                    agent any
+                    steps {
+                        unstash 'mac'
+                        script {
+                            signInstaller('dmg', 'macsign')
+                            notarizeInstaller('dmg')
+                            uploadInstaller('macos')
+                        }
+                    }
+                }
                 stage('Sign and Upload Windows') {
                     agent {
                         kubernetes {
