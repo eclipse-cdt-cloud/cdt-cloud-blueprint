@@ -43,8 +43,8 @@ export class TheiaBlueprintContribution implements CommandContribution, MenuCont
     @inject(WindowService)
     protected readonly windowService: WindowService;
 
-    static REPORT_ISSUE_URL = 'https://github.com/eclipse-theia/theia-blueprint/issues/new?assignees=&labels=&template=bug_report.md';
-    static DOCUMENTATION_URL = 'https://theia-ide.org/docs/blueprint_documentation';
+    static REPORT_ISSUE_URL = 'https://github.com/eclipse-cdt-cloud/cdt-cloud-blueprint/issues/new/choose';
+    static DOCUMENTATION_URL = 'https://cdt-cloud.io/';
 
     registerCommands(commandRegistry: CommandRegistry): void {
         commandRegistry.registerCommand(BlueprintCommands.REPORT_ISSUE, {

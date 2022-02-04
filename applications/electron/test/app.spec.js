@@ -12,22 +12,22 @@ function getBinaryPath() {
       return path.join(
         distFolder,
         "linux-unpacked",
-        "theia-blueprint-for-c"
+        "cdt-cloud-blueprint"
       );
     case "win32":
       return path.join(
         distFolder,
         "win-unpacked",
-        "TheiaBlueprintForC.exe"
+        "CDTCloudBlueprint.exe"
       );
     case "darwin":
       return path.join(
         distFolder,
         "mac",
-        "TheiaBlueprintForC.app",
+        "CDTCloudBlueprint.app",
         "Contents",
         "MacOS",
-        "TheiaBlueprintForC"
+        "CDTCloudBlueprint"
       );
     default:
       return undefined;
@@ -96,7 +96,7 @@ describe("Theia App", function() {
 
   it("Correct window title", async function() {
     const windowTitle = await this.browser.getTitle();
-    expect(windowTitle).to.include("workspace — Theia");
+    expect(windowTitle).to.include("workspace — CDTCloudBlueprint");
   });
 
   it("Builtin extensions", async function() {

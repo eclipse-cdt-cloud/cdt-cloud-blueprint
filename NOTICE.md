@@ -1,12 +1,12 @@
-# Notices for Eclipse Theia
+# Notices for CDT.cloud Blueprint
 
-This content is produced and maintained by the Eclipse Theia project.
+This content is produced and maintained by the CDT.cloud project.
 
-* Project home: https://projects.eclipse.org/projects/ecd.theia
+* Project home: https://projects.eclipse.org/projects/ecd.cdt.cloud
 
 ## Trademarks
 
-Eclipse Theia is a trademark of the Eclipse Foundation.
+CDT.cloud is a trademark of the Eclipse Foundation.
 
 ## Copyright
 
@@ -25,17 +25,6 @@ General Public License, version 2 with the GNU Classpath Exception which is
 available at https://www.gnu.org/software/classpath/license.html.
 
 SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
-
-## Source Code
-
-The project maintains the following source code repositories:
-
-* https://github.com/eclipse/theia-generator-plugin
-* https://github.com/eclipse/theia-yeoman-plugin
-* https://github.com/eclipse/theia-plugin-packager
-* https://github.com/eclipse/theia-cpp-extension
-* https://github.com/eclipse/theia-python-extension
-* https://github.com/eclipse/theia-java-extension
 
 ## Third-party Content
 

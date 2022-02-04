@@ -15,7 +15,7 @@ tasks:
   - init: yarn --network-timeout 100000 && yarn electron package:preview && yarn electron package
     command: >
       jwm &
-      gp open /workspace/theia-blueprint/applications/electron/dist/latest-linux.yml
+      gp open /workspace/cdt-cloud-blueprint/applications/electron/dist/latest-linux.yml
 
 github:
   prebuilds:
