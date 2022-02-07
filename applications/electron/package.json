@@ -6,7 +6,16 @@
   "version": "1.22.1",
   "main": "scripts/theia-electron-main.js",
   "license": "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0",
-  "author": "CDT.cloud <sdirix@eclipsesource.com>",
+  "author": {
+    "name": "CDT.cloud"
+  },
+  "contributors": [
+    {
+      "name": "CDT.cloud Project",
+      "email": "cdt-cloud-dev@eclipse.org",
+      "url": "https://projects.eclipse.org/projects/ecd.cdt.cloud"
+    }
+  ],
   "homepage": "https://cdt-cloud.io/",
   "bugs": {
     "url": "https://github.com/eclipse-cdt-cloud/cdt-cloud-blueprint/issues"
@@ -130,9 +139,9 @@
     "vscode.markdown-language-features": "https://open-vsx.org/api/vscode/markdown-language-features/1.39.2/file/vscode.markdown-language-features-1.39.2.vsix",
     "vscode-builtin-extensions-pack": "https://open-vsx.org/api/eclipse-theia/builtin-extension-pack/1.50.1/file/eclipse-theia.builtin-extension-pack-1.50.1.vsix",
     "cdt-gdb-vscode": "https://open-vsx.org/api/eclipse-cdt/cdt-gdb-vscode/0.0.92/file/eclipse-cdt.cdt-gdb-vscode-0.0.92.vsix",
-    "vscode-builtin-cpp": "https://open-vsx.org/api/vscode/cpp/1.45.1/file/vscode.cpp-1.45.1.vsix",
-    "vscode-clangd": "https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd/0.1.7/file/llvm-vs-code-extensions.vscode-clangd-0.1.7.vsix",
-    "vscode-cmake": "https://open-vsx.org/api/ms-vscode/cmake-tools/1.7.0/file/ms-vscode.cmake-tools-1.7.0.vsix"
+    "vscode-builtin-cpp": "https://open-vsx.org/api/vscode/cpp/1.62.3/file/vscode.cpp-1.62.3.vsix",
+    "vscode-clangd": "https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd/0.1.15/file/llvm-vs-code-extensions.vscode-clangd-0.1.15.vsix",
+    "vscode-cmake": "https://open-vsx.org/api/ms-vscode/cmake-tools/1.9.2/file/ms-vscode.cmake-tools-1.9.2.vsix"
   },
   "theiaPluginsExcludeIds": [
     "vscode.extension-editing",
