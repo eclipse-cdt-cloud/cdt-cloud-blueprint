@@ -1,5 +1,5 @@
 appId: eclipse.theia
-productName: TheiaBlueprint
+productName: CDTCloudBlueprint
 copyright: Copyright © 2020 Eclipse Foundation, Inc
 electronDist: ../../node_modules/electron/dist
 electronVersion: 15.3.6

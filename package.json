@@ -2,14 +2,16 @@
   "private": true,
   "version": "1.22.1",
   "license": "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0",
-  "author": "Rob Moran <github@thegecko.org>",
-  "homepage": "https://github.com/eclipse-theia/theia-blueprint#readme",
+  "author": {
+    "name": "CDT.cloud"
+  },
+  "homepage": "https://cdt-cloud.io/",
   "bugs": {
-    "url": "https://github.com/eclipse-theia/theia/issues"
+    "url": "https://github.com/eclipse-cdt-cloud/cdt-cloud-blueprint/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eclipse-theia/theia-blueprint.git"
+    "url": "git+https://github.com/eclipse-cdt-cloud/cdt-cloud-blueprint.git"
   },
   "engines": {
     "yarn": "1.0.x || >=1.2.1",
@@ -43,6 +45,12 @@
     "test": "lerna run test",
     "electron": "yarn --cwd applications/electron",
     "update:next": "ts-node scripts/update-theia-to-next.ts && lerna run update:next"
+  },
+  "resolutions": {
+    "**/@theia/core": "1.22.1",
+    "**/@theia/debug": "1.22.1",
+    "**/@theia/editor": "1.22.1",
+    "**/@theia/filesystem": "1.22.1"
   },
   "workspaces": [
     "applications/*",

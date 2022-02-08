@@ -45,16 +45,14 @@ function openExternalLink(url: string, windowService: WindowService): void {
 export function renderWhatIs(windowService: WindowService): React.ReactNode {
     return <div className='gs-section'>
         <h3 className='gs-section-header'>
-            What is Theia Blueprint?
+            What is CDT.cloud Blueprint?
         </h3>
         <div >
-            Eclipse Theia Blueprint is a <span className='gs-text-bold'>template</span> to showcase
-            the capabilities of Eclipse Theia as well as how to build desktop-based products based on the platform.
-            Theia Blueprint assembles a selected subset of existing Theia features and extensions. We
-            provide installers for Theia Blueprint to be downloaded (see below) as well
-            as <ExternalBrowserLink text="documentation" url="https://theia-ide.org/docs/blueprint_documentation/"
-                windowService={windowService} ></ExternalBrowserLink> on how to customize this template to build a
-            product and installers for your own Theia-based product.
+            CDT.cloud Blueprint is a <span className='gs-text-bold'>template</span> tool for building
+            custom, web-based C/C++ tools. It is made of existing open source components and provides
+            a typical C/C++ IDE based on the Eclipse Theia platform. This includes C/C++ language
+            features, a language server, debugging support, memory debugging and a tracing view. It is
+            meant to serve as a starting point for the implementation of domain-specific custom tools.
         </div>
     </div>;
 }
@@ -65,7 +63,7 @@ export function renderWhatIsNot(): React.ReactNode {
             What is it not?
         </h3>
         <div >
-            Eclipse Theia Blueprint is <span className='gs-text-bold'><span className='gs-text-underline'>not</span> a production-ready
+            CDT.cloud Blueprint is <span className='gs-text-bold'><span className='gs-text-underline'>not</span> a production-ready
                 product</span>. Therefore, it is also not a replacement for Visual Studio Code or any other IDE.
         </div>
     </div>;
@@ -77,16 +75,16 @@ export function renderTickets(windowService: WindowService): React.ReactNode {
             Reporting feature requests and bugs
         </h3>
         <div >
-            The features in Eclipse Theia Blueprint are based on Theia and the included
+            The features in CDT.cloud Blueprint are based on Theia and the included
             extensions/plugins. For bugs in Theia please consider opening an issue in
             the <ExternalBrowserLink text="Theia project on Github" url="https://github.com/eclipse-theia/theia/issues/new/choose"
                 windowService={windowService} ></ExternalBrowserLink>.
         </div>
         <div>
-            Eclipse Theia Blueprint only packages existing functionality into a product and installers
+            CDT.cloud Blueprint only packages existing functionality into a product and installers
             for the product. If you believe there is a mistake in packaging, something needs to be added to the
             packaging or the installers do not work properly,
-            please <ExternalBrowserLink text="open an issue on Github" url="https://github.com/eclipse-theia/theia-blueprint/issues/new/choose"
+            please <ExternalBrowserLink text="open an issue on Github" url="https://github.com/eclipse-cdt-cloud/cdt-cloud-blueprint/issues/new/choose"
                 windowService={windowService} ></ExternalBrowserLink> to let us know.
         </div>
     </div>;
@@ -98,8 +96,8 @@ export function renderSourceCode(windowService: WindowService): React.ReactNode 
             Source Code
         </h3>
         <div >
-            The source code of Eclipse Theia Blueprint is available
-            on <ExternalBrowserLink text="Github" url="https://github.com/eclipse-theia/theia-blueprint"
+            The source code of CDT.cloud Blueprint is available
+            on <ExternalBrowserLink text="Github" url="https://github.com/eclipse-cdt-cloud/cdt-cloud-blueprint"
                 windowService={windowService} ></ExternalBrowserLink>.
         </div>
     </div>;
@@ -111,9 +109,9 @@ export function renderDocumentation(windowService: WindowService): React.ReactNo
             Documentation
         </h3>
         <div >
-            Please see <ExternalBrowserLink text="here" url="https://theia-ide.org/docs/blueprint_documentation/"
+            Please see <ExternalBrowserLink text="here" url="https://cdt-cloud.io/"
                 windowService={windowService} ></ExternalBrowserLink> for
-            documentation how to customize Eclipse Theia Blueprint.
+            documentation how to customize CDT.cloud Blueprint.
         </div>
     </div>;
 }
@@ -124,7 +122,7 @@ export function renderDownloads(): React.ReactNode {
             Updates and Downloads
         </h3>
         <div className='gs-action-container'>
-            You can update Eclipse Theia Blueprint directly in this application by navigating to
+            You can update CDT.cloud Blueprint directly in this application by navigating to
             File {'>'} Settings {'>'} Check for Updates… Moreover the application will check for Updates
             after each launch automatically.
         </div>

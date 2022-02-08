@@ -122,7 +122,7 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
 
     protected renderHeader(): React.ReactNode {
         return <div className='gs-header'>
-            <h1>Eclipse Theia <span className='gs-blue-header'>Blueprint</span></h1>
+            <h1>CDT.cloud <span className='gs-blue-header'>Blueprint</span></h1>
             {this.renderVersion()}
         </div>;
     }

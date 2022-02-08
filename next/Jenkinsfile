@@ -104,16 +104,16 @@ spec:
     }
     post {
         failure {
-            echo "Build result FAILURE: Send email notification to jfaltermeier@eclipsesource.com"
+            echo "Build result FAILURE: Send email notification to sdirix@eclipsesource.com"
             emailext attachLog: true,
             body: 'Job: ${JOB_NAME}<br>Build Number: ${BUILD_NUMBER}<br>Build URL: ${BUILD_URL}',
-            mimeType: 'text/html', subject: 'Build ${JOB_NAME} (#${BUILD_NUMBER}) FAILURE', to: 'jfaltermeier@eclipsesource.com'
+            mimeType: 'text/html', subject: 'Build ${JOB_NAME} (#${BUILD_NUMBER}) FAILURE', to: 'sdirix@eclipsesource.com'
         }
         unstable {
-            echo "Build result UNSTABLE: Send email notification to jfaltermeier@eclipsesource.com"
+            echo "Build result UNSTABLE: Send email notification to sdirix@eclipsesource.com"
             emailext attachLog: true,
             body: 'Job: ${JOB_NAME}<br>Build Number: ${BUILD_NUMBER}<br>Build URL: ${BUILD_URL}',
-            mimeType: 'text/html', subject: 'Build ${JOB_NAME} (#${BUILD_NUMBER}) UNSTABLE', to: 'jfaltermeier@eclipsesource.com'
+            mimeType: 'text/html', subject: 'Build ${JOB_NAME} (#${BUILD_NUMBER}) UNSTABLE', to: 'sdirix@eclipsesource.com'
         }
     }
 }
