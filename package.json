@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "1.22.1",
+  "version": "1.24.0",
   "license": "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0",
   "author": {
     "name": "CDT.cloud"
@@ -14,11 +14,11 @@
     "url": "git+https://github.com/eclipse-cdt-cloud/cdt-cloud-blueprint.git"
   },
   "engines": {
-    "yarn": "1.0.x || >=1.2.1",
-    "node": ">=12.14.1 <13"
+    "yarn": ">=1.7.0 <2",
+    "node": ">=12.14.1"
   },
   "devDependencies": {
-    "@theia/cli": "1.22.1",
+    "@theia/cli": "1.24.0",
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/eslint-plugin-tslint": "^4.25.0",
     "@typescript-eslint/parser": "^4.25.0",
@@ -47,10 +47,10 @@
     "update:next": "ts-node scripts/update-theia-to-next.ts && lerna run update:next"
   },
   "resolutions": {
-    "**/@theia/core": "1.22.1",
-    "**/@theia/debug": "1.22.1",
-    "**/@theia/editor": "1.22.1",
-    "**/@theia/filesystem": "1.22.1"
+    "**/@theia/core": "1.24.0",
+    "**/@theia/debug": "1.24.0",
+    "**/@theia/editor": "1.24.0",
+    "**/@theia/filesystem": "1.24.0"
   },
   "workspaces": [
     "applications/*",
