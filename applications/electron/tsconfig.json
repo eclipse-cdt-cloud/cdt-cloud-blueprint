@@ -1,0 +1,16 @@
+{
+    "extends": "../../configs/base.tsconfig",
+    "include": [],
+    "compilerOptions": {
+      "composite": true
+    },
+    "references": [
+      {
+        "path": "../../theia-extensions/theia-blueprint-product"
+      },
+      {
+        "path": "../../theia-extensions/theia-blueprint-updater"
+      }
+    ]
+  }
+  
