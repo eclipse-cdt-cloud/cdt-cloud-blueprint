@@ -22,6 +22,13 @@
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/eslint-plugin-tslint": "^4.25.0",
     "@typescript-eslint/parser": "^4.25.0",
+    "typescript": "^4.6.3",
+    "cli-progress": "^3.10.0",
+    "@types/cli-progress": "^3.9.2",
+    "tar-fs": "^2.1.1",
+    "@types/tar-fs": "^2.0.1",
+    "gunzip-maybe": "^1.4.2",
+    "@types/gunzip-maybe": "^1.4.0",
     "eslint": "^7.27.0",
     "eslint-plugin-deprecation": "1.2.1",
     "eslint-plugin-import": "^2.23.3",
@@ -45,7 +52,8 @@
     "test": "lerna run test",
     "electron": "yarn --cwd applications/electron",
     "browser": "yarn --cwd applications/browser",
-    "update:next": "ts-node scripts/update-theia-to-next.ts && lerna run update:next"
+    "update:next": "ts-node scripts/update-theia-to-next.ts && lerna run update:next",
+    "tracecompass-server:start": "ts-node scripts/tracecompass-server.ts"
   },
   "resolutions": {
     "**/@theia/core": "1.22.1",

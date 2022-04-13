@@ -8,3 +8,5 @@
 **/plugins
 **/tsconfig.tsbuildinfo
 *.log
+
+tracecompass-server

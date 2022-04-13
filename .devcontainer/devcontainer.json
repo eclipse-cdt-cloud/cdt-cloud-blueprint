@@ -28,5 +28,17 @@
 	// "postCreateCommand": "yarn install",
 
 	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-	"remoteUser": "node"
+	"remoteUser": "node",
+
+	// Happens after updateContentCommand and once the dev container has been assigned to a user for the first time.
+	"postCreateCommand": "yarn",
+
+	"portsAttributes": {
+		"3000": { "label": "Theia Backend", "onAutoForward": "openBrowserOnce" },
+		"8080": { "label": "Trace Compass Server", "onAutoForward": "ignore" }
+	},
+
+	// Runs each time the container is successfully started
+	// Starts the trace compass server. Downloads the server if not yet available.
+	"postStartCommand": "nohup bash -c 'yarn tracecompass-server:start &'"
 }

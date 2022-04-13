@@ -12,6 +12,11 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
      libsecret-1-dev \
      build-essential libssl-dev
 
+# Install java for Trace Compass Server
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+     && apt-get -y install --no-install-recommends \
+     openjdk-17-jre
+
 # C/C++ dependencies
 RUN add-apt-repository 'deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main'
 RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
