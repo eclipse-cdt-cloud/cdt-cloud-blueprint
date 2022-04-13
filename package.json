@@ -22,6 +22,7 @@
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/eslint-plugin-tslint": "^4.25.0",
     "@typescript-eslint/parser": "^4.25.0",
+    "tslint": "^5.12.0",
     "typescript": "^4.6.3",
     "cli-progress": "^3.10.0",
     "@types/cli-progress": "^3.9.2",
