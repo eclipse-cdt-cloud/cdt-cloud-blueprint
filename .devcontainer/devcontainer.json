@@ -35,7 +35,7 @@
 
 	"portsAttributes": {
 		"3000": { "label": "Theia Backend", "onAutoForward": "openBrowserOnce" },
-		"8080": { "label": "Trace Compass Server", "onAutoForward": "ignore" }
+		"8080": { "label": "Trace Compass Server", "onAutoForward": "silent" }
 	},
 
 	// Runs each time the container is successfully started
