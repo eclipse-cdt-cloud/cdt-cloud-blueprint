@@ -89,7 +89,7 @@
     "cdt-cloud-blueprint-updater": "1.24.0",
     "cdt-cloud-blueprint-product": "1.24.0",
     "@theia/cpp-debug": "1.19.0",
-    "theia-traceviewer": "0.2.0-next.61895a7.0"
+    "theia-traceviewer": "0.2.0-next.033d953.0"
   },
   "devDependencies": {
     "@theia/cli": "1.24.0",
@@ -141,7 +141,8 @@
     "cdt-gdb-vscode": "https://open-vsx.org/api/eclipse-cdt/cdt-gdb-vscode/0.0.92/file/eclipse-cdt.cdt-gdb-vscode-0.0.92.vsix",
     "vscode-builtin-cpp": "https://open-vsx.org/api/vscode/cpp/1.62.3/file/vscode.cpp-1.62.3.vsix",
     "vscode-clangd": "https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd/0.1.15/file/llvm-vs-code-extensions.vscode-clangd-0.1.15.vsix",
-    "vscode-cmake": "https://open-vsx.org/api/ms-vscode/cmake-tools/1.9.2/file/ms-vscode.cmake-tools-1.9.2.vsix"
+    "vscode-cmake": "https://open-vsx.org/api/ms-vscode/cmake-tools/1.10.5/file/ms-vscode.cmake-tools-1.10.5.vsix",
+    "cdtcloud-clangd-contexts": "https://github.com/eclipse-cdt-cloud/clangd-contexts/releases/download/v0.8.0/cdtcloud-clangd-contexts-ext-0.8.0.vsix"
   },
   "theiaPluginsExcludeIds": [
     "vscode.extension-editing",

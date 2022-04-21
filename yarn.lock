@@ -2628,7 +2628,7 @@
     "@theia/monaco-editor-core" "1.65.2"
     anser "^2.0.1"
 
-"@theia/core@1.19.0", "@theia/core@1.24.0":
+"@theia/core@1.19.0", "@theia/core@1.21.0", "@theia/core@1.24.0":
   version "1.24.0"
   resolved "https://registry.yarnpkg.com/@theia/core/-/core-1.24.0.tgz#ff278a6572b1088c2805a674207d69153cab2537"
   integrity sha512-HLId45qq3Sx0agclgWScWeatUyLktUg1iFnUz+UK+c84ZJF00wywym1r85LOcg/ny6jYLYnuyvGW0vGxyJ1/lA==
@@ -2745,7 +2745,7 @@
     "@theia/editor" "1.24.0"
     "@theia/navigator" "1.24.0"
 
-"@theia/editor@1.19.0", "@theia/editor@1.24.0":
+"@theia/editor@1.21.0", "@theia/editor@1.24.0":
   version "1.24.0"
   resolved "https://registry.yarnpkg.com/@theia/editor/-/editor-1.24.0.tgz#b4138531d2d1e11e747501696e84ec3bfa7672e6"
   integrity sha512-RMyK9GwOY+daU+UXQHoLu4hKN9Xebl+nYvMK/goBWyz7YnkvcQVRa505xyT2vw8h9KOVOEcCp1u2eA4zM+RZew==
@@ -2792,7 +2792,7 @@
     "@theia/workspace" "1.24.0"
     vscode-ripgrep "^1.2.4"
 
-"@theia/filesystem@1.19.0", "@theia/filesystem@1.24.0":
+"@theia/filesystem@1.21.0", "@theia/filesystem@1.24.0":
   version "1.24.0"
   resolved "https://registry.yarnpkg.com/@theia/filesystem/-/filesystem-1.24.0.tgz#5027545d8d6deb0ccfacfcce4e6a873df572277b"
   integrity sha512-XCKISKighFscmxNIlYh+eLyq6dr2mzupjnPHT7VgOChNnN0vOaSOyISt9U9gzu8+nTq1Ww73HIisgW/T4UP8UQ==
@@ -4028,7 +4028,7 @@
   resolved "https://registry.yarnpkg.com/@ungap/promise-all-settled/-/promise-all-settled-1.1.2.tgz#aa58042711d6e3275dd37dc597e5d31e8c290a44"
   integrity sha512-sL/cEvJWAnClXw0wHk85/2L0G6Sj8UB0Ctc1TEMbKSsmpRosqhwj9gWgFRZSrBr2f9tiXISwNhCPmlfqUqyb9Q==
 
-"@vscode/codicons@*":
+"@vscode/codicons@*", "@vscode/codicons@^0.0.29":
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@vscode/codicons/-/codicons-0.0.29.tgz#587e6ce4be8de55d9d11e5297ea55a3dbab08ccf"
   integrity sha512-AXhTv1nl3r4W5DqAfXXKiawQNW+tLBNlXn/GcsnFCL0j17sQ2AY+az9oB9K6wjkibq1fndNJvmT8RYN712Fdww==
@@ -4449,6 +4449,11 @@ ajv@^8.0.0, ajv@^8.0.1, ajv@^8.6.3, ajv@^8.8.0:
     json-schema-traverse "^1.0.0"
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
+
+animate.css@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/animate.css/-/animate.css-4.1.1.tgz#614ec5a81131d7e4dc362a58143f7406abd68075"
+  integrity sha512-+mRmCTv6SbCmtYJCN4faJMNFVNN5EuCTTprDTAo7YzIGji2KADmakjVA3+8mVDkZ2Bf09vayB35lSQIex2+QaQ==
 
 anser@^2.0.1:
   version "2.1.1"
@@ -13375,16 +13380,17 @@ textextensions@^5.13.0:
   resolved "https://registry.yarnpkg.com/textextensions/-/textextensions-5.15.0.tgz#4bb3296ad6fc111cf4b39c589dd028d8aaaf7060"
   integrity sha512-MeqZRHLuaGamUXGuVn2ivtU3LA3mLCCIO5kUGoohTCoGmCBg/+8yPhWVX9WSl9telvVd8erftjFk9Fwb2dD6rw==
 
-theia-traceviewer@0.2.0-next.61895a7.0:
-  version "0.2.0-next.61895a7.0"
-  resolved "https://registry.yarnpkg.com/theia-traceviewer/-/theia-traceviewer-0.2.0-next.61895a7.0.tgz#23ed41b4ea3092d0dadbbb7333aa7fc675e746dd"
-  integrity sha512-Oyqmb3XF0CEVTDkYfvEI1Iw7ZmDhTn+HCL59Cbax7QXlBpi2Y1V+P4sDBmf8+Io6k8rgQccpY4Mi5KcTrEVCZg==
+theia-traceviewer@0.2.0-next.033d953.0:
+  version "0.2.0-next.033d953.0"
+  resolved "https://registry.yarnpkg.com/theia-traceviewer/-/theia-traceviewer-0.2.0-next.033d953.0.tgz#35d551b0dca1ba1e0d7834d768a8f4a146bd5536"
+  integrity sha512-AS1upB7t+RF8tInHMu9WfHpR8sa0DsApJgr7tDvhj1OLGRmYadBx98vHi0y7axvYMw8jrbJ5uJTAahKHfU/AVA==
   dependencies:
-    "@theia/core" "1.19.0"
-    "@theia/editor" "1.19.0"
-    "@theia/filesystem" "1.19.0"
-    traceviewer-base "0.2.0-next.61895a7.0+61895a7"
-    traceviewer-react-components "0.2.0-next.61895a7.0+61895a7"
+    "@theia/core" "1.21.0"
+    "@theia/editor" "1.21.0"
+    "@theia/filesystem" "1.21.0"
+    animate.css "^4.1.1"
+    traceviewer-base "0.2.0-next.033d953.0+033d953"
+    traceviewer-react-components "0.2.0-next.033d953.0+033d953"
     tree-kill latest
 
 through2@^2.0.0, through2@^2.0.3:
@@ -13482,21 +13488,22 @@ tr46@~0.0.3:
   resolved "https://registry.yarnpkg.com/tr46/-/tr46-0.0.3.tgz#8184fd347dac9cdc185992f3a6622e14b9d9ab6a"
   integrity sha1-gYT9NH2snNwYWZLzpmIuFLnZq2o=
 
-traceviewer-base@0.2.0-next.61895a7.0+61895a7:
-  version "0.2.0-next.61895a7.0"
-  resolved "https://registry.yarnpkg.com/traceviewer-base/-/traceviewer-base-0.2.0-next.61895a7.0.tgz#ec7063fbbf0b6786c8721b5319b1271e5ff1ea9e"
-  integrity sha512-+U8aT7miWswcbheAQM/looeW72MgagfO+uF5Du8yKoidqZ3ura2POuiSAF2qaZTf8/Sgl42ze0at8I1rC+MCMQ==
+traceviewer-base@0.2.0-next.033d953.0+033d953:
+  version "0.2.0-next.033d953.0"
+  resolved "https://registry.yarnpkg.com/traceviewer-base/-/traceviewer-base-0.2.0-next.033d953.0.tgz#4ace0533c2c570aefc76eaaf7e8f441ab8ec5021"
+  integrity sha512-BwdaDLpWpCa4/YPEtwekPJSeBcY1qaFVQoNmNMlitwqSSKJNYOJROMVVHCb3DfcyWuEveZ7jN+ppMZGHt1b9jg==
   dependencies:
     tsp-typescript-client next
 
-traceviewer-react-components@0.2.0-next.61895a7.0+61895a7:
-  version "0.2.0-next.61895a7.0"
-  resolved "https://registry.yarnpkg.com/traceviewer-react-components/-/traceviewer-react-components-0.2.0-next.61895a7.0.tgz#f24d2dafac650425630f96a448bf4b6063d65ca0"
-  integrity sha512-dmH5xlj51vPIjtNnV0djB1Pk/DX9ae8IrtyB77g841cjf866VGQAGaxOT3mAhoeyPQ88LaS+2d71W88zlI1SDg==
+traceviewer-react-components@0.2.0-next.033d953.0+033d953:
+  version "0.2.0-next.033d953.0"
+  resolved "https://registry.yarnpkg.com/traceviewer-react-components/-/traceviewer-react-components-0.2.0-next.033d953.0.tgz#d5652d8784ea922617e2901dd69a2db8a6d2dae2"
+  integrity sha512-wOeOAfSATvgYYiq0lJzAQVZurPG57XMJAoco37zN9Zob8+cwlPhaHLCVLeIE8SjjdG2hIdi/HGrhZUtw6tOO7g==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.17"
     "@fortawesome/free-solid-svg-icons" "^5.8.1"
     "@fortawesome/react-fontawesome" "^0.1.4"
+    "@vscode/codicons" "^0.0.29"
     ag-grid-community "^23.1.0"
     ag-grid-react "^23.1.0"
     chart.js "^2.8.0"
@@ -13510,7 +13517,7 @@ traceviewer-react-components@0.2.0-next.61895a7.0+61895a7:
     semantic-ui-css "^2.4.1"
     semantic-ui-react "^0.86.0"
     timeline-chart next
-    traceviewer-base "0.2.0-next.61895a7.0+61895a7"
+    traceviewer-base "0.2.0-next.033d953.0+033d953"
     tsp-typescript-client next
 
 trash@^6.1.1:
