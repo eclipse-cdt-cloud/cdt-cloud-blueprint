@@ -20,9 +20,9 @@ import { renderDocumentation, renderDownloads, renderSourceCode, renderTickets, 
 import { GettingStartedWidget } from '@theia/getting-started/lib/browser/getting-started-widget';
 import { VSXEnvironment } from '@theia/vsx-registry/lib/common/vsx-environment';
 import { WindowService } from '@theia/core/lib/browser/window/window-service';
-import { PreferenceService } from '@theia/core/lib/browser';
+import { codicon, PreferenceService } from '@theia/core/lib/browser';
 import { BlueprintPreferences } from './theia-blueprint-preferences';
-import { DisposableCollection } from '@theia/core';
+import { DisposableCollection, nls } from '@theia/core';
 
 @injectable()
 export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
@@ -141,6 +141,51 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
 
     protected renderPreferences(): React.ReactNode {
         return <GSPreferences preferenceService={this.preferenceService}></GSPreferences>;
+    }
+
+    protected renderHelp(): React.ReactNode {
+        return <div className='gs-section'>
+            <h3 className='gs-section-header'>
+                <i className={codicon('question')}></i>
+                {nls.localizeByDefault('Help')}
+            </h3>
+            <div className='gs-action-container'>
+                <a
+                    role={'button'}
+                    tabIndex={0}
+                    onClick={() => this.doOpenExternalLink(this.documentationUrl)}
+                    onKeyDown={(e: React.KeyboardEvent) => this.doOpenExternalLinkEnter(e, 'https://cdt-cloud.io')}>
+                    {nls.localizeByDefault('CDT.cloud Documentation')}
+                </a>
+            </div>
+            <div className='gs-action-container'>
+                <a
+                    role={'button'}
+                    tabIndex={0}
+                    onClick={() => this.doOpenExternalLink(this.documentationUrl)}
+                    onKeyDown={(e: React.KeyboardEvent) => this.doOpenExternalLinkEnter(e, this.documentationUrl)}>
+                    {nls.localizeByDefault('Theia Documentation')}
+                </a>
+            </div>
+            <div className='gs-action-container'>
+                <a
+                    role={'button'}
+                    tabIndex={0}
+                    onClick={() => this.doOpenExternalLink(this.extensionUrl)}
+                    onKeyDown={(e: React.KeyboardEvent) => this.doOpenExternalLinkEnter(e, this.extensionUrl)}>
+                    {nls.localize('theia/getting-started/newExtension', 'Building a New Extension')}
+                </a>
+            </div>
+            <div className='gs-action-container'>
+                <a
+                    role={'button'}
+                    tabIndex={0}
+                    onClick={() => this.doOpenExternalLink(this.pluginUrl)}
+                    onKeyDown={(e: React.KeyboardEvent) => this.doOpenExternalLinkEnter(e, this.pluginUrl)}>
+                    {nls.localize('theia/getting-started/newPlugin', 'Building a New Plugin')}
+                </a>
+            </div>
+        </div>;
     }
 }
 

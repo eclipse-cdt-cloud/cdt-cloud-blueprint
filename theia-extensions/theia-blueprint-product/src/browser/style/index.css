@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 :root {
-    --theia-branding-logo: url(../icons/TheiaBlueprintLogo-blue.png);
+    --cdtcloud-branding-logo: url(../icons/CDTCloudBlueprintLogo.png);
 }
 
 .gs-blue-header {
@@ -37,7 +37,7 @@
 }
 
 .gs-logo {
-    background-image: var(--theia-branding-logo);
+    background-image: var(--cdtcloud-branding-logo);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: contain;
@@ -53,7 +53,7 @@
 }
 
 .ad-logo {
-    background-image: var(--theia-branding-logo);
+    background-image: var(--cdtcloud-branding-logo);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: contain;

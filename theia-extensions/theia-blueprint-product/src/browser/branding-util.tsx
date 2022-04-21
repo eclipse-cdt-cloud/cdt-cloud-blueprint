@@ -45,26 +45,35 @@ function openExternalLink(url: string, windowService: WindowService): void {
 export function renderWhatIs(windowService: WindowService): React.ReactNode {
     return <div className='gs-section'>
         <h3 className='gs-section-header'>
-            What is CDT.cloud Blueprint?
+            Welcome to CDT.cloud Blueprint
         </h3>
         <div >
-            CDT.cloud Blueprint is a <span className='gs-text-bold'>template</span> tool for building
-            custom, web-based C/C++ tools. It is made of existing open source components and provides
-            a typical C/C++ IDE based on the Eclipse Theia platform. This includes C/C++ language
-            features, a language server, debugging support, memory debugging and a tracing view. It is
-            meant to serve as a starting point for the implementation of domain-specific custom tools.
+            CDT.cloud Blueprint is a <span className='gs-text-bold'>template</span> tool for building custom, web-based C/C++ tools.
+            Purely based on extensible open source components, it offers a modern and feature-rich C/C++ development experience,
+            including language editing and debugging support, memory debugging and a tracing view.
+            It is meant to serve as a starting point for the implementation of your own domain-specific custom C/C++ tool.
         </div>
+        <h3 className='gs-section-header'>
+            Start playing around!
+        </h3>
+        <div>Copy a C/C++ project into your workspace, e.g. <ExternalBrowserLink text="this project"
+            url="https://github.com/eclipse-cdt-cloud/clangd-contexts/tree/main/examples/clangd-workspace" windowService={windowService} ></ExternalBrowserLink>.</div>
+        <div>Download and open <ExternalBrowserLink text="example traces"
+            url="https://github.com/tuxology/tracevizlab/blob/master/labs/TraceCompassTutorialTraces.tgz" windowService={windowService} ></ExternalBrowserLink> with
+            Trace Compass Cloud.</div>
+        <div>Explore the features, such as code editing, building, build configurations, debugging, etc.</div>
     </div>;
 }
 
 export function renderWhatIsNot(): React.ReactNode {
     return <div className='gs-section'>
         <h3 className='gs-section-header'>
-            What is it not?
+            What CDT.cloud Blueprint isn't
         </h3>
         <div >
-            CDT.cloud Blueprint is <span className='gs-text-bold'><span className='gs-text-underline'>not</span> a production-ready
-                product</span>. Therefore, it is also not a replacement for Visual Studio Code or any other IDE.
+            CDT.cloud Blueprint is <span className='gs-text-bold'>not meant to be used as a production-ready product</span>.
+            However, feel free to use it a template for building your own custom C/C++ tool based on this blueprint, as well
+            as for testing the integrated CDT.cloud components.
         </div>
     </div>;
 }
@@ -72,20 +81,17 @@ export function renderWhatIsNot(): React.ReactNode {
 export function renderTickets(windowService: WindowService): React.ReactNode {
     return <div className='gs-section'>
         <h3 className='gs-section-header'>
-            Reporting feature requests and bugs
+            Get involved with CDT.cloud
         </h3>
         <div >
-            The features in CDT.cloud Blueprint are based on Theia and the included
-            extensions/plugins. For bugs in Theia please consider opening an issue in
-            the <ExternalBrowserLink text="Theia project on Github" url="https://github.com/eclipse-theia/theia/issues/new/choose"
-                windowService={windowService} ></ExternalBrowserLink>.
-        </div>
-        <div>
-            CDT.cloud Blueprint only packages existing functionality into a product and installers
-            for the product. If you believe there is a mistake in packaging, something needs to be added to the
-            packaging or the installers do not work properly,
-            please <ExternalBrowserLink text="open an issue on Github" url="https://github.com/eclipse-cdt-cloud/cdt-cloud-blueprint/issues/new/choose"
-                windowService={windowService} ></ExternalBrowserLink> to let us know.
+            CDT.cloud Blueprint is part of the CDT.cloud project, which hosts components and best practices for building
+            customizable web-based C/C++ tools. For more information on CDT.cloud visit us
+            on <ExternalBrowserLink text="our webpage" url="https://cdt-cloud.io"
+                windowService={windowService} ></ExternalBrowserLink> or
+            on <ExternalBrowserLink text="Github" url="https://github.com/eclipse-cdt-cloud/cdt-cloud"
+                windowService={windowService} ></ExternalBrowserLink> and <ExternalBrowserLink text="get in touch"
+                    url="https://cdt-cloud.io/contact" windowService={windowService} ></ExternalBrowserLink> to
+            discuss ideas, request features, report bugs, or to get support for building your custom C/C++ tool.
         </div>
     </div>;
 }
@@ -93,27 +99,35 @@ export function renderTickets(windowService: WindowService): React.ReactNode {
 export function renderSourceCode(windowService: WindowService): React.ReactNode {
     return <div className='gs-section'>
         <h3 className='gs-section-header'>
-            Source Code
+            Source Code and CDT.cloud components
         </h3>
         <div >
             The source code of CDT.cloud Blueprint is available
             on <ExternalBrowserLink text="Github" url="https://github.com/eclipse-cdt-cloud/cdt-cloud-blueprint"
                 windowService={windowService} ></ExternalBrowserLink>.
         </div>
+        <div >
+            CDT.cloud Blueprint bundles the following CDT.cloud open-source components:
+            <ul>
+                <li>
+                    <ExternalBrowserLink text="CDT GDB Debug Adapter" url="https://github.com/eclipse-cdt-cloud/cdt-gdb-adapter"
+                        windowService={windowService} ></ExternalBrowserLink>
+                </li>
+                <li>
+                    <ExternalBrowserLink text="Clangd Contexts" url="https://github.com/eclipse-cdt-cloud/clangd-contexts"
+                        windowService={windowService} ></ExternalBrowserLink>
+                </li>
+                <li>
+                    <ExternalBrowserLink text="Trace Compass Cloud" url="https://github.com/eclipse-cdt-cloud/theia-trace-extension"
+                        windowService={windowService} ></ExternalBrowserLink>
+                </li>
+            </ul>
+        </div>
     </div>;
 }
 
 export function renderDocumentation(windowService: WindowService): React.ReactNode {
-    return <div className='gs-section'>
-        <h3 className='gs-section-header'>
-            Documentation
-        </h3>
-        <div >
-            Please see <ExternalBrowserLink text="here" url="https://cdt-cloud.io/"
-                windowService={windowService} ></ExternalBrowserLink> for
-            documentation how to customize CDT.cloud Blueprint.
-        </div>
-    </div>;
+    return <div className='gs-section'></div>;
 }
 
 export function renderDownloads(): React.ReactNode {
@@ -123,11 +137,9 @@ export function renderDownloads(): React.ReactNode {
         </h3>
         <div className='gs-action-container'>
             You can update CDT.cloud Blueprint directly in this application by navigating to
-            File {'>'} Settings {'>'} Check for Updates… Moreover the application will check for Updates
+            File {'>'} Settings {'>'} Check for Updates. Moreover the application will check for Updates
             after each launch automatically.
-        </div>
-        <div className='gs-action-container'>
-            Alternatively you can download the most recent version from the download page.
+            Alternatively you can download the most recent version from our webpage.
         </div>
     </div>;
 }
