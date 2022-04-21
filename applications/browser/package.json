@@ -1,0 +1,110 @@
+{
+    "private": true,
+    "name": "cdt-cloud-blueprint-browser",
+    "description": "CDT.cloud Blueprint is a template for building custom web-based C/C++ tools",
+    "license": "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0",
+    "author": {
+        "name": "CDT.cloud",
+        "email": "cdt-cloud-dev@eclipse.org"
+    },
+    "homepage": "https://cdt-cloud.io/",
+    "bugs": {
+        "url": "https://github.com/eclipse-cdt-cloud/cdt-cloud-blueprint/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/eclipse-cdt-cloud/cdt-cloud-blueprint.git"
+    },
+    "engines": {
+        "yarn": "1.0.x || >=1.2.1",
+        "node": ">=12.14.1 <13"
+    },
+    "theia": {
+        "frontend": {
+            "config": {
+                "applicationName": "CDT Cloud Blueprint",
+                "preferences": {
+                    "files.enableTrash": false
+                }
+            }
+        }
+    },
+    "dependencies": {
+        "@theia/bulk-edit": "1.22.1",
+        "@theia/callhierarchy": "1.22.1",
+        "@theia/console": "1.22.1",
+        "@theia/core": "1.22.1",
+        "@theia/debug": "1.22.1",
+        "@theia/editor": "1.22.1",
+        "@theia/editor-preview": "1.22.1",
+        "@theia/electron": "1.22.1",
+        "@theia/external-terminal": "1.22.1",
+        "@theia/file-search": "1.22.1",
+        "@theia/filesystem": "1.22.1",
+        "@theia/getting-started": "1.22.1",
+        "@theia/keymaps": "1.22.1",
+        "@theia/markers": "1.22.1",
+        "@theia/messages": "1.22.1",
+        "@theia/metrics": "1.22.1",
+        "@theia/mini-browser": "1.22.1",
+        "@theia/monaco": "1.22.1",
+        "@theia/navigator": "1.22.1",
+        "@theia/outline-view": "1.22.1",
+        "@theia/output": "1.22.1",
+        "@theia/plugin-dev": "1.22.1",
+        "@theia/plugin-ext": "1.22.1",
+        "@theia/plugin-ext-vscode": "1.22.1",
+        "@theia/preferences": "1.22.1",
+        "@theia/preview": "1.22.1",
+        "@theia/process": "1.22.1",
+        "@theia/property-view": "1.22.1",
+        "@theia/scm": "1.22.1",
+        "@theia/scm-extra": "1.22.1",
+        "@theia/search-in-workspace": "1.22.1",
+        "@theia/task": "1.22.1",
+        "@theia/terminal": "1.22.1",
+        "@theia/timeline": "1.22.1",
+        "@theia/typehierarchy": "1.22.1",
+        "@theia/userstorage": "1.22.1",
+        "@theia/variable-resolver": "1.22.1",
+        "@theia/vsx-registry": "1.22.1",
+        "@theia/workspace": "1.22.1",
+        "fs-extra": "^9.0.1",
+        "cdt-cloud-blueprint-product": "1.22.1",
+        "@theia/cpp-debug": "1.19.0",
+        "theia-traceviewer": "0.2.0-next.61895a7.0"
+    },
+    "devDependencies": {
+        "@theia/cli": "1.22.1"
+    },
+    "scripts": {
+        "prepare": "yarn build && yarn download:plugins",
+        "clean": "theia clean && rimraf node_modules",
+        "build": "yarn -s compile && yarn -s bundle",
+        "bundle": "theia build",
+        "compile": "tsc -b",
+        "rebuild": "theia rebuild:browser --cacheRoot ../..",
+        "start": "yarn -s rebuild && theia start --plugins=local-dir:./plugins",
+        "start:debug": "yarn -s start --log-level=debug",
+        
+        "start:watch": "concurrently --kill-others -n tsc,bundle,run -c red,yellow,green \"tsc -b -w --preserveWatchOutput\" \"yarn -s watch:bundle\" \"yarn -s start\"",
+        "watch": "concurrently --kill-others -n tsc,bundle -c red,yellow \"tsc -b -w --preserveWatchOutput\" \"yarn -s watch:bundle\"",
+        "watch:bundle": "theia build --watch --mode development",
+        "watch:compile": "tsc -b -w",
+        "download:plugins": "theia download:plugins"
+    },
+    "theiaPluginsDir": "plugins",
+    "theiaPlugins": {
+        "vscode.git": "https://open-vsx.org/api/vscode/git/1.52.1/file/vscode.git-1.52.1.vsix",
+        "vscode.markdown-language-features": "https://open-vsx.org/api/vscode/markdown-language-features/1.39.2/file/vscode.markdown-language-features-1.39.2.vsix",
+        "vscode-builtin-extensions-pack": "https://open-vsx.org/api/eclipse-theia/builtin-extension-pack/1.50.1/file/eclipse-theia.builtin-extension-pack-1.50.1.vsix",
+        "cdt-gdb-vscode": "https://open-vsx.org/api/eclipse-cdt/cdt-gdb-vscode/0.0.92/file/eclipse-cdt.cdt-gdb-vscode-0.0.92.vsix",
+        "vscode-builtin-cpp": "https://open-vsx.org/api/vscode/cpp/1.62.3/file/vscode.cpp-1.62.3.vsix",
+        "vscode-clangd": "https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd/0.1.15/file/llvm-vs-code-extensions.vscode-clangd-0.1.15.vsix",
+        "vscode-cmake": "https://open-vsx.org/api/ms-vscode/cmake-tools/1.9.2/file/ms-vscode.cmake-tools-1.9.2.vsix"
+    },
+    "theiaPluginsExcludeIds": [
+        "vscode.extension-editing",
+        "vscode.microsoft-authentication"
+    ]
+}
