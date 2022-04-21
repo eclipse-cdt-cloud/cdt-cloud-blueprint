@@ -30,6 +30,7 @@
     "@types/tar-fs": "^2.0.1",
     "gunzip-maybe": "^1.4.2",
     "@types/gunzip-maybe": "^1.4.0",
+    "concurrently": "^3.5.0",
     "eslint": "^7.27.0",
     "eslint-plugin-deprecation": "1.2.1",
     "eslint-plugin-import": "^2.23.3",
