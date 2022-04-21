@@ -8,3 +8,6 @@
 **/plugins
 **/tsconfig.tsbuildinfo
 *.log
+
+tracecompass-server
+nohup.out
