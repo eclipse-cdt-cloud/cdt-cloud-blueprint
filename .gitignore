@@ -10,3 +10,4 @@
 *.log
 
 tracecompass-server
+nohup.out
