@@ -26,6 +26,11 @@ CDT.cloud Blueprint is a template for building custom web-based C/C++ tools. It 
 
 CDT.cloud Blueprint is ***not*** **a production-ready product**. Therefore, it is also not meant to be a replacement for Visual Studio Code or any other IDE.
 
+## Current state
+
+CDT.cloud Blueprint is in an early alpha state and undergoing active development.
+See [this milestone for release 1.0](https://github.com/eclipse-cdt-cloud/cdt-cloud-blueprint/milestone/1).
+
 ## Development
 
 CDT.cloud Blueprint is based on [Eclipse Theia Blueprint](https://github.com/eclipse-theia/theia-blueprint).
@@ -74,6 +79,7 @@ The packaged application is located in `applications/electron/dist`.
 - To use the trace view, download and start the [TraceCompassServer](https://download.eclipse.org/tracecompass.incubator/trace-server/rcp/)
 - Example traces can be found here: [TraceCompassTutorialTraces](https://github.com/tuxology/tracevizlab/blob/master/labs/TraceCompassTutorialTraces.tgz)
 - An example workspace including a trace can be found [here](https://github.com/eclipsesource/cdtcloud-alpha/tree/master/example/workspace)
+- Clangd contexts also provides an example workspace, see [here](https://github.com/eclipse-cdt-cloud/clangd-contexts/tree/main/examples/clangd-workspace).
 
 ### Running E2E Tests
 
@@ -84,6 +90,15 @@ This is done based on the preview of the packaged application.
 yarn electron package:preview
 yarn electron test
 ```
+
+### Docker based development
+
+1. Install the [Remote Dev extension pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) in VS Code
+2. Open this repository in VS Code
+3. In the notification that should appear: confirm to open this folder in the remote container instead
+4. CDT.cloud should be running on 127.0.0.1:3000 (VS Code should notify you on that)
+
+This executes the Browser application within a Docker container.
 
 ### Troubleshooting
 
