@@ -35,6 +35,7 @@ import { ElectronMainMenuFactory } from '@theia/core/lib/electron-browser/menu/e
 import { isOSX } from '@theia/core/lib/common/os';
 import { setInterval, clearInterval } from 'timers';
 import URI from '@theia/core/lib/common/uri';
+import { URI as VSCodeURI } from 'vscode-uri';
 
 export namespace TheiaUpdaterCommands {
 
@@ -192,7 +193,7 @@ export class TheiaUpdaterFrontendContribution implements CommandContribution, Me
     }
 
     protected async handleDownloadUpdate(): Promise<void> {
-        const answer = await this.messageService.info('Updates found, do you want to download the update?', 'No', 'Yes', 'Never');
+        const answer = await this.messageService.info('Updates found, do you want to update?', 'No', 'Yes', 'Never');
         if (answer === 'Never') {
             this.preferenceService.set('updates.reportOnStart', false, PreferenceScope.User);
             return;
@@ -222,7 +223,7 @@ export class TheiaUpdaterFrontendContribution implements CommandContribution, Me
             this.progress.report({ work: { done: 1, total: 1 } });
             this.stopProgress();
         }
-        const answer = await this.messageService.info('Ready to update. Do you want to update now? (This will restart the application)', 'No', 'Yes');
+        const answer = await this.messageService.info('An update has been downloaded and will be automatically installed on exit. Do you want to restart now?', 'No', 'Yes');
         if (answer === 'Yes') {
             this.updater.onRestartToUpdateRequested();
         }
@@ -234,7 +235,7 @@ export class TheiaUpdaterFrontendContribution implements CommandContribution, Me
             const viewLogAction = 'View Error Log';
             const answer = await this.messageService.error(error.message, viewLogAction);
             if (answer === viewLogAction) {
-                const uri = new URI(error.errorLogPath);
+                const uri = new URI(VSCodeURI.file(error.errorLogPath));
                 const opener = await this.openerService.getOpener(uri);
                 opener.open(uri);
             }
