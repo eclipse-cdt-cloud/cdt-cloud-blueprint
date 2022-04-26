@@ -1,7 +1,7 @@
 <br/>
 <div id="cdt-cloud-logo" align="center">
     <br />
-    <img src="https://avatars.githubusercontent.com/u/95486469?s=200&v=4" alt="CDT.cloud Logo" width="300"/>
+    <img src="theia-extensions/theia-blueprint-product/src/browser/icons/CDTCloudBlueprintLogo.png" alt="CDT.cloud Blueprint Logo"/>
     <h3>CDT.cloud Blueprint</h3>
 </div>
 
