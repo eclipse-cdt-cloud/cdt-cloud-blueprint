@@ -314,12 +314,12 @@ def uploadInstaller(String platform) {
         def packageJSON = readJSON file: "package.json"
         String version = "${packageJSON.version}"
         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-            sh "ssh genie.cloud@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/cdtcloud/blueprint/${version}/${platform}"
-            sh "ssh genie.cloud@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/cdtcloud/blueprint/${version}/${platform}"
-            sh "scp ${distFolder}/*.* genie.cloud@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/cdtcloud/blueprint/${version}/${platform}"
-            sh "ssh genie.cloud@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/cdtcloud/blueprint/latest/${platform}"
-            sh "ssh genie.cloud@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/cdtcloud/blueprint/latest/${platform}"
-            sh "scp ${distFolder}/*.* genie.cloud@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/cdtcloud/blueprint/latest/${platform}"
+            sh "ssh genie.cdt-cloud@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/cdt-cloud/blueprint/${version}/${platform}"
+            sh "ssh genie.cdt-cloud@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/cdt-cloud/blueprint/${version}/${platform}"
+            sh "scp ${distFolder}/*.* genie.cdt-cloud@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/cdt-cloud/blueprint/${version}/${platform}"
+            sh "ssh genie.cdt-cloud@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/cdt-cloud/blueprint/latest/${platform}"
+            sh "ssh genie.cdt-cloud@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/cdt-cloud/blueprint/latest/${platform}"
+            sh "scp ${distFolder}/*.* genie.cdt-cloud@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/cdt-cloud/blueprint/latest/${platform}"
         }
     } else {
         echo "Skipped upload for branch ${env.BRANCH_NAME}"
@@ -331,7 +331,7 @@ def copyInstaller(String platform, String installer, String extension) {
         def packageJSON = readJSON file: "package.json"
         String version = "${packageJSON.version}"
         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-            sh "ssh genie.cloud@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/cdtcloud/blueprint/latest/${platform}/${installer}.${extension} /home/data/httpd/download.eclipse.org/cdtcdtcloud/blueprint/latest/${platform}/${installer}-${version}.${extension}"
+            sh "ssh genie.cdt-cloud@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/cdt-cloud/blueprint/latest/${platform}/${installer}.${extension} /home/data/httpd/download.eclipse.org/cdt-cloud/blueprint/latest/${platform}/${installer}-${version}.${extension}"
         }
     } else {
         echo "Skipped copying installer for branch ${env.BRANCH_NAME}"
