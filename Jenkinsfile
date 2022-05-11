@@ -243,6 +243,7 @@ def buildInstaller() {
         sh(script: 'yarn --frozen-lockfile --force')
     } catch(error) {
         retry(MAX_RETRY) {
+            sleep(900)
             echo "yarn failed - Retrying"
             sh(script: 'yarn --frozen-lockfile --force')        
         }
@@ -314,12 +315,12 @@ def uploadInstaller(String platform) {
         def packageJSON = readJSON file: "package.json"
         String version = "${packageJSON.version}"
         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-            sh "ssh genie.cdt-cloud@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/cdt-cloud/blueprint/${version}/${platform}"
-            sh "ssh genie.cdt-cloud@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/cdt-cloud/blueprint/${version}/${platform}"
-            sh "scp ${distFolder}/*.* genie.cdt-cloud@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/cdt-cloud/blueprint/${version}/${platform}"
-            sh "ssh genie.cdt-cloud@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/cdt-cloud/blueprint/latest/${platform}"
-            sh "ssh genie.cdt-cloud@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/cdt-cloud/blueprint/latest/${platform}"
-            sh "scp ${distFolder}/*.* genie.cdt-cloud@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/cdt-cloud/blueprint/latest/${platform}"
+            sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/cdt-cloud/${version}/${platform}"
+            sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/cdt-cloud/${version}/${platform}"
+            sh "scp ${distFolder}/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/cdt-cloud/${version}/${platform}"
+            sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/cdt-cloud/latest/${platform}"
+            sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/cdt-cloud/latest/${platform}"
+            sh "scp ${distFolder}/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/cdt-cloud/latest/${platform}"
         }
     } else {
         echo "Skipped upload for branch ${env.BRANCH_NAME}"
@@ -331,7 +332,7 @@ def copyInstaller(String platform, String installer, String extension) {
         def packageJSON = readJSON file: "package.json"
         String version = "${packageJSON.version}"
         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-            sh "ssh genie.cdt-cloud@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/cdt-cloud/blueprint/latest/${platform}/${installer}.${extension} /home/data/httpd/download.eclipse.org/cdt-cloud/blueprint/latest/${platform}/${installer}-${version}.${extension}"
+            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/cdt-cloud/latest/${platform}/${installer}.${extension} /home/data/httpd/download.eclipse.org/theia/cdt-cloud/latest/${platform}/${installer}-${version}.${extension}"
         }
     } else {
         echo "Skipped copying installer for branch ${env.BRANCH_NAME}"
