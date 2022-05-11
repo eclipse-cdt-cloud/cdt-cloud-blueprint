@@ -15,14 +15,14 @@ if [ -d "${INPUT}" ]; then
 fi
 
 # copy file to storage server
-scp -p "${INPUT}" genie.cloud@projects-storage.eclipse.org:./
+scp -p "${INPUT}" genie.theia@projects-storage.eclipse.org:./
 rm -f "${INPUT}"
 
 # name to use on server
 REMOTE_NAME=${INPUT##*/}
 
 # notarize over ssh
-RESPONSE=$(ssh -q genie.cloud@projects-storage.eclipse.org curl -X POST -F file=@"\"${REMOTE_NAME}\"" -F "'options={\"primaryBundleId\": \"${APP_ID}\", \"staple\": true};type=application/json'" https://cbi.eclipse.org/macos/xcrun/notarize)
+RESPONSE=$(ssh -q genie.theia@projects-storage.eclipse.org curl -X POST -F file=@"\"${REMOTE_NAME}\"" -F "'options={\"primaryBundleId\": \"${APP_ID}\", \"staple\": true};type=application/json'" https://cbi.eclipse.org/macos/xcrun/notarize)
 
 # fund uuid and status
 [[ $RESPONSE =~ $UUID_REGEX ]]
@@ -34,7 +34,7 @@ STATUS=${BASH_REMATCH[1]}
 echo "  Progress: $RESPONSE"
 while [[ $STATUS == 'IN_PROGRESS' ]]; do
     sleep 120
-    RESPONSE=$(ssh -q genie.cloud@projects-storage.eclipse.org curl -s https://cbi.eclipse.org/macos/xcrun/${UUID}/status)
+    RESPONSE=$(ssh -q genie.theia@projects-storage.eclipse.org curl -s https://cbi.eclipse.org/macos/xcrun/${UUID}/status)
     [[ $RESPONSE =~ $STATUS_REGEX ]]
     STATUS=${BASH_REMATCH[1]}
     echo "  Progress: $RESPONSE"
@@ -46,13 +46,13 @@ if [[ $STATUS != 'COMPLETE' ]]; then
 fi
 
 # download stapled result
-ssh -q genie.cloud@projects-storage.eclipse.org curl -o "\"stapled-${REMOTE_NAME}\"" https://cbi.eclipse.org/macos/xcrun/${UUID}/download
+ssh -q genie.theia@projects-storage.eclipse.org curl -o "\"stapled-${REMOTE_NAME}\"" https://cbi.eclipse.org/macos/xcrun/${UUID}/download
 
 # copy stapled file back from server
-scp -T -p genie.cloud@projects-storage.eclipse.org:"\"./stapled-${REMOTE_NAME}\"" "${INPUT}"
+scp -T -p genie.theia@projects-storage.eclipse.org:"\"./stapled-${REMOTE_NAME}\"" "${INPUT}"
 
 # ensure storage server is clean
-ssh -q genie.cloud@projects-storage.eclipse.org rm -f "\"${REMOTE_NAME}\"" "\"stapled-${REMOTE_NAME}\"" entitlements.plist
+ssh -q genie.theia@projects-storage.eclipse.org rm -f "\"${REMOTE_NAME}\"" "\"stapled-${REMOTE_NAME}\"" entitlements.plist
 
 # if unzip needed
 if [ "$NEEDS_UNZIP" = true ]; then

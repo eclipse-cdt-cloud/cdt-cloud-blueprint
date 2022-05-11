@@ -2,7 +2,8 @@
     "extends": "../../configs/base.tsconfig",
     "include": [],
     "compilerOptions": {
-      "composite": true
+      "composite": true,
+      "esModuleInterop": true,
     },
     "references": [
       {

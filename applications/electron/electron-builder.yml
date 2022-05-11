@@ -30,7 +30,7 @@ win:
     - nsis
   publish:
     provider: generic
-    url: "https://download.eclipse.org/theia/latest/windows"
+    url: "https://download.eclipse.org/theia/cdt-cloud/latest/windows"
 mac:
   icon: resources/icons/MacLauncherIcon/512-512-2.icns
   category: public.app-category.developer-tools
@@ -40,7 +40,7 @@ mac:
     - zip
   publish:
     provider: generic
-    url: "https://download.eclipse.org/theia/latest/macos"
+    url: "https://download.eclipse.org/theia/cdt-cloud/latest/macos"
 linux:
   icon: resources/icons/LinuxLauncherIcon/512-512.png
   category: Development
@@ -50,7 +50,7 @@ linux:
     - AppImage
   publish:
     provider: generic
-    url: "https://download.eclipse.org/theia/latest/linux"
+    url: "https://download.eclipse.org/theia/cdt-cloud/latest/linux"
 
 nsis:
   menuCategory: true
