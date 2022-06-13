@@ -22,7 +22,8 @@ import { VSXEnvironment } from '@theia/vsx-registry/lib/common/vsx-environment';
 import { WindowService } from '@theia/core/lib/browser/window/window-service';
 import { codicon, Message, PreferenceService } from '@theia/core/lib/browser';
 import { BlueprintPreferences } from './theia-blueprint-preferences';
-import { DisposableCollection, nls } from '@theia/core';
+import { CommandService, DisposableCollection, nls } from '@theia/core';
+import { GenerateExampleCommand, Examples } from '@eclipse-cdt-cloud/blueprint-example-generator/lib/browser';
 
 @injectable()
 export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
@@ -32,6 +33,9 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
 
     @inject(WindowService)
     protected readonly windowService: WindowService;
+
+    @inject(CommandService)
+    protected readonly commandService: CommandService;
 
     @inject(PreferenceService)
     protected readonly preferenceService: PreferenceService;
@@ -67,7 +71,7 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
             <hr className='gs-hr' />
             <div className='flex-grid'>
                 <div className='col'>
-                    {renderWhatIs(this.windowService)}
+                    {renderWhatIs(this.windowService, this.commandService)}
                 </div>
             </div>
             <div className='flex-grid'>
@@ -117,6 +121,11 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
             </div>
             <div className='flex-grid'>
                 <div className='col'>
+                    {this.renderExamples()}
+                </div>
+            </div>
+            <div className='flex-grid'>
+                <div className='col'>
                     {this.renderSettings()}
                 </div>
             </div>
@@ -150,6 +159,31 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
     protected renderPreferences(): React.ReactNode {
         return <GSPreferences preferenceService={this.preferenceService}></GSPreferences>;
     }
+
+    protected renderExamples(): React.ReactNode {
+        return <div className='gs-section'>
+            <h3 className='gs-section-header'>
+                <i className={codicon('beaker')}></i>
+                {nls.localizeByDefault('Examples')}
+            </h3>
+            <div className='gs-action-container'>
+                <a
+                    role={'button'}
+                    tabIndex={0}
+                    onClick={() => this.doGenerateExample(Examples.CMAKE_WITH_LIBRARY)}
+                    onKeyDown={(e: React.KeyboardEvent) => this.doGenerateExampleEnter(e, Examples.CMAKE_WITH_LIBRARY)}>
+                    {nls.localizeByDefault('CMake Example With Library')}
+                </a>
+            </div>
+        </div>;
+    }
+
+    protected doGenerateExample = (exampleId: string) => this.commandRegistry.executeCommand(GenerateExampleCommand.id, exampleId);
+    protected doGenerateExampleEnter = (e: React.KeyboardEvent, exampleId: string) => {
+        if (this.isEnterKey(e)) {
+            this.doGenerateExample(exampleId);
+        }
+    };
 
     protected renderHelp(): React.ReactNode {
         return <div className='gs-section'>

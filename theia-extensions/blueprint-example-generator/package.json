@@ -1,14 +1,13 @@
 {
-  "private": true,
-  "name": "cdt-cloud-blueprint-product",
+  "name": "@eclipse-cdt-cloud/blueprint-example-generator",
   "version": "1.24.0",
-  "description": "CDT.cloud Blueprint Product Branding",
+  "description": "Extension for generating examples in CDT.cloud blueprint",
   "dependencies": {
     "@theia/core": "1.24.0",
-    "@theia/getting-started": "1.24.0",
-    "@theia/vsx-registry": "1.24.0",
     "@theia/workspace": "1.24.0",
-    "@eclipse-cdt-cloud/blueprint-example-generator": "1.24.0",
+    "@theia/filesystem": "1.24.0",
+    "@theia/editor": "1.24.0",
+    "fs-extra": "^8.1.0",
     "inversify": "^5.1.1"
   },
   "devDependencies": {
@@ -18,9 +17,8 @@
   },
   "theiaExtensions": [
     {
-      "frontendElectron": "lib/browser/theia-blueprint-frontend-module",
-      "electronMain": "lib/electron-main/theia-blueprint-main-module",
-      "backend": "lib/node/theia-blueprint-backend-module"
+      "frontendElectron": "lib/browser/example-generator-frontend-module",
+      "backend": "lib/node/example-generator-backend-module"
     }
   ],
   "keywords": [
@@ -46,8 +44,5 @@
     "lint": "eslint --ext js,jsx,ts,tsx src",
     "lint:fix": "eslint --ext js,jsx,ts,tsx src --fix",
     "update:next": "ts-node ../../scripts/update-theia-to-next.ts"
-  },
-  "peerDependencies": {
-    "react": "^16.8.0"
   }
 }
