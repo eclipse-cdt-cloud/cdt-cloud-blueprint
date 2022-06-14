@@ -20,13 +20,15 @@ import { injectable } from '@theia/core/shared/inversify';
 import * as fs from 'fs-extra';
 import { ExampleGeneratorService, Examples } from '../common/protocol';
 
+const EXAMPLE_DIRECTORY = 'resources';
+
 // TODO use fsPath once we upgrade Theia
 // https://github.com/eclipse-theia/theia/wiki/Coding-Guidelines#backend-fs-path
 @injectable()
 export class ExampleGeneratorServiceImpl implements ExampleGeneratorService {
 
     async generateExample(exampleId: string, targetFolderUri: string): Promise<string | undefined> {
-        const examplesPath = new Path(module.path).resolve('../../examples');
+        const examplesPath = new Path(module.path).resolve(`../../${EXAMPLE_DIRECTORY}`);
         if (!examplesPath || !fs.existsSync(examplesPath.toString())) {
             throw new Error('Could not find examples folder');
         }
@@ -38,6 +40,7 @@ export class ExampleGeneratorServiceImpl implements ExampleGeneratorService {
 
         const target = new URI(targetFolderUri);
         fs.copySync(examplePath.toString(), target.path.toString(), { recursive: true, errorOnExist: true });
+
         const fileToBeOpened = this.getFileToBeOpened(exampleId);
         return fileToBeOpened ? target.path.resolve(fileToBeOpened)?.toString() : undefined;
     }

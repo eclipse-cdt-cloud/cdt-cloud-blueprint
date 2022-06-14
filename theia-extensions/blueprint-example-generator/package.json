@@ -34,6 +34,7 @@
   },
   "homepage": "https://cdt-cloud.io/",
   "files": [
+    "resources",
     "lib",
     "src"
   ],
