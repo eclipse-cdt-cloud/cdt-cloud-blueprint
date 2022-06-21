@@ -80,8 +80,10 @@ spec:
                     }
                     steps {
                         container('theia-dev') {
-                            script {
-                                buildInstaller()
+                            withCredentials([string(credentialsId: "github-bot-token", variable: 'GITHUB_TOKEN')]) {
+                                script {
+                                    buildInstaller()
+                                }
                             }
                         }
                         stash includes: "${distFolder}/*", name: 'linux'
@@ -243,7 +245,7 @@ def buildInstaller() {
         sh(script: 'yarn --frozen-lockfile --force')
     } catch(error) {
         retry(MAX_RETRY) {
-            sleep(900)
+            sleep(1200)
             echo "yarn failed - Retrying"
             sh(script: 'yarn --frozen-lockfile --force')        
         }
