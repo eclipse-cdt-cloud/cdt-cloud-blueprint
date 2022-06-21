@@ -28,7 +28,7 @@ export class IconContribution implements ElectronMainApplicationContribution {
             if (windowOptions && windowOptions.icon === undefined) {
                 // The window image is undefined. If the executable has an image set, this is used as a fallback.
                 // Since AppImage does not support this anymore via electron-builder, set an image for the linux platform.
-                windowOptions.icon = path.join(__dirname, '../../icons/512-512.png');
+                windowOptions.icon = path.join(__dirname, '../../icons/64-64.png');
             }
         }
     }
