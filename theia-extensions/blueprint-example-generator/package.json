@@ -18,6 +18,7 @@
   "theiaExtensions": [
     {
       "frontendElectron": "lib/browser/example-generator-frontend-module",
+      "frontend": "lib/browser/example-generator-frontend-module",
       "backend": "lib/node/example-generator-backend-module"
     }
   ],

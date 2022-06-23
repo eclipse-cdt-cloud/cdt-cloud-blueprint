@@ -20,6 +20,7 @@
     {
       "frontendElectron": "lib/browser/theia-blueprint-frontend-module",
       "electronMain": "lib/electron-main/theia-blueprint-main-module",
+      "frontend": "lib/browser/theia-blueprint-frontend-module",
       "backend": "lib/node/theia-blueprint-backend-module"
     }
   ],
