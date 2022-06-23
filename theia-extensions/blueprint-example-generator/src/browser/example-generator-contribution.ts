@@ -61,8 +61,9 @@ export class GenerateExampleCommandHandler implements CommandHandler {
             return;
         }
 
-        const targetFolder = await this.selectTargetFolder();
+        const targetFolder = await this.getWorkspaceRoot();
         if (!targetFolder) {
+            this.messageService.error('Cannot resolve workspace root, please open a workspace');
             return;
         }
 
@@ -96,36 +97,20 @@ export class GenerateExampleCommandHandler implements CommandHandler {
         return selection?.value;
     }
 
-    protected async selectTargetFolder(): Promise<URI | undefined> {
+    protected async getWorkspaceRoot(): Promise<URI | undefined> {
         const workspaceRoot = await this.selectWorkspaceRoot();
         if (!workspaceRoot) {
             return;
         }
-
-        const result = await this.quickInputService.input({
-            placeHolder: 'Enter target folder name',
-            validateInput: async (input: string) => {
-                if (!input || input.length < 1) {
-                    return 'Please enter valid folder name';
-                }
-                const target = workspaceRoot.resolve(input);
-                if (!target) {
-                    return 'No valid workspace';
-                } else if (await this.fileService.exists(target)) {
-                    return 'Target folder already exists';
-                }
-            }
-        });
-        if (!result) {
-            return;
-        }
-
-        return workspaceRoot.resolve(result);
+        return workspaceRoot;
     }
 
     protected async selectWorkspaceRoot(): Promise<URI | undefined> {
         const workspaceRoots = this.workspaceService.tryGetRoots();
-        if (workspaceRoots.length < 2) {
+        if (workspaceRoots.length === 0) {
+            return;
+        }
+        if (workspaceRoots.length === 1) {
             return workspaceRoots[0].resource;
         }
         const items: QuickPickValue<URI>[] = [];
