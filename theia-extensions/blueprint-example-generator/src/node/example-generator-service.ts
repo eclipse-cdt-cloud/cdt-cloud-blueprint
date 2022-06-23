@@ -49,6 +49,9 @@ export class ExampleGeneratorServiceImpl implements ExampleGeneratorService {
         if (exampleId === Examples.CMAKE_WITH_LIBRARY) {
             return 'README.md';
         }
+        if (exampleId === Examples.CLANGD_CONTEXTS) {
+            return 'README.md';
+        }
         return undefined;
     }
 

@@ -18,7 +18,9 @@ export const ExampleGeneratorService = Symbol('ExampleGeneratorService');
 export const EXAMPLE_GENERATOR_PATH = '/services/example-generator';
 
 export enum Examples {
-    CMAKE_WITH_LIBRARY = 'cmake-with-library'
+    CMAKE_WITH_LIBRARY = 'cmake-with-library',
+    EXAMPLE_TRACES = 'example-traces',
+    CLANGD_CONTEXTS = 'clangd-contexts'
 }
 
 /**

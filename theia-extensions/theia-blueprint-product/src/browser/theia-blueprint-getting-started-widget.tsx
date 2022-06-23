@@ -175,6 +175,24 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
                     {nls.localizeByDefault('CMake Example With Library')}
                 </a>
             </div>
+            <div className='gs-action-container'>
+                <a
+                    role={'button'}
+                    tabIndex={0}
+                    onClick={() => this.doGenerateExample(Examples.EXAMPLE_TRACES)}
+                    onKeyDown={(e: React.KeyboardEvent) => this.doGenerateExampleEnter(e, Examples.EXAMPLE_TRACES)}>
+                    {nls.localizeByDefault('Example traces')}
+                </a>
+            </div>
+            <div className='gs-action-container'>
+                <a
+                    role={'button'}
+                    tabIndex={0}
+                    onClick={() => this.doGenerateExample(Examples.CLANGD_CONTEXTS)}
+                    onKeyDown={(e: React.KeyboardEvent) => this.doGenerateExampleEnter(e, Examples.CLANGD_CONTEXTS)}>
+                    {nls.localizeByDefault('Clangd contexts')}
+                </a>
+            </div>
         </div>;
     }
 
