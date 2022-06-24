@@ -46,11 +46,14 @@ export class ExampleGeneratorServiceImpl implements ExampleGeneratorService {
     }
 
     protected getFileToBeOpened(exampleId: string): string | undefined {
-        if (exampleId === Examples.CMAKE_WITH_LIBRARY) {
-            return 'README.md';
+        if (exampleId === Examples.CMAKE_EXAMPLE) {
+            return 'CMAKE_EXAMPLE_README.md';
         }
         if (exampleId === Examples.CLANGD_CONTEXTS) {
-            return 'README.md';
+            return 'CLANGD_CONTEXTS_README.md';
+        }
+        if (exampleId === Examples.CLANGD_CONTEXTS) {
+            return 'EXAMPLE_TRACES_README.md';
         }
         return undefined;
     }

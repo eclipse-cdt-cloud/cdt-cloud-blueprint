@@ -89,7 +89,7 @@ export class GenerateExampleCommandHandler implements CommandHandler {
 
     protected async askUserToChooseExample(): Promise<string | undefined> {
         const items: QuickPickValue<string>[] = [
-            { label: 'CMake example with library', value: Examples.CMAKE_WITH_LIBRARY },
+            { label: 'CMake example', value: Examples.CMAKE_EXAMPLE },
             { label: 'Example traces', value: Examples.EXAMPLE_TRACES },
             { label: 'Clangd contexts', value: Examples.CLANGD_CONTEXTS }
         ];

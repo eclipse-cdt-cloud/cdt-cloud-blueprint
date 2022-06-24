@@ -170,9 +170,9 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
                 <a
                     role={'button'}
                     tabIndex={0}
-                    onClick={() => this.doGenerateExample(Examples.CMAKE_WITH_LIBRARY)}
-                    onKeyDown={(e: React.KeyboardEvent) => this.doGenerateExampleEnter(e, Examples.CMAKE_WITH_LIBRARY)}>
-                    {nls.localizeByDefault('CMake Example With Library')}
+                    onClick={() => this.doGenerateExample(Examples.CMAKE_EXAMPLE)}
+                    onKeyDown={(e: React.KeyboardEvent) => this.doGenerateExampleEnter(e, Examples.CMAKE_EXAMPLE)}>
+                    {nls.localizeByDefault('CMake Example')}
                 </a>
             </div>
             <div className='gs-action-container'>

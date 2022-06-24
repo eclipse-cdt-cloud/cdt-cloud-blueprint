@@ -1,8 +1,8 @@
-# CMake Example Project
+# Example Workspace with Clangd Contexts
 
-This is a simple multi-context project with two different _clangd contexts_ that should be properly handled by code completion suggestions and warnings in the code editor.
+This is a simple multi-project workspace that has two different _clangd contexts_ that should be properly handled by code completion suggestions and warnings in the code editor.
 
-## How to Build the Project
+## How to Build the Workspace
 
 Make sure that you have `gcc` from the GNU toolchain and `cmake` on the `PATH`.
 Then build the workspace using
@@ -26,6 +26,29 @@ This is interesting because the built-in defined symbols differ.
 In `main.c` there are different warnings depending on the built-in defined symbols and the definition of the `TestStruct_t` is different depending on the target architecture.
 
 Line 22 will generate a warning in the `Atom` configurations, but not in the others because in those, the `__atom__` macro is not defined (not being built specifically for that CPU).
+
+## Using the Example VS Code Extension
+
+The [example workspace](../clangd-workspace/README.md) contains two projects, `app/` and `lib/`.
+If we have a look at the `app/main.c` file we can see a compilation error because the reference to a name defined in the `lib/` project cannot be resolved.
+To fix this a build configuration needs to be set.
+
+> **Note** that until the example workspace has first been built [according to these instructions](../clangd-workspace/README.md#how-to-build-the-workspace), VS Code will not be able to show any build configurations to choose because the context directories containing the requisite makefiles and compilation databases do not yet exist.
+
+This can be done via the command palette using the `Clangd: Change build configuration` command.
+Alternatively, the build configuration can be configured by clicking on the build configuration item on the status bar.
+
+> **Note** that the `Clangd: Change build configuration` command also restarts the clangd language server to apply the configuration changes.
+> Some errors regarding rejected promises may be thrown by restarting the language server.
+> However, they are harmless and can safely be ignored.
+
+Clangd uses a dedicated cache per build configuration index, which means that switching between configurations does not require a full re-indexing.
+
+The `Debug_x86-64` configuration uses a GCC-specific compile flag which is not recognized by clangd.
+To avoid errors related to unsupported GCC compile flags the `Clangd: Suppress unsupported GCC flags"` command can be used.
+It is also possible to suppress GCC flags only in a specific subdirectory.
+Simply select the directory in the file explorer, open the context menu and select `Clangd: Suppress unsupported GCC flags"`.
+The `cdtcloud-clangd-contexts-ext` extension then recursively collects all `.clangd` configuration files that are located within the workspace or within the selected directory and adds a configuration option that tells the clangd server to suppress the unsupported compilation flags.
 
 ## Context-sensitive Variation Points
 
