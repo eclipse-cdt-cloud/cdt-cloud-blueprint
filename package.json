@@ -41,7 +41,10 @@
     "rimraf": "^2.7.1",
     "ts-node": "^10.0.0",
     "type-fest": "^0.20.2",
-    "yargs": "17.2.1"
+    "yargs": "17.2.1",
+    "verdaccio": "^5.13.1",
+    "wait-port": "^0.2.9",
+    "glob": "^8.0.3"
   },
   "scripts": {
     "prepare": "lerna run prepare",
@@ -55,7 +58,9 @@
     "electron": "yarn --cwd applications/electron",
     "browser": "yarn --cwd applications/browser",
     "update:next": "ts-node scripts/update-theia-to-next.ts && lerna run update:next",
-    "tracecompass-server:start": "ts-node scripts/tracecompass-server.ts"
+    "tracecompass-server:start": "ts-node scripts/tracecompass-server.ts",
+    "verdaccio:start": "verdaccio --config configs/verdaccio.config.yaml --listen 4873",
+    "build-standalone": "ts-node scripts/theia-standalone-browser-app.ts"
   },
   "resolutions": {
     "**/@theia/core": "1.24.0",
