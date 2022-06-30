@@ -19,6 +19,7 @@ export const EXAMPLE_GENERATOR_PATH = '/services/example-generator';
 
 export enum Examples {
     CMAKE_EXAMPLE = 'cmake-example',
+    EXAMPLE_TRACES = 'example-traces',
     CLANGD_CONTEXTS = 'clangd-contexts'
 }
 
