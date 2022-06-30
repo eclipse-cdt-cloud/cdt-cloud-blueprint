@@ -15,3 +15,4 @@ Below are some features that can be tried out:
 - Code completion (after building)
 - Cross-file navigation (after building)
 - Debugging (after building)
+- Memory Inspector (during debugging)

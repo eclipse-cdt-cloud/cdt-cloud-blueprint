@@ -52,9 +52,6 @@ export class ExampleGeneratorServiceImpl implements ExampleGeneratorService {
         if (exampleId === Examples.CLANGD_CONTEXTS) {
             return 'CLANGD_CONTEXTS_README.md';
         }
-        if (exampleId === Examples.EXAMPLE_TRACES) {
-            return 'EXAMPLE_TRACES_README.md';
-        }
         return undefined;
     }
 
