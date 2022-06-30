@@ -15,9 +15,10 @@
  ********************************************************************************/
 
 import { Key, KeyCode } from '@theia/core/lib/browser';
+import { nls } from '@theia/core';
 import { WindowService } from '@theia/core/lib/browser/window/window-service';
 import { CommandService } from '@theia/core/lib/common/command';
-import { GenerateExampleCommand } from '@eclipse-cdt-cloud/blueprint-example-generator/lib/browser';
+import { GenerateExampleCommand, Examples } from '@eclipse-cdt-cloud/blueprint-example-generator/lib/browser';
 import * as React from 'react';
 
 export interface ExternalBrowserLinkProps {
@@ -66,14 +67,18 @@ export function renderWhatIs(windowService: WindowService, commandService: Comma
                 {'example project'}
             </a>.</div>
         <div>Explore the features, such as code editing, building, build configurations, debugging, etc.</div>
-        <div>Download and open <ExternalBrowserLink text="example traces"
-            url="https://github.com/tuxology/tracevizlab/blob/master/labs/TraceCompassTutorialTraces.tgz" windowService={windowService} ></ExternalBrowserLink> with
-            Trace Compass Cloud.</div>
+        <div>
+            <a
+                role={'button'}
+                tabIndex={0}
+                onClick={() => generateExample(commandService, Examples.EXAMPLE_TRACES)}>
+                {nls.localizeByDefault('Generate example traces')}
+            </a> {' '} and open them with Trace Compass Cloud.</div>
     </div>;
 }
 
-function generateExample(commandService: CommandService): void {
-    commandService.executeCommand(GenerateExampleCommand.id);
+function generateExample(commandService: CommandService, exampleId?: Examples): void {
+    commandService.executeCommand(GenerateExampleCommand.id, exampleId);
 }
 
 export function renderWhatIsNot(): React.ReactNode {
