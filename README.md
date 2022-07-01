@@ -100,6 +100,20 @@ yarn electron test
 
 This executes the Browser application within a Docker container.
 
+#### Build & run Docker image
+
+To build a fully functioning Docker image run:
+
+```sh
+docker build -t cdt-cloud-blueprint:latest -f dockerfile/Dockerfile .
+```
+
+To start the created image run:
+
+```sh
+docker run -it -p 0.0.0.0:3000:3000 -p 0.0.0.0:8080:8080 cdt-cloud-blueprint:latest
+```
+
 ### Troubleshooting
 
 - [_"Don't expect that you can build app for all platforms on one platform."_](https://www.electron.build/multi-platform-build)
