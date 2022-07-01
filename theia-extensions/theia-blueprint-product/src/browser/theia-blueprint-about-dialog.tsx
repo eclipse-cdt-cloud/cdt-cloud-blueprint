@@ -20,6 +20,7 @@ import { injectable, inject, postConstruct } from '@theia/core/shared/inversify'
 import { renderDocumentation, renderDownloads, renderSourceCode, renderTickets, renderWhatIs, renderWhatIsNot } from './branding-util';
 import { VSXEnvironment } from '@theia/vsx-registry/lib/common/vsx-environment';
 import { WindowService } from '@theia/core/lib/browser/window/window-service';
+import { CommandService } from '@theia/core';
 
 @injectable()
 export class TheiaBlueprintAboutDialog extends AboutDialog {
@@ -29,6 +30,9 @@ export class TheiaBlueprintAboutDialog extends AboutDialog {
 
     @inject(WindowService)
     protected readonly windowService: WindowService;
+
+    @inject(CommandService)
+    protected readonly commandService: CommandService;
 
     protected vscodeApiVersion: string;
 
@@ -61,7 +65,7 @@ export class TheiaBlueprintAboutDialog extends AboutDialog {
             <hr className='gs-hr' />
             <div className='flex-grid'>
                 <div className='col'>
-                    {renderWhatIs(this.windowService)}
+                    {renderWhatIs(this.windowService, this.commandService)}
                 </div>
             </div>
             <div className='flex-grid'>

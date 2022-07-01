@@ -15,7 +15,10 @@
  ********************************************************************************/
 
 import { Key, KeyCode } from '@theia/core/lib/browser';
+import { nls } from '@theia/core';
 import { WindowService } from '@theia/core/lib/browser/window/window-service';
+import { CommandService } from '@theia/core/lib/common/command';
+import { GenerateExampleCommand, Examples } from '@eclipse-cdt-cloud/blueprint-example-generator/lib/browser';
 import * as React from 'react';
 
 export interface ExternalBrowserLinkProps {
@@ -42,7 +45,7 @@ function openExternalLink(url: string, windowService: WindowService): void {
     windowService.openNewWindow(url, { external: true });
 }
 
-export function renderWhatIs(windowService: WindowService): React.ReactNode {
+export function renderWhatIs(windowService: WindowService, commandService: CommandService): React.ReactNode {
     return <div className='gs-section'>
         <h3 className='gs-section-header'>
             Welcome to CDT.cloud Blueprint
@@ -56,13 +59,26 @@ export function renderWhatIs(windowService: WindowService): React.ReactNode {
         <h3 className='gs-section-header'>
             Start playing around!
         </h3>
-        <div>Copy a C/C++ project into your workspace, e.g. <ExternalBrowserLink text="this project"
-            url="https://github.com/eclipse-cdt-cloud/clangd-contexts/tree/main/examples/clangd-workspace" windowService={windowService} ></ExternalBrowserLink>.</div>
-        <div>Download and open <ExternalBrowserLink text="example traces"
-            url="https://github.com/tuxology/tracevizlab/blob/master/labs/TraceCompassTutorialTraces.tgz" windowService={windowService} ></ExternalBrowserLink> with
-            Trace Compass Cloud.</div>
+        <div>Select and generate an <a
+                role={'button'}
+                tabIndex={0}
+                onClick={() => generateExample(commandService)}
+                onKeyDown={(e: React.KeyboardEvent) => generateExample(commandService)}>
+                {'example project'}
+            </a>.</div>
         <div>Explore the features, such as code editing, building, build configurations, debugging, etc.</div>
+        <div>
+            <a
+                role={'button'}
+                tabIndex={0}
+                onClick={() => generateExample(commandService, Examples.EXAMPLE_TRACES)}>
+                {nls.localizeByDefault('Generate example traces')}
+            </a> {' '} and open them with Trace Compass Cloud.</div>
     </div>;
+}
+
+function generateExample(commandService: CommandService, exampleId?: Examples): void {
+    commandService.executeCommand(GenerateExampleCommand.id, exampleId);
 }
 
 export function renderWhatIsNot(): React.ReactNode {
