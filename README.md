@@ -96,8 +96,8 @@ yarn electron test
 1. Install the [Remote Dev extension pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) in VS Code
 2. Open this repository in VS Code
 3. In the notification that should appear: confirm to open this folder in the remote container instead
-4. Once VS Code is opened in the container, run `yarn browser start` in the container's terminal to start the CDT.cloud blueprint backend.
-5. Once, CDT.cloud blueprint is up, it should be running on 127.0.0.1:3000 and can be accessed from the host.
+4. Once VS Code is opened in the container and the `Configuring Dev Container` task is finished, run `yarn browser start` in the container's terminal to start the CDT.cloud blueprint backend.
+5. Once CDT.cloud blueprint is up, it should be running on 127.0.0.1:3000 and can be accessed from the host.
 
 Now you can make changes to the source code and rebuild with `yarn` or run `yarn watch` before the changes. After a browser refresh, your changes should get effective.
 
