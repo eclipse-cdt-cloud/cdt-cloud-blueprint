@@ -27,7 +27,7 @@ const DOWNLOAD_URL =
 
 execute();
 
-async function execute(): Promise<void> {
+export async function execute(): Promise<void> {
   try {
     const archivePath = `${LOCAL_DOWNLOAD_TARGET_PATH}${LOCAL_DOWNLOAD_TARGET_FILENAME}`;
     if (fs.existsSync(LOCAL_BINARY_PATH)) {
