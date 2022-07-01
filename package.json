@@ -54,8 +54,10 @@
     "test": "lerna run test",
     "electron": "yarn --cwd applications/electron",
     "browser": "yarn --cwd applications/browser",
+    "docker": "yarn --cwd applications/docker",
     "update:next": "ts-node scripts/update-theia-to-next.ts && lerna run update:next",
-    "tracecompass-server:start": "ts-node scripts/tracecompass-server.ts"
+    "tracecompass-server:download": "ts-node scripts/tracecompass-server-download.ts",
+    "tracecompass-server:start": "yarn tracecompass-server:download && ts-node scripts/tracecompass-server.ts"
   },
   "resolutions": {
     "**/@theia/core": "1.24.0",
