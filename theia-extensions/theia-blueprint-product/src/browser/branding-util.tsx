@@ -94,6 +94,19 @@ export function renderWhatIsNot(): React.ReactNode {
     </div>;
 }
 
+export function renderSupport(windowService: WindowService): React.ReactNode {
+    return <div className='gs-section'>
+        <h3 className='gs-section-header'>
+            Professional Support
+        </h3>
+        <div >
+            Professional support, implementation services, consulting and training for building tools like this instance of CDT.cloud Blueprint and for
+            building other tools based on Eclipse Theia is available by selected companies as listed on the
+            <ExternalBrowserLink text="CDT.cloud support page" url="https://cdt-cloud.io/support/" windowService={windowService} ></ExternalBrowserLink>.
+        </div>
+    </div>;
+}
+
 export function renderTickets(windowService: WindowService): React.ReactNode {
     return <div className='gs-section'>
         <h3 className='gs-section-header'>

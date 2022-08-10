@@ -213,7 +213,7 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
                 <a
                     role={'button'}
                     tabIndex={0}
-                    onClick={() => this.doOpenExternalLink(this.documentationUrl)}
+                    onClick={() => this.doOpenExternalLink('https://cdt-cloud.io')}
                     onKeyDown={(e: React.KeyboardEvent) => this.doOpenExternalLinkEnter(e, 'https://cdt-cloud.io')}>
                     {nls.localizeByDefault('CDT.cloud Documentation')}
                 </a>
