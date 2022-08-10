@@ -26,7 +26,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
      libc++-dev libc++1 libc++abi-dev libc++abi1 libclang-dev \
      libclang1 liblldb-dev libllvm-ocaml-dev libomp-dev libomp5 \
      lld lldb llvm-dev llvm-runtime llvm python3-clang \
-     cmake
+     cmake gdb
 
 RUN update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-14 100
 RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-14 100
