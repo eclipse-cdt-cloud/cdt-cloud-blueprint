@@ -8,6 +8,7 @@
       "request": "launch",
       "name": "Debug Example C++",
       "program": "${workspaceFolder}/Example",
+      "initCommands": ["tbreak main"],
       "preLaunchTask": "Binary build"
     }
   ]
