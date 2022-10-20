@@ -82,7 +82,7 @@ spec:
                         container('theia-dev') {
                             withCredentials([string(credentialsId: "github-bot-token", variable: 'GITHUB_TOKEN')]) {
                                 script {
-                                    buildInstaller()
+                                    buildInstaller(1200)
                                 }
                             }
                         }
@@ -100,7 +100,7 @@ spec:
                     }
                     steps {
                         script {
-                            buildInstaller()
+                            buildInstaller(60)
                         }
                         stash includes: "${distFolder}/*", name: 'mac'
                     }
@@ -117,7 +117,8 @@ spec:
                     steps {
                         script {
                             sh "npm config set msvs_version 2017"
-                            buildInstaller()
+                            sh "npx node-gyp install 14.20.0"
+                            buildInstaller(60)
                         }
                         stash name: 'win'
                     }
@@ -219,7 +220,7 @@ spec:
                         container('theia-dev') {
                             script {
                                 signInstaller('exe', 'windows')
-                                updateMetadata('CDTCloudBlueprint.exe', 'latest.yml')
+                                updateMetadata('CDTCloudBlueprint.exe', 'latest.yml', 1200)
                             }
                         }
                         container('jnlp') {
@@ -235,7 +236,7 @@ spec:
     }
 }
 
-def buildInstaller() {
+def buildInstaller(int sleepBetweenRetries) {
     int MAX_RETRY = 3
 
     checkout scm
@@ -245,7 +246,7 @@ def buildInstaller() {
         sh(script: 'yarn --frozen-lockfile --force')
     } catch(error) {
         retry(MAX_RETRY) {
-            sleep(1200)
+            sleep(sleepBetweenRetries)
             echo "yarn failed - Retrying"
             sh(script: 'yarn --frozen-lockfile --force')        
         }
@@ -307,9 +308,19 @@ def notarizeInstaller(String ext) {
     }
 }
 
-def updateMetadata(String executable, String yaml) {
-    sh "yarn install --force"
-    sh "yarn electron update:checksum -e ${executable} -y ${yaml}"
+def updateMetadata(String executable, String yaml, int sleepBetweenRetries) {
+    int MAX_RETRY = 4
+    try {
+        sh "yarn install --force"
+        sh "yarn electron update:checksum -e ${executable} -y ${yaml}"
+    } catch(error) {
+        retry(MAX_RETRY) {
+            sleep(sleepBetweenRetries)
+            echo "yarn failed - Retrying"
+            sh "yarn install --force"
+            sh "yarn electron update:checksum -e ${executable} -y ${yaml}"
+        }
+    }
 }
 
 def uploadInstaller(String platform) {

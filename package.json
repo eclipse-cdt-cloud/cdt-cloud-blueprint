@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "1.24.0",
+  "version": "1.29.0",
   "license": "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0",
   "author": {
     "name": "CDT.cloud"
@@ -18,7 +18,7 @@
     "node": ">=12.14.1"
   },
   "devDependencies": {
-    "@theia/cli": "1.24.0",
+    "@theia/cli": "1.29.0",
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/eslint-plugin-tslint": "^4.25.0",
     "@typescript-eslint/parser": "^4.25.0",
@@ -59,14 +59,11 @@
     "tracecompass-server:download": "ts-node scripts/tracecompass-server-download.ts",
     "tracecompass-server:start": "yarn tracecompass-server:download && ts-node scripts/tracecompass-server.ts"
   },
-  "resolutions": {
-    "**/@theia/core": "1.24.0",
-    "**/@theia/debug": "1.24.0",
-    "**/@theia/editor": "1.24.0",
-    "**/@theia/filesystem": "1.24.0"
-  },
   "workspaces": [
     "applications/*",
     "theia-extensions/*"
-  ]
+  ],
+  "resolutions": {
+    "**/multer": "1.4.4-lts.1"
+  }
 }
