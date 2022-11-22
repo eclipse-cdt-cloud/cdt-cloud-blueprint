@@ -84,11 +84,6 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
             </div>
             <div className='flex-grid'>
                 <div className='col'>
-                    {renderSupport(this.windowService)}
-                </div>
-            </div>
-            <div className='flex-grid'>
-                <div className='col'>
                     {renderTickets(this.windowService)}
                 </div>
             </div>
