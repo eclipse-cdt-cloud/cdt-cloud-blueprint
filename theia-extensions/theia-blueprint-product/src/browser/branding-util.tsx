@@ -102,7 +102,7 @@ export function renderSupport(windowService: WindowService): React.ReactNode {
         <div >
             Professional support, implementation services, consulting and training for building tools like this instance of CDT.cloud Blueprint and for
             building other tools based on Eclipse Theia is available by selected companies as listed on
-            the <ExternalBrowserLink text="CDT.cloud support page" url="https://cdt-cloud.io/support/" windowService={windowService} ></ExternalBrowserLink>.
+            the <ExternalBrowserLink text="CDT.cloud support page" url="https://www.eclipse.org/cdt-cloud/support/" windowService={windowService} ></ExternalBrowserLink>.
         </div>
     </div>;
 }
@@ -115,11 +115,11 @@ export function renderTickets(windowService: WindowService): React.ReactNode {
         <div >
             CDT.cloud Blueprint is part of the CDT.cloud project, which hosts components and best practices for building
             customizable web-based C/C++ tools. For more information on CDT.cloud visit us
-            on <ExternalBrowserLink text="our webpage" url="https://cdt-cloud.io"
+            on <ExternalBrowserLink text="our webpage" url="https://www.eclipse.org/cdt-cloud"
                 windowService={windowService} ></ExternalBrowserLink> or
             on <ExternalBrowserLink text="Github" url="https://github.com/eclipse-cdt-cloud/cdt-cloud"
                 windowService={windowService} ></ExternalBrowserLink> and <ExternalBrowserLink text="get in touch"
-                    url="https://cdt-cloud.io/contact" windowService={windowService} ></ExternalBrowserLink> to
+                    url="https://www.eclipse.org/cdt-cloud/contact" windowService={windowService} ></ExternalBrowserLink> to
             discuss ideas, request features, report bugs, or to get support for building your custom C/C++ tool.
         </div>
     </div>;

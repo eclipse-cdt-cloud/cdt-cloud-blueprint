@@ -11,7 +11,7 @@ CDT.cloud Blueprint is a template for building custom web-based C/C++ tools. It 
 
 </div>
 
-[Visit the CDT.cloud website for more information](https://cdt-cloud.io/).
+[Visit the CDT.cloud website for more information](https://www.eclipse.org/cdt-cloud/).
 
 ## License
 
