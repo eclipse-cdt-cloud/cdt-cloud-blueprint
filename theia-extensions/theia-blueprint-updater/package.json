@@ -1,12 +1,12 @@
 {
   "private": true,
   "name": "cdt-cloud-blueprint-updater",
-  "version": "1.30.0",
+  "version": "1.31.1",
   "description": "CDT.cloud Blueprint Updater",
   "dependencies": {
-    "@theia/core": "1.30.0",
-    "@theia/output": "1.30.0",
-    "@theia/preferences": "1.30.0",
+    "@theia/core": "1.31.1",
+    "@theia/output": "1.31.1",
+    "@theia/preferences": "1.31.1",
     "electron-log": "^4.3.0",
     "electron-updater": "4.3.9",
     "fs-extra": "^10.0.0",
