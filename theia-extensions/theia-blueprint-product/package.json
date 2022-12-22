@@ -35,7 +35,7 @@
   "bugs": {
     "url": "https://github.com/eclipse-cdt-cloud/cdt-cloud-blueprint/issues"
   },
-  "homepage": "https://cdt-cloud.io/",
+  "homepage": "https://www.eclipse.org/cdt-cloud/",
   "files": [
     "lib",
     "src"
