@@ -17,7 +17,7 @@
       }
     },
     {
-        "label": "Run example",
+        "label": "Launch Example C++",
         "type": "shell",
         "command": "${workspaceFolder}/Example",
         "dependsOn": [ "Binary build" ],
