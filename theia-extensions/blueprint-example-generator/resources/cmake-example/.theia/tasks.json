@@ -15,6 +15,21 @@
       "runOptions": {
         "runOn": "folderOpen"
       }
+    },
+    {
+        "label": "Launch Example C++",
+        "type": "shell",
+        "command": "${workspaceFolder}/Example",
+        "dependsOn": [ "Binary build" ],
+        "presentation": {
+            "echo": true,
+            "reveal": "always",
+            "focus": true,
+            "panel": "shared",
+            "showReuseMessage": false,
+            "clear": true
+        },
+        "problemMatcher": []
     }
   ]
 }
