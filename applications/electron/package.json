@@ -124,7 +124,7 @@
     "compile": "tsc -b",
     "rebuild": "theia rebuild:electron --cacheRoot ../..",
     "watch": "concurrently -n compile,bundle \"theiaext watch --preserveWatchOutput\" \"theia build --watch --mode development\"",
-    "start": "yarn -s rebuild && electron scripts/theia-electron-main.js",
+    "start": "yarn -s rebuild && TRACE_SERVER_PATH=../../tracecompass-server/trace-compass-server/tracecompass-server electron scripts/theia-electron-main.js",
     "start:debug": "yarn start --log-level=debug",
     "package": "yarn clean:dist && electron-builder -c.mac.identity=null --publish never",
     "deploy": "yarn clean:dist && electron-builder -c.mac.identity=null --publish always",
