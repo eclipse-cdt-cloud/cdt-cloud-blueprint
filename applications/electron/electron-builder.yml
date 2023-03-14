@@ -51,6 +51,9 @@ linux:
   publish:
     provider: generic
     url: "https://download.eclipse.org/theia/cdt-cloud/latest/linux"
+  extraResources:
+    - from: ../../tracecompass-server/trace-compass-server
+      to: trace-compass-server
 
 nsis:
   menuCategory: true
