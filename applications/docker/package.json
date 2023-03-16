@@ -91,7 +91,7 @@
     "watch": "concurrently --kill-others -n tsc,bundle -c red,yellow \"tsc -b -w --preserveWatchOutput\" \"yarn -s watch:bundle\"",
     "watch:bundle": "theia build --watch --mode development",
     "watch:compile": "tsc -b -w",
-    "download:plugins": "theia download:plugins"
+    "download:plugins": "theia download:plugins --parallel=false"
   },
   "theiaPluginsDir": "plugins",
   "theiaPlugins": {
