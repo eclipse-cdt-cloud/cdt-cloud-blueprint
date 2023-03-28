@@ -1,11 +1,11 @@
-FROM node:14-bullseye as build-stage
+FROM node:16-bullseye as build-stage
 RUN apt-get update && apt-get install -y libxkbfile-dev libsecret-1-dev
 COPY . /home/theia/cdt-cloud-blueprint
 WORKDIR /home/theia/cdt-cloud-blueprint
 RUN yarn
 RUN yarn tracecompass-server:download
 
-FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:0-14-bullseye as production-stage
+FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:0-16-bullseye as production-stage
 
 RUN adduser --system --group theia
 

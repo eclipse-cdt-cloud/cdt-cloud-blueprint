@@ -2278,7 +2278,7 @@
     "@theia/monaco-editor-core" "1.72.3"
     anser "^2.0.1"
 
-"@theia/core@1.29.0", "@theia/core@1.34.4":
+"@theia/core@1.34.2", "@theia/core@1.34.4":
   version "1.34.4"
   resolved "https://registry.npmjs.org/@theia/core/-/core-1.34.4.tgz#70b8541e3d816581f31717890aaf3cebaeb65fb1"
   integrity sha512-IwP2+Xc9Vwp6scbsseiKDzdGqr8YiyZwNQAD+VSJ+hsi9EWTMrcATe65kEcH3gcMu3lDJbtDBVVl5E6d3Go/3w==
@@ -2386,7 +2386,7 @@
     "@theia/editor" "1.34.4"
     "@theia/navigator" "1.34.4"
 
-"@theia/editor@1.29.0", "@theia/editor@1.34.4":
+"@theia/editor@1.34.2", "@theia/editor@1.34.4":
   version "1.34.4"
   resolved "https://registry.npmjs.org/@theia/editor/-/editor-1.34.4.tgz#3403ab2143b1f2bebf5e78c45ea8223b274a15e9"
   integrity sha512-0oD+91JbCVBi9hq63vXXitNq/7B3J4JRhZulFPAdRu7NyGKE7LTdIQoQvUYXp4Uzola6+YpYS4LohuXJwTOKhg==
@@ -2433,7 +2433,7 @@
     "@theia/workspace" "1.34.4"
     "@vscode/ripgrep" "^1.14.2"
 
-"@theia/filesystem@1.29.0", "@theia/filesystem@1.34.4":
+"@theia/filesystem@1.34.2", "@theia/filesystem@1.34.4":
   version "1.34.4"
   resolved "https://registry.npmjs.org/@theia/filesystem/-/filesystem-1.34.4.tgz#c08fd7b818e4c9303cd356e97991dc1ba0a9848a"
   integrity sha512-7eSoj5mdCkimVdCi8h0HCqvoPiwPJCgkcxvXeau6zsAwrrLrF6r1nUt4D+u5otgKJ6Yro242vYpmH5ITV6MFFA==
@@ -11905,6 +11905,13 @@ react-chartjs-2@^2.7.6:
     lodash "^4.17.19"
     prop-types "^15.7.2"
 
+react-contexify@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.npmjs.org/react-contexify/-/react-contexify-5.0.0.tgz#11b477550a0ee5a9a144399bc17c7c56bbc60057"
+  integrity sha512-2FIp7lxJ6dtfGr8EZ4uVV5p5TQjd0n2h/JU7PrejNIMiCeZWvSVPFh4lj1ZvjXosglBvP7q5JQQ8yUCdSaMSaw==
+  dependencies:
+    clsx "^1.1.1"
+
 react-dom@^18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.2.0.tgz#22aaf38708db2674ed9ada224ca4aa708d821e3d"
@@ -13470,17 +13477,17 @@ textextensions@^5.13.0:
   resolved "https://registry.yarnpkg.com/textextensions/-/textextensions-5.15.0.tgz#4bb3296ad6fc111cf4b39c589dd028d8aaaf7060"
   integrity sha512-MeqZRHLuaGamUXGuVn2ivtU3LA3mLCCIO5kUGoohTCoGmCBg/+8yPhWVX9WSl9telvVd8erftjFk9Fwb2dD6rw==
 
-theia-traceviewer@0.2.0-next.38d4e17.0:
-  version "0.2.0-next.38d4e17.0"
-  resolved "https://registry.npmjs.org/theia-traceviewer/-/theia-traceviewer-0.2.0-next.38d4e17.0.tgz#bf7f0d43e4f8fbe6d5098e3538a1f2c4d8add0d5"
-  integrity sha512-DTpB+RbnAIdW5SYSF32jTd/nQ2gK/kjKwjwtKup+ebysLmlPevI/ezSoAebd89UFd4K5e20YmEINNzL2O1oukg==
+theia-traceviewer@0.2.0-next.75c9da4.0:
+  version "0.2.0-next.75c9da4.0"
+  resolved "https://registry.npmjs.org/theia-traceviewer/-/theia-traceviewer-0.2.0-next.75c9da4.0.tgz#81a0b4b0506763de02a8e2e7e78c036f464fc99d"
+  integrity sha512-RwJw/CIYQo6VwWg9nZmdTAgo/IjCjwhsga/yPeMTmEAPl4bYlxnVhD5HRr8rSrG1IU2imnA3cL87Hfa/S+X+Vw==
   dependencies:
-    "@theia/core" "1.29.0"
-    "@theia/editor" "1.29.0"
-    "@theia/filesystem" "1.29.0"
+    "@theia/core" "1.34.2"
+    "@theia/editor" "1.34.2"
+    "@theia/filesystem" "1.34.2"
     animate.css "^4.1.1"
-    traceviewer-base "0.2.0-next.38d4e17.0+38d4e17"
-    traceviewer-react-components "0.2.0-next.38d4e17.0+38d4e17"
+    traceviewer-base "0.2.0-next.75c9da4.0+75c9da4"
+    traceviewer-react-components "0.2.0-next.75c9da4.0+75c9da4"
     tree-kill latest
 
 through2@^2.0.0, through2@^2.0.3:
@@ -13503,10 +13510,10 @@ through@2, "through@>=2.2.7 <3", through@^2.3.4, through@^2.3.6, through@^2.3.8,
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==
 
-timeline-chart@next:
-  version "0.3.0-next.1f50903.0"
-  resolved "https://registry.yarnpkg.com/timeline-chart/-/timeline-chart-0.3.0-next.1f50903.0.tgz#e1978c5b7b3d3632b4adfed6743ede5f2153389b"
-  integrity sha512-5FaQkeVk8dpjijQtRr7CYYicnqKUkeh5dyegplz82GhjhBRXh9J/PT6XHLwuEZlwm1bUlVOVIm2FpWZJT4GGVA==
+timeline-chart@0.3.0-next.82a0ac9.0, timeline-chart@next:
+  version "0.3.0-next.82a0ac9.0"
+  resolved "https://registry.npmjs.org/timeline-chart/-/timeline-chart-0.3.0-next.82a0ac9.0.tgz#4fd27cd71d0ee2aebced20ea3bc5b3e95247fbcb"
+  integrity sha512-YGHlz7wT904qqhGSYO+iX37YYVXZmHh931loKHBYEYEzkCAhZ2rkcR34ELj5y6U8Pxb1M7GDQZdWicKOxTSbGA==
   dependencies:
     "@types/lodash.throttle" "^4.1.4"
     glob "^7.1.6"
@@ -13579,17 +13586,17 @@ tr46@~0.0.3:
   resolved "https://registry.yarnpkg.com/tr46/-/tr46-0.0.3.tgz#8184fd347dac9cdc185992f3a6622e14b9d9ab6a"
   integrity sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==
 
-traceviewer-base@0.2.0-next.38d4e17.0+38d4e17:
-  version "0.2.0-next.38d4e17.0"
-  resolved "https://registry.npmjs.org/traceviewer-base/-/traceviewer-base-0.2.0-next.38d4e17.0.tgz#d8ef1a02fb9f7f4afba1016ac4e6988ad8a3c590"
-  integrity sha512-Vj4dlHWHyCi8b27oTfSk7J+ulDaB5D2LZiWcyU19i70FB4Jr6HjpYG/HdVZ6gjI0wTqF9HgOGpw4XzGEDeJLeQ==
+traceviewer-base@0.2.0-next.75c9da4.0+75c9da4:
+  version "0.2.0-next.75c9da4.0"
+  resolved "https://registry.npmjs.org/traceviewer-base/-/traceviewer-base-0.2.0-next.75c9da4.0.tgz#7d35c978d609e97610d62b4db184c63a1087301b"
+  integrity sha512-TTchu8OcXjxi8bVtKzwnb0IRD0eXd8Oh7oO2rX+f3aIMFFwUQhScz68P0GN2bqg1UmMqg3aAxLmzC0ETzvkepQ==
   dependencies:
     tsp-typescript-client next
 
-traceviewer-react-components@0.2.0-next.38d4e17.0+38d4e17:
-  version "0.2.0-next.38d4e17.0"
-  resolved "https://registry.npmjs.org/traceviewer-react-components/-/traceviewer-react-components-0.2.0-next.38d4e17.0.tgz#634dff3a48ab2e241e62380256d5da30bfc06fee"
-  integrity sha512-9crOggCLjtWCwb/cTbQQmAVw+zpPHX9iglYHUagwoMNCyFFiOfQHXmbfr33DegKJBLadk3HQT328R7FPB/1mjA==
+traceviewer-react-components@0.2.0-next.75c9da4.0+75c9da4:
+  version "0.2.0-next.75c9da4.0"
+  resolved "https://registry.npmjs.org/traceviewer-react-components/-/traceviewer-react-components-0.2.0-next.75c9da4.0.tgz#291a8e7e62cb35d53cf03bf4d2504306d4087554"
+  integrity sha512-Zsj2aJfU8QiZHq2ZgDWdZrJ1O3YdWBzr981HAHFOFIcX8SMehl/6xKAYHlvE9JkGYWm+hQ9nk4yLpw9LK/1pew==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.17"
     "@fortawesome/free-solid-svg-icons" "^5.8.1"
@@ -13601,6 +13608,7 @@ traceviewer-react-components@0.2.0-next.38d4e17.0+38d4e17:
     d3 "^7.1.1"
     lodash "^4.17.15"
     react-chartjs-2 "^2.7.6"
+    react-contexify "^5.0.0"
     react-grid-layout "1.2.0"
     react-modal "^3.8.1"
     react-tooltip "4.2.14"
@@ -13608,7 +13616,7 @@ traceviewer-react-components@0.2.0-next.38d4e17.0+38d4e17:
     semantic-ui-css "^2.4.1"
     semantic-ui-react "^0.86.0"
     timeline-chart next
-    traceviewer-base "0.2.0-next.38d4e17.0+38d4e17"
+    traceviewer-base "0.2.0-next.75c9da4.0+75c9da4"
     tsp-typescript-client next
 
 trash@^6.1.1:
@@ -13732,10 +13740,10 @@ tslint@^5.12.0:
     tslib "^1.8.0"
     tsutils "^2.29.0"
 
-tsp-typescript-client@next:
-  version "0.4.0-next.32fca72.0"
-  resolved "https://registry.yarnpkg.com/tsp-typescript-client/-/tsp-typescript-client-0.4.0-next.32fca72.0.tgz#f0044679b778f565ec1b37226ee86436ea7980e6"
-  integrity sha512-8nxNdJP+HCOK0OEAlcFOtlFpM8pYYBANFxL07P0EXEp/OvHZDJN0lrCrrtfZlTwV53O3lTA3WpaGqWARCtNppA==
+tsp-typescript-client@0.4.0-next.143a5ab.0, tsp-typescript-client@next:
+  version "0.4.0-next.143a5ab.0"
+  resolved "https://registry.npmjs.org/tsp-typescript-client/-/tsp-typescript-client-0.4.0-next.143a5ab.0.tgz#b7258f168cab720b3892dedc54a8794de3d6867f"
+  integrity sha512-vyJATe8mvY3mbBSCr9THPEh2+wTqbwb1MdAxJO6tanZagOt+zqMuNh+k9ZOKCyaWBqndkUOLX6W6hF8cbH5NaQ==
   dependencies:
     json-bigint sidorares/json-bigint#2c0a5f896d7888e68e5f4ae3c7ea5cd42fd54473
     node-fetch "^2.5.0"
