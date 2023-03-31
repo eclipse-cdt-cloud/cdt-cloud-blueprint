@@ -14,35 +14,40 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Path } from '@theia/core';
 import URI from '@theia/core/lib/common/uri';
+import { FileUri } from '@theia/core/lib/node/file-uri';
 import { injectable } from '@theia/core/shared/inversify';
 import * as fs from 'fs-extra';
 import { ExampleGeneratorService, Examples } from '../common/protocol';
 
 const EXAMPLE_DIRECTORY = 'resources';
 
-// TODO use fsPath once we upgrade Theia
-// https://github.com/eclipse-theia/theia/wiki/Coding-Guidelines#backend-fs-path
 @injectable()
 export class ExampleGeneratorServiceImpl implements ExampleGeneratorService {
 
     async generateExample(exampleId: string, targetFolderUri: string): Promise<string | undefined> {
-        const examplesPath = new Path(module.path).resolve(`../../${EXAMPLE_DIRECTORY}`);
-        if (!examplesPath || !fs.existsSync(examplesPath.toString())) {
+        const examplesUri = new URI(module.path).resolve(`../../${EXAMPLE_DIRECTORY}`).normalizePath();
+        const examplesPath = FileUri.fsPath(examplesUri);
+        if (!examplesPath || !fs.existsSync(examplesPath)) {
             throw new Error('Could not find examples folder');
         }
 
-        const examplePath = examplesPath.resolve(`${exampleId}`);
-        if (!examplePath || !fs.existsSync(examplePath.toString())) {
-            throw new Error(`Could not find files in ${examplesPath}${examplePath}`);
+        const exampleUri = examplesUri.resolve(exampleId);
+        const examplePath = FileUri.fsPath(exampleUri);
+        if (!examplePath || !fs.existsSync(examplePath)) {
+            throw new Error(`Could not find files in ${examplePath}`);
         }
 
-        const target = new URI(targetFolderUri);
-        fs.copySync(examplePath.toString(), target.path.toString(), { recursive: true, errorOnExist: true });
+        const targetUri = new URI(targetFolderUri);
+        const targetPath = FileUri.fsPath(targetUri);
+        fs.copySync(examplePath, targetPath, { recursive: true, errorOnExist: true });
 
         const fileToBeOpened = this.getFileToBeOpened(exampleId);
-        return fileToBeOpened ? target.path.resolve(fileToBeOpened)?.toString() : undefined;
+        if (fileToBeOpened) {
+            return FileUri.fsPath(targetUri.resolve(fileToBeOpened));
+        }
+
+        return undefined;
     }
 
     protected getFileToBeOpened(exampleId: string): string | undefined {
