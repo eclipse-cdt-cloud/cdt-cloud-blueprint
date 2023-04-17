@@ -25,7 +25,7 @@ import { ExampleGeneratorService, Examples } from '../common/protocol';
 
 export const GenerateExampleCommand: Command = {
     id: 'eclipse-cdt-cloud.example-generator.generate-example',
-    label: 'Generate CDT.cloud Blueprint Example'
+    label: 'Generate CDT Cloud Blueprint Example'
 };
 
 @injectable()

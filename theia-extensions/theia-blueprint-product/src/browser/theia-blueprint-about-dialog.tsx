@@ -104,7 +104,7 @@ export class TheiaBlueprintAboutDialog extends AboutDialog {
 
     protected renderTitle(): React.ReactNode {
         return <div className='gs-header'>
-            <h1>CDT.cloud <span className='gs-blue-header'>Blueprint</span></h1>
+            <h1>CDT Cloud <span className='gs-blue-header'>Blueprint</span></h1>
             {this.renderVersion()}
         </div>;
     }

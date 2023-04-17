@@ -24,7 +24,7 @@ export enum Examples {
 }
 
 /**
- * Service for generating CDT.cloud blueprint examples.
+ * Service for generating CDT Cloud blueprint examples.
  */
 export interface ExampleGeneratorService {
     /**
