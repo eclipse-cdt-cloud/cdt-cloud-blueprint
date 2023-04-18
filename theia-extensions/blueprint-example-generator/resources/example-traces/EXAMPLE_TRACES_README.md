@@ -1,6 +1,6 @@
 # Workspace with example traces
 
-This workspace contains two example traces licensed under [`Creative Commons Attribution 4.0 International Public License`](https://github.com/dorsal-lab/Tracevizlab/blob/3e284690d92435b092204fb14f3d1ec932eea9fb/LICENSE) taken from [here](https://github.com/dorsal-lab/Tracevizlab/blob/3e284690d92435b092204fb14f3d1ec932eea9fb/labs/TraceCompassTutorialTraces.tgz). They can be opened using the [CDT Cloud theia trace-extension](https://github.com/eclipse-cdt-cloud/theia-trace-extension).
+This workspace contains two example traces licensed under [`Creative Commons Attribution 4.0 International Public License`](https://github.com/dorsal-lab/Tracevizlab/blob/3e284690d92435b092204fb14f3d1ec932eea9fb/LICENSE) taken from [here](https://github.com/dorsal-lab/Tracevizlab/blob/3e284690d92435b092204fb14f3d1ec932eea9fb/labs/TraceCompassTutorialTraces.tgz). They can be opened using the [CDT Cloud Theia trace-extension](https://github.com/eclipse-cdt-cloud/theia-trace-extension).
 
 ## Open a trace with the trace view
 
