@@ -5,7 +5,7 @@ This is a simple multi-project workspace that has two different _clangd contexts
 ## How to Build the Workspace
 
 Make sure that you have `gcc` from the GNU toolchain and `cmake` on the `PATH`.
-Then open a terminal in CDT.cloud Blueprint and build the workspace using
+Then open a terminal in CDT Cloud Blueprint and build the workspace using
 
 ```console
 ./build.sh

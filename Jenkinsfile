@@ -1,5 +1,5 @@
 /**
- * This Jenkinsfile builds CDT.cloud Blueprint across the major OS platforms
+ * This Jenkinsfile builds CDT Cloud Blueprint across the major OS platforms
  */
 import groovy.json.JsonSlurper
 

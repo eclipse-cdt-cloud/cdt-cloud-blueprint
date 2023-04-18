@@ -142,7 +142,7 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
 
     protected renderHeader(): React.ReactNode {
         return <div className='gs-header'>
-            <h1>CDT.cloud <span className='gs-blue-header'>Blueprint</span></h1>
+            <h1>CDT Cloud <span className='gs-blue-header'>Blueprint</span></h1>
             {this.renderVersion()}
         </div>;
     }
@@ -218,7 +218,7 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
                     tabIndex={0}
                     onClick={() => this.doOpenExternalLink('https://www.eclipse.org/cdt-cloud/documentation')}
                     onKeyDown={(e: React.KeyboardEvent) => this.doOpenExternalLinkEnter(e, 'https://www.eclipse.org/cdt-cloud/documentation')}>
-                    {nls.localizeByDefault('CDT.cloud Documentation')}
+                    {nls.localizeByDefault('CDT Cloud Documentation')}
                 </a>
             </div>
             <div className='gs-action-container'>

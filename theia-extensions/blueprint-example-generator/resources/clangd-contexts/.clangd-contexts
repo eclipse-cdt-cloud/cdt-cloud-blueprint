@@ -1,5 +1,5 @@
 {
-    "workspaceName": "CDT.cloud Clangd Contexts Example",
+    "workspaceName": "CDT Cloud Clangd Contexts Example",
     "projects": [
         {
             "path": "app",

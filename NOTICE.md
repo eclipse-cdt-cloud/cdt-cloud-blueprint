@@ -1,12 +1,12 @@
-# Notices for CDT.cloud Blueprint
+# Notices for CDT Cloud Blueprint
 
-This content is produced and maintained by the CDT.cloud project.
+This content is produced and maintained by the CDT Cloud project.
 
 * Project home: https://projects.eclipse.org/projects/ecd.cdt.cloud
 
 ## Trademarks
 
-CDT.cloud is a trademark of the Eclipse Foundation.
+CDT Cloud is a trademark of the Eclipse Foundation.
 
 ## Copyright
 

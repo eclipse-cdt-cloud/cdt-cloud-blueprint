@@ -1,10 +1,10 @@
 {
   "private": true,
   "name": "cdt-cloud-blueprint-docker",
-  "description": "CDT.cloud Blueprint is a template for building custom web-based C/C++ tools",
+  "description": "CDT Cloud Blueprint is a template for building custom web-based C/C++ tools",
   "license": "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0",
   "author": {
-    "name": "CDT.cloud",
+    "name": "CDT Cloud",
     "email": "cdt-cloud-dev@eclipse.org"
   },
   "homepage": "https://www.eclipse.org/cdt-cloud/",
