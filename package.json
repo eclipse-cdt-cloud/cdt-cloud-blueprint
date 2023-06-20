@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@theia/cli": "1.38.0",
+    "@types/request": "^2.0.3",
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/eslint-plugin-tslint": "^4.25.0",
     "@typescript-eslint/parser": "^4.25.0",
@@ -38,6 +39,7 @@
     "eslint-plugin-no-unsanitized": "^3.1.5",
     "eslint-plugin-react": "^7.23.2",
     "lerna": "^6.0.1",
+    "request": "^2.82.0",
     "rimraf": "^2.7.1",
     "ts-node": "^10.0.0",
     "type-fest": "^0.20.2",
