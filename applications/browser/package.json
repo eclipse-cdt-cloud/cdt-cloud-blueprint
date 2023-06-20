@@ -84,7 +84,7 @@
       "fs-extra": "^9.0.1",
       "cdt-cloud-blueprint-updater": "1.38.0",
       "cdt-cloud-blueprint-product": "1.38.0",
-      "theia-traceviewer": "0.2.0-next.75c9da4.0",
+      "theia-traceviewer": "0.2.0-next.20230619144800.297af68.0",
       "@eclipse-cdt-cloud/blueprint-example-generator": "1.38.0"
   },
   "devDependencies": {
@@ -107,24 +107,21 @@
   },
   "theiaPluginsDir": "plugins",
   "theiaPlugins": {
-      "vscode.markdown-language-features": "https://open-vsx.org/api/vscode/markdown-language-features/1.64.2/file/vscode.markdown-language-features-1.64.2.vsix",
-      "eclipse-theia.builtin-extension-pack": "https://open-vsx.org/api/eclipse-theia/builtin-extension-pack/1.70.2/file/eclipse-theia.builtin-extension-pack-1.70.2.vsix",
-      "cdt-gdb-vscode": "https://open-vsx.org/api/eclipse-cdt/cdt-gdb-vscode/0.0.98/file/eclipse-cdt.cdt-gdb-vscode-0.0.98.vsix",
-      "vscode-builtin-cpp": "https://open-vsx.org/api/vscode/cpp/1.62.3/file/vscode.cpp-1.62.3.vsix",
-      "vscode-clangd": "https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd/0.1.23/file/llvm-vs-code-extensions.vscode-clangd-0.1.23.vsix",
-      "vscode-cmake": "https://open-vsx.org/api/ms-vscode/cmake-tools/1.13.45/file/ms-vscode.cmake-tools-1.13.45.vsix",
+      "eclipse-theia.builtin-extension-pack": "https://open-vsx.org/api/eclipse-theia/builtin-extension-pack/1.77.0/file/eclipse-theia.builtin-extension-pack-1.77.0.vsix",
+      "cdt-gdb-vscode": "https://open-vsx.org/api/eclipse-cdt/cdt-gdb-vscode/0.0.99/file/eclipse-cdt.cdt-gdb-vscode-0.0.99.vsix",
+      "vscode-builtin-cpp": "https://open-vsx.org/api/vscode/cpp/1.77.0/file/vscode.cpp-1.77.0.vsix",
+      "vscode-clangd": "https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd/0.1.24/file/llvm-vs-code-extensions.vscode-clangd-0.1.24.vsix",
+      "vscode-cmake": "https://open-vsx.org/api/ms-vscode/cmake-tools/1.14.33/file/ms-vscode.cmake-tools-1.14.33.vsix",
       "cdtcloud-clangd-contexts": "https://github.com/eclipse-cdt-cloud/clangd-contexts/releases/download/v0.8.0/cdtcloud-clangd-contexts-ext-0.8.0.vsix"
   },
   "theiaPluginsExcludeIds": [
     "ms-vscode.js-debug-companion",
+    "VisualStudioExptTeam.vscodeintellicode",
+    "vscode.builtin-notebook-renderers",
     "vscode.extension-editing",
-    "vscode.git",
-    "vscode.git-ui",
     "vscode.github",
     "vscode.github-authentication",
-    "vscode.microsoft-authentication",
-    "ms-vscode.js-debug",
     "vscode.ipynb",
-    "vscode.references-view"
+    "vscode.microsoft-authentication"
   ]
 }
