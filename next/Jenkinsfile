@@ -24,7 +24,8 @@ kind: Pod
 spec:
   containers:
   - name: theia-dev
-    image: eclipsetheia/theia-blueprint
+    image: eclipsetheia/theia-blueprint:builder
+    imagePullPolicy: Always
     command:
     - cat
     tty: true
@@ -134,6 +135,9 @@ def buildNext(boolean runTests, int sleepBetweenRetries) {
     sh "git config user.name \"Not a real user\""
     sh "git fetch origin next"
     sh "git merge FETCH_HEAD"
+    sh "node --version"
+
+    sh "export NODE_OPTIONS=--max_old_space_size=4096"
 
     // regular build
     sh "printenv && yarn cache dir"

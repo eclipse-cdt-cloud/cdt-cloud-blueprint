@@ -1,0 +1,75 @@
+pipeline {
+    agent {
+        label 'windows'
+    }
+    triggers { cron('@weekly') }
+    options {
+        timeout(time: 1, unit: 'HOURS')
+        disableConcurrentBuilds()
+    }
+    stages {
+        stage('Cleanup Windows temp directory') {
+            steps {
+                script {
+                    listTemp('before cleanup', '%temp%')
+                    cleanFiles('tmp/plugin-download', '%temp%', 'theia-plugin-download**')
+                    cleanDirs('tmp/yarn', '%temp%', 'yarn--**')
+                    cleanDirs('tmp/lighthouse', '%temp%', 'lighthouse.*')
+                    listTemp('after cleanup', '%temp%')
+                    cleanDir('appdata/local/electron', '\"%LocalAppData%\"\\electron\\Cache')
+                    cleanYarnCache('appdata/local/yarn')
+                }
+            }
+        }
+    }
+}
+
+Object listTemp(String label, String temp) {
+    echo "in listTemp():  ${label}"
+    bat "DIR ${temp}"
+    return
+}
+
+Object cleanFiles(String label, String parent, String pattern) {
+    echo "in cleanFile() - clean: ${label} files"
+    echo "parent: ${parent}, pattern: ${pattern}"
+
+    // use "returnStatus" option to avoid an exception being thrown if no
+    // matching files are found, failing the pipeline
+    s = bat(
+            script: "FORFILES /p ${parent} /m ${pattern} /C \"cmd /c Del /q @file\"",
+            returnStatus: true
+        )
+    if (s != 0) {
+        echo "No ${pattern} file found... Good I guess"
+    }
+}
+
+Object cleanDirs(String label, String parent, String pattern) {
+    echo "Before ${label} Cleanup:"
+
+    bat "FOR /D /R ${parent} %%i in (${pattern}) do echo \"%%i\""
+    bat "FOR /D /R ${parent} %%i in (${pattern}) do @rmdir /s /q \"%%i\""
+
+    echo "After ${label} Cleanup:"
+    bat "FOR /D /R ${parent} %%i in (${pattern}) do echo \"%%i\""
+    return
+}
+
+Object cleanDir(String label, String parent) {
+    echo "Before ${label} Cleanup:"
+
+    bat "FOR /D /R ${parent} %%i in (*) do echo \"%%i\""
+    bat "if exist ${parent} @rmdir /s /q ${parent}"
+
+    echo "After ${label} Cleanup:"
+    bat "FOR /D /R ${parent} %%i in (*) do echo \"%%i\""
+    return
+}
+
+Object cleanYarnCache(String label) {
+    echo "Cleaning-up: ${label}"
+    sh 'yarn cache clean --all'
+    return
+}
+

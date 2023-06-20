@@ -28,6 +28,11 @@
                   "files.enableTrash": false
               }
           }
+      },
+      "generator": {
+           "config": {
+              "preloadTemplate": "./resources/preload.html"
+           }
       }
   },
   "dependencies": {

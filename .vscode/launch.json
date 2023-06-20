@@ -70,8 +70,62 @@
       "outFiles": [
         "${workspaceFolder}/applications/browser/src-gen/backend/*.js",
         "${workspaceFolder}/applications/browser/lib/**/*.js",
-        "${workspaceFolder}/theia-extensions/*/lib/**/*.js"
+        "${workspaceFolder}/packages/*/lib/**/*.js",
+        "${workspaceFolder}/dev-packages/*/lib/**/*.js"
       ],
+      "smartStep": true,
+      "internalConsoleOptions": "openOnSessionStart",
+      "outputCapture": "std"
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach to Plugin Host",
+      "port": 9339,
+      "timeout": 60000,
+      "stopOnEntry": false,
+      "smartStep": true,
+      "sourceMaps": true,
+      "internalConsoleOptions": "openOnSessionStart",
+      "outFiles": ["${workspaceFolder}/packages/plugin-ext/lib/**/*.js", "${workspaceFolder}/plugins/**/*.js"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Browser Backend (eclipse.jdt.ls)",
+      "program": "${workspaceFolder}/applications/browser/src-gen/backend/main.js",
+      "args": [
+        "--log-level=debug",
+        "--root-dir=${workspaceFolder}/../eclipse.jdt.ls/org.eclipse.jdt.ls.core",
+        "--port=3000",
+        "--no-cluster",
+        "--no-app-auto-install"
+      ],
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "sourceMaps": true,
+      "outFiles": [
+        "${workspaceFolder}/applications/browser/src-gen/backend/*.js",
+        "${workspaceFolder}/applications/browser/lib/**/*.js",
+        "${workspaceFolder}/packages/*/lib/**/*.js",
+        "${workspaceFolder}/dev-packages/*/lib/**/*.js"
+      ],
+      "smartStep": true,
+      "internalConsoleOptions": "openOnSessionStart",
+      "outputCapture": "std"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "protocol": "inspector",
+      "name": "Run Mocha Tests",
+      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      "args": ["--no-timeouts", "--colors", "--opts", "${workspaceFolder}/configs/mocha.opts", "**/${fileBasenameNoExtension}.js"],
+      "env": {
+        "TS_NODE_PROJECT": "${workspaceFolder}/tsconfig.json"
+      },
+      "sourceMaps": true,
       "smartStep": true,
       "internalConsoleOptions": "openOnSessionStart",
       "outputCapture": "std"
@@ -89,6 +143,27 @@
       "name": "Attach to Electron Frontend",
       "port": 9222,
       "webRoot": "${workspaceFolder}/applications/electron"
+    },
+    {
+      "name": "Launch VS Code Tests",
+      "type": "node",
+      "request": "launch",
+      "args": [
+        "${workspaceFolder}/applications/browser/src-gen/backend/main.js",
+        "${workspaceFolder}/plugins/vscode-api-tests/testWorkspace",
+        "--port",
+        "3030",
+        "--hostname",
+        "0.0.0.0",
+        "--extensionTestsPath=${workspaceFolder}/plugins/vscode-api-tests/out/singlefolder-tests",
+        "--hosted-plugin-inspect=9339"
+      ],
+      "env": {
+        "THEIA_DEFAULT_PLUGINS": "local-dir:${workspaceFolder}/plugins"
+      },
+      "stopOnEntry": false,
+      "sourceMaps": true,
+      "outFiles": ["${workspaceFolder}/../.js"]
     }
   ]
 }

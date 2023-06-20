@@ -46,7 +46,8 @@ kind: Pod
 spec:
   containers:
   - name: theia-dev
-    image: eclipsetheia/theia-blueprint
+    image: eclipsetheia/theia-blueprint:builder
+    imagePullPolicy: Always
     command:
     - cat
     tty: true
@@ -82,7 +83,7 @@ spec:
                         container('theia-dev') {
                             withCredentials([string(credentialsId: "github-bot-token", variable: 'GITHUB_TOKEN')]) {
                                 script {
-                                    buildInstaller(1200)
+                                    buildInstaller(1200, false)
                                 }
                             }
                         }
@@ -100,7 +101,7 @@ spec:
                     }
                     steps {
                         script {
-                            buildInstaller(60)
+                            buildInstaller(60, false)
                         }
                         stash includes: "${distFolder}/*", name: 'mac'
                     }
@@ -118,7 +119,13 @@ spec:
                         script {
                             sh "npm config set msvs_version 2017"
                             sh "npx node-gyp install 14.20.0"
-                            buildInstaller(60)
+
+                            // analyze memory usage
+                            bat "wmic ComputerSystem get TotalPhysicalMemory"
+                            bat "wmic OS get FreePhysicalMemory"
+                            bat "tasklist"
+
+                            buildInstaller(60, true)
                         }
                         stash name: 'win'
                     }
@@ -176,7 +183,8 @@ kind: Pod
 spec:
   containers:
   - name: theia-dev
-    image: eclipsetheia/theia-blueprint
+    image: eclipsetheia/theia-blueprint:builder
+    imagePullPolicy: Always
     command:
     - cat
     tty: true
@@ -220,13 +228,13 @@ spec:
                         container('theia-dev') {
                             script {
                                 signInstaller('exe', 'windows')
-                                updateMetadata('CDTCloudBlueprint.exe', 'latest.yml', 1200)
+                                updateMetadata('CDTCloudBlueprint.exe', 'latest.yml', 'windows', 1200)
                             }
                         }
                         container('jnlp') {
                             script {
                                 uploadInstaller('windows')
-                                copyInstaller('windows', 'CDTCloudBlueprint', 'exe')
+                                copyInstallerAndUpdateLatestYml('windows', 'CDTCloudBlueprint', 'exe', 'latest.yml', '1.36.0,1.37.0')
                             }
                         }
                     }
@@ -236,10 +244,16 @@ spec:
     }
 }
 
-def buildInstaller(int sleepBetweenRetries) {
+def buildInstaller(int sleepBetweenRetries, boolean excludeBrowser) {
     int MAX_RETRY = 3
 
     checkout scm
+    if (excludeBrowser) {
+        sh "npm install -g ts-node typescript '@types/node'"
+        sh "ts-node scripts/patch-workspaces.ts"
+    }
+    sh "node --version"
+    sh "export NODE_OPTIONS=--max_old_space_size=4096"
     sh "printenv && yarn cache dir"
     sh "yarn cache clean"
     try {
@@ -308,17 +322,20 @@ def notarizeInstaller(String ext) {
     }
 }
 
-def updateMetadata(String executable, String yaml, int sleepBetweenRetries) {
+def updateMetadata(String executable, String yaml, String platform, int sleepBetweenRetries) {
     int MAX_RETRY = 4
     try {
+        sh "export NODE_OPTIONS=--max_old_space_size=4096"
         sh "yarn install --force"
-        sh "yarn electron update:checksum -e ${executable} -y ${yaml}"
+        sh "yarn electron update:blockmap -e ${executable}"
+        sh "yarn electron update:checksum -e ${executable} -y ${yaml} -p ${platform}"
     } catch(error) {
         retry(MAX_RETRY) {
             sleep(sleepBetweenRetries)
             echo "yarn failed - Retrying"
             sh "yarn install --force"
-            sh "yarn electron update:checksum -e ${executable} -y ${yaml}"
+            sh "yarn electron update:blockmap -e ${executable}"
+            sh "yarn electron update:checksum -e ${executable} -y ${yaml} -p ${platform}"
         }
     }
 }
@@ -340,13 +357,29 @@ def uploadInstaller(String platform) {
     }
 }
 
-def copyInstaller(String platform, String installer, String extension) {
+/**
+ * Currently we have the windows updater available twice with different names. 
+ * We want to have a name without the versions for providing a stable download link. 
+ * Due to a bug in the nsis-updater the downloaded exe for an update needs to have a different name than initially however.
+ */
+def copyInstallerAndUpdateLatestYml(String platform, String installer, String extension, String yaml, String UPDATABLE_VERSIONS) {
     if (env.BRANCH_NAME == releaseBranch) {
         def packageJSON = readJSON file: "package.json"
         String version = "${packageJSON.version}"
         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
             sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/cdt-cloud/latest/${platform}/${installer}.${extension} /home/data/httpd/download.eclipse.org/theia/cdt-cloud/latest/${platform}/${installer}-${version}.${extension}"
         }
+        if (UPDATABLE_VERSIONS.length() != 0) {
+            for (oldVersion in UPDATABLE_VERSIONS.split(",")) {
+                sshagent(['projects-storage.eclipse.org-bot-ssh']) {
+                    sh "ssh genie.theia@projects-storage.eclipse.org rm -f /home/data/httpd/download.eclipse.org/theia/${oldVersion}/${platform}/${yaml}"
+                    sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/${version}/${platform}/${yaml} /home/data/httpd/download.eclipse.org/theia/${oldVersion}/${platform}/${yaml}"
+                }
+            }
+        } else {
+            echo "No updateable versions"
+        }
+
     } else {
         echo "Skipped copying installer for branch ${env.BRANCH_NAME}"
     }
