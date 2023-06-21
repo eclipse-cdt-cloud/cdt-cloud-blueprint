@@ -6,18 +6,6 @@
   "configurations": [
     {
       "type": "node",
-      "request": "attach",
-      "name": "Attach by Process ID",
-      "processId": "${command:PickProcess}"
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Launch with Node.js",
-      "program": "${file}"
-    },
-    {
-      "type": "node",
       "request": "launch",
       "name": "Launch Electron Backend",
       "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
@@ -37,18 +25,23 @@
         "--plugins=local-dir:plugins"
       ],
       "env": {
-        "NODE_ENV": "development"
+        "NODE_ENV": "development",
+        "TRACE_SERVER_PATH": "${workspaceFolder}/tracecompass-server/trace-compass-server/tracecompass-server"
       },
       "sourceMaps": true,
       "outFiles": [
         "${workspaceFolder}/applications/electron/src-gen/frontend/electron-main.js",
         "${workspaceFolder}/applications/electron/src-gen/backend/main.js",
         "${workspaceFolder}/applications/electron/lib/**/*.js",
-        "${workspaceFolder}/theia-extensions/*/lib/**/*.js"
+        "${workspaceFolder}/theia-extensions/*/lib/**/*.js",
+        "${workspaceFolder}/node_modules/@theia/*/lib/**/*.js",
+        "${workspaceFolder}/node_modules/theia-traceviewer/lib/**/*.js",
+        "${workspaceFolder}/node_modules/traceviewer-base/lib/**/*.js"
       ],
       "smartStep": true,
       "internalConsoleOptions": "openOnSessionStart",
-      "outputCapture": "std"
+      "outputCapture": "std",
+      "preLaunchTask": "Prepare Electron Start"
     },
     {
       "type": "node",
@@ -64,18 +57,22 @@
         "--hosted-plugin-inspect=9339"
       ],
       "env": {
-        "NODE_ENV": "development"
+        "NODE_ENV": "development",
+        "TRACE_SERVER_PATH": "${workspaceFolder}/tracecompass-server/trace-compass-server/tracecompass-server"
       },
       "sourceMaps": true,
       "outFiles": [
         "${workspaceFolder}/applications/browser/src-gen/backend/*.js",
         "${workspaceFolder}/applications/browser/lib/**/*.js",
-        "${workspaceFolder}/packages/*/lib/**/*.js",
-        "${workspaceFolder}/dev-packages/*/lib/**/*.js"
+        "${workspaceFolder}/theia-extensions/*/lib/**/*.js",
+        "${workspaceFolder}/node_modules/@theia/*/lib/**/*.js",
+        "${workspaceFolder}/node_modules/theia-traceviewer/lib/**/*.js",
+        "${workspaceFolder}/node_modules/traceviewer-base/lib/**/*.js"
       ],
       "smartStep": true,
       "internalConsoleOptions": "openOnSessionStart",
-      "outputCapture": "std"
+      "outputCapture": "std",
+      "preLaunchTask": "Prepare Browser Start"
     },
     {
       "type": "node",
@@ -102,18 +99,23 @@
         "--no-app-auto-install"
       ],
       "env": {
-        "NODE_ENV": "development"
+        "NODE_ENV": "development",
+        "TRACE_SERVER_PATH": "${workspaceFolder}/tracecompass-server/trace-compass-server/tracecompass-server"
       },
       "sourceMaps": true,
       "outFiles": [
         "${workspaceFolder}/applications/browser/src-gen/backend/*.js",
         "${workspaceFolder}/applications/browser/lib/**/*.js",
         "${workspaceFolder}/packages/*/lib/**/*.js",
-        "${workspaceFolder}/dev-packages/*/lib/**/*.js"
+        "${workspaceFolder}/dev-packages/*/lib/**/*.js",
+        "${workspaceFolder}/node_modules/@theia/*/lib/**/*.js",
+        "${workspaceFolder}/node_modules/theia-traceviewer/lib/**/*.js",
+        "${workspaceFolder}/node_modules/traceviewer-base/lib/**/*.js"
       ],
       "smartStep": true,
       "internalConsoleOptions": "openOnSessionStart",
-      "outputCapture": "std"
+      "outputCapture": "std",
+      "preLaunchTask": "Prepare Browser Start"
     },
     {
       "type": "node",
