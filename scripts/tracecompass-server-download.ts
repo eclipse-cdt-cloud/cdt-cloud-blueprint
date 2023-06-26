@@ -21,7 +21,6 @@ import gunzip from "gunzip-maybe";
 
 const LOCAL_DOWNLOAD_TARGET_PATH = "./tracecompass-server/";
 const LOCAL_DOWNLOAD_TARGET_FILENAME = "trace-server.tar.gz";
-const LOCAL_BINARY_PATH = `${LOCAL_DOWNLOAD_TARGET_PATH}trace-compass-server/tracecompass-server`;
 const DOWNLOAD_URL =
   "https://download.eclipse.org/tracecompass.incubator/trace-server/rcp/trace-compass-server-latest-linux.gtk.x86_64.tar.gz";
 
@@ -30,9 +29,6 @@ execute();
 export async function execute(): Promise<void> {
   try {
     const archivePath = `${LOCAL_DOWNLOAD_TARGET_PATH}${LOCAL_DOWNLOAD_TARGET_FILENAME}`;
-    if (fs.existsSync(LOCAL_BINARY_PATH)) {
-      return;
-    }
     await clean();
     await download(DOWNLOAD_URL, archivePath);
     await extract(archivePath);

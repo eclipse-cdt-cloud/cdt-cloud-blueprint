@@ -47,6 +47,7 @@ Documentation on how to package Theia as a Desktop Product may be found [here](h
 
 - Root level configures mono-repo build with lerna
 - `applications` groups the different app targets
+  - `browser` contains a browser based version of CDT Cloud Blueprint that may be packaged as a Docker image
   - `electron` contains app to package, packaging configuration, and E2E tests for the Electron target.
 - `theia-extensions` groups the various custom theia extensions for CDT Cloud Blueprint
   - `theia-blueprint-product` contains a Theia extension contributing the product branding (about dialogue and welcome page).
@@ -58,7 +59,7 @@ Documentation on how to package Theia as a Desktop Product may be found [here](h
 yarn
 ```
 
-### Package the Application
+### Package the Electron Application
 
 ```sh
 yarn electron package
@@ -66,7 +67,7 @@ yarn electron package
 
 The packaged application is located in `applications/electron/dist`.
 
-### Create a Preview Application (without packaging it)
+### Create a Preview Electron Application (without packaging it)
 
 ```sh
 yarn electron package:preview
@@ -114,6 +115,20 @@ To start the created image run:
 ```sh
 docker run -it -p 0.0.0.0:3000:3000 -p 0.0.0.0:8080:8080 cdt-cloud-blueprint:latest
 ```
+
+### Running Browser app
+
+The browser app may be started with
+
+```sh
+# Download Plugins for browser app
+yarn browser download:plugins
+
+# Start browser app
+yarn browser start
+```
+
+and connect to <http://localhost:3000/>
 
 ### Troubleshooting
 
