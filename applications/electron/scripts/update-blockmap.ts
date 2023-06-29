@@ -42,5 +42,5 @@ async function execute(): Promise<void> {
     fs.rmSync(blockMapFile, {
         force: true,
     });
-    const updateInfo = await executeAppBuilderAsJson<BlockMapDataHolder>(["blockmap", "--input", executablePath, "--output", blockMapFile])
+    await executeAppBuilderAsJson<BlockMapDataHolder>(["blockmap", "--input", executablePath, "--output", blockMapFile])
 }
