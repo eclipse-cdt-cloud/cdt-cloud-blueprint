@@ -14,17 +14,11 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { ConnectionHandler, JsonRpcConnectionHandler, bindContributionProvider } from '@theia/core';
 import { ContainerModule } from '@theia/core/shared/inversify';
-import { EXAMPLE_GENERATOR_PATH, ExampleGeneratorService, ExamplesContribution } from '../common/protocol';
-import { ExampleGeneratorServiceImpl } from './example-generator-service';
+import { CdtCloudBlueprintExamplesContribution } from './blueprint-examples-contribution';
+import { ExamplesContribution } from '@eclipse-cdt-cloud/blueprint-example-generator/lib/node';
 
 export default new ContainerModule((bind, unbind, isBound, rebind) => {
-    bindContributionProvider(bind, ExamplesContribution);
-    bind(ExampleGeneratorService).to(ExampleGeneratorServiceImpl).inSingletonScope();
-    bind(ConnectionHandler).toDynamicValue(ctx =>
-        new JsonRpcConnectionHandler(EXAMPLE_GENERATOR_PATH,
-            () => ctx.container.get<ExampleGeneratorService>(ExampleGeneratorService)
-        )
-    ).inSingletonScope();
+    bind(CdtCloudBlueprintExamplesContribution).toSelf().inSingletonScope();
+    bind(ExamplesContribution).toService(CdtCloudBlueprintExamplesContribution);
 });

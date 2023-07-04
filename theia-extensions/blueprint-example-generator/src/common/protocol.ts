@@ -14,24 +14,39 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
+import { DebugConfiguration } from '@theia/debug/lib/common/debug-configuration';
+import { TaskCustomization } from '@theia/task/lib/common/task-protocol';
+
 export const ExampleGeneratorService = Symbol('ExampleGeneratorService');
 export const EXAMPLE_GENERATOR_PATH = '/services/example-generator';
 
-export enum Examples {
-    CMAKE_EXAMPLE = 'cmake-example',
-    EXAMPLE_TRACES = 'example-traces',
-    CLANGD_CONTEXTS = 'clangd-contexts'
+export interface Example {
+    id: string;
+    label: string;
+    resourcesPath: string;
+    welcomeFile?: string;
+    tasks?: TaskCustomization[];
+    launches?: DebugConfiguration[];
 }
 
 /**
- * Service for generating CDT Cloud Blueprint examples.
+ * Service for generating examples.
  */
 export interface ExampleGeneratorService {
     /**
-     * Generates the example with the name `exampleId` into the specified folder `targetFolderName`.
-     * @param exampleId identifyer of the example.
-     * @param targetFolderUri URI of the folder into which the example shall be generated.
-     * @returns (optional) URI of a file to be opened in an editor.
+     * Returns all examples available for generation.
      */
-    generateExample(exampleId: string, targetFolderUri: string): Promise<string | undefined>
+    getExamples(): Promise<Example[]>;
+    /**
+     * Generates the specified `example` into the specified folder `targetPath`.
+     * @param example the example to generate.
+     * @param targetPath URI of the folder into which the example shall be generated.
+     * @param targetFolderName The user-specified name of the target folder or `undefined`.
+     */
+    generateExample(example: Example, targetPath: string, targetFolderName?: string): Promise<void>
+}
+
+export const ExamplesContribution = Symbol('ExamplesContribution');
+export interface ExamplesContribution {
+    readonly examples: Example[];
 }

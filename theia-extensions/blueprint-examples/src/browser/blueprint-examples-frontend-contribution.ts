@@ -14,14 +14,16 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Command, CommandContribution, CommandHandler, CommandRegistry, MessageService, nls } from '@theia/core';
+import { Command, CommandContribution, CommandHandler, CommandRegistry, CommandService, MessageService, nls } from '@theia/core';
 import { LabelProvider, QuickInputService, QuickPickService, QuickPickValue } from '@theia/core/lib/browser';
 import URI from '@theia/core/lib/common/uri';
 import { EditorManager } from '@theia/editor/lib/browser';
 import { FileService } from '@theia/filesystem/lib/browser/file-service';
+import { FileNavigatorCommands } from '@theia/navigator/lib/browser/navigator-contribution';
 import { WorkspaceService } from '@theia/workspace/lib/browser/workspace-service';
+import { ExampleGeneratorService, Example } from '@eclipse-cdt-cloud/blueprint-example-generator/lib/browser';
+
 import { inject, injectable } from 'inversify';
-import { ExampleGeneratorService, Examples } from '../common/protocol';
 
 export const GenerateExampleCommand: Command = {
     id: 'eclipse-cdt-cloud.example-generator.generate-example',
@@ -55,23 +57,35 @@ export class GenerateExampleCommandHandler implements CommandHandler {
     @inject(EditorManager)
     protected readonly editorManager: EditorManager;
 
+    @inject(CommandService)
+    protected readonly commandService: CommandService;
+
     async execute(...args: string[]): Promise<void> {
-        const exampleId = await this.getExampleId(args);
-        if (!exampleId) {
+        const example = await this.selectExample(args);
+        if (!example) {
             return;
         }
 
-        const targetFolder = await this.getWorkspaceRoot();
-        if (!targetFolder) {
+        const workspaceFolder = await this.getWorkspaceRoot();
+        if (!workspaceFolder) {
             this.messageService.error('Cannot resolve workspace root, please open a workspace');
             return;
         }
 
-        const progress = await this.messageService.showProgress({ text: 'Starting to report progress' });
+        const targetFolder = await this.specifyTargetFolder(example, workspaceFolder);
+        let targetFolderName = undefined;
+        if (!targetFolder.isEqual(workspaceFolder)) {
+            targetFolderName = targetFolder.path.name;
+        }
+        const progress = await this.messageService.showProgress({
+            text: 'Generating example ' + example.label + targetFolderName ? ' to ' + targetFolderName : ''
+        });
         try {
-            const fileToBeOpened = await this.exampleGeneratorService.generateExample(exampleId, targetFolder.toString());
-            if (fileToBeOpened) {
-                this.editorManager.open(new URI(fileToBeOpened));
+            await this.exampleGeneratorService.generateExample(example, targetFolder.toString(), targetFolderName);
+            await this.refreshAndReveal(targetFolder);
+            if (example.welcomeFile) {
+                const fileUri = targetFolder.resolve(example.welcomeFile);
+                await this.editorManager.open(fileUri);
             }
         } catch (error) {
             console.error('Uncaught Exception: ', error.toString());
@@ -80,19 +94,23 @@ export class GenerateExampleCommandHandler implements CommandHandler {
         }
     }
 
-    protected async getExampleId(args: string[]): Promise<string | undefined> {
+    protected async selectExample(args: string[]): Promise<Example | undefined> {
         if (args.length < 1 || typeof args[0] !== 'string') {
             return this.askUserToChooseExample();
         }
-        return args[0];
+
+        const examples = await this.exampleGeneratorService.getExamples();
+        const matchedExample = examples.filter(e => args[0] === e.id);
+        if (matchedExample.length > 0) {
+            return matchedExample[0];
+        }
+
+        return undefined;
     }
 
-    protected async askUserToChooseExample(): Promise<string | undefined> {
-        const items: QuickPickValue<string>[] = [
-            { label: 'CMake example', value: Examples.CMAKE_EXAMPLE },
-            { label: 'Example traces', value: Examples.EXAMPLE_TRACES },
-            { label: 'Clangd contexts', value: Examples.CLANGD_CONTEXTS }
-        ];
+    protected async askUserToChooseExample(): Promise<Example | undefined> {
+        const examples = await this.exampleGeneratorService.getExamples();
+        const items: QuickPickValue<Example>[] = examples.map(e => <QuickPickValue<Example>>{ label: e.label, value: e });
         const selection = await this.quickPickService.show(items, {
             placeholder: 'Select type of example to generate'
         });
@@ -128,6 +146,38 @@ export class GenerateExampleCommandHandler implements CommandHandler {
         });
         return root?.value;
     }
+
+    protected async refreshAndReveal(fileUri: URI): Promise<void> {
+        await this.commandService.executeCommand(FileNavigatorCommands.REFRESH_NAVIGATOR.id);
+        await this.commandService.executeCommand(FileNavigatorCommands.REVEAL_IN_NAVIGATOR.id, fileUri);
+    }
+
+    protected async specifyTargetFolder(example: Example, workspaceFolder: URI): Promise<URI> {
+        const targetFolderName = await this.quickInputService.input({
+            placeHolder: example.id,
+            prompt: 'Specify the name of the target folder',
+            validateInput: input => this.validateFolderName(input, workspaceFolder)
+        });
+        return workspaceFolder.resolve(targetFolderName ?? '');
+    }
+
+    protected async validateFolderName(input: string, workspaceFolder: URI): Promise<string | { content: string; severity: number; } | null | undefined> {
+        const inputIsNotEmpty = input.length !== 0;
+        const validFolderNameRegExp = /^[^\s^\x00-\x1f\\?*:"";<>|\/.][^\x00-\x1f\\?*:"";<>|\/]*[^\s^\x00-\x1f\\?*:"";<>|\/.]+$/;
+        if (inputIsNotEmpty && !validFolderNameRegExp.test(input)) {
+            return {
+                content: 'Invalid folder name',
+                severity: 3 // Error
+            };
+        }
+        if (inputIsNotEmpty && await this.fileService.exists(workspaceFolder.resolve(input))) {
+            return {
+                content: 'Folder already exists',
+                severity: 3 // Error
+            };
+        }
+        return undefined;
+    }
 }
 
 @injectable()
@@ -139,4 +189,5 @@ export class ExampleGeneratorCommandContribution implements CommandContribution 
     registerCommands(commands: CommandRegistry): void {
         commands.registerCommand(GenerateExampleCommand, this.generateExampleCommandHandler);
     }
+
 }

@@ -23,7 +23,7 @@ import { WindowService } from '@theia/core/lib/browser/window/window-service';
 import { codicon, Message, PreferenceService } from '@theia/core/lib/browser';
 import { BlueprintPreferences } from './theia-blueprint-preferences';
 import { CommandService, nls } from '@theia/core';
-import { GenerateExampleCommand, Examples } from '@eclipse-cdt-cloud/blueprint-example-generator/lib/browser';
+import { GenerateExampleCommand, CdtCloudBlueprintExamples } from '@eclipse-cdt-cloud/blueprint-examples/lib/browser';
 
 @injectable()
 export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
@@ -173,8 +173,8 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
                 <a
                     role={'button'}
                     tabIndex={0}
-                    onClick={() => this.doGenerateExample(Examples.CMAKE_EXAMPLE)}
-                    onKeyDown={(e: React.KeyboardEvent) => this.doGenerateExampleEnter(e, Examples.CMAKE_EXAMPLE)}>
+                    onClick={() => this.doGenerateExample(CdtCloudBlueprintExamples.CMAKE_EXAMPLE)}
+                    onKeyDown={(e: React.KeyboardEvent) => this.doGenerateExampleEnter(e, CdtCloudBlueprintExamples.CMAKE_EXAMPLE)}>
                     {nls.localizeByDefault('CMake Example')}
                 </a>
             </div>
@@ -182,8 +182,8 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
                 <a
                     role={'button'}
                     tabIndex={0}
-                    onClick={() => this.doGenerateExample(Examples.EXAMPLE_TRACES)}
-                    onKeyDown={(e: React.KeyboardEvent) => this.doGenerateExampleEnter(e, Examples.EXAMPLE_TRACES)}>
+                    onClick={() => this.doGenerateExample(CdtCloudBlueprintExamples.EXAMPLE_TRACES)}
+                    onKeyDown={(e: React.KeyboardEvent) => this.doGenerateExampleEnter(e, CdtCloudBlueprintExamples.EXAMPLE_TRACES)}>
                     {nls.localizeByDefault('Example traces')}
                 </a>
             </div>
@@ -191,8 +191,8 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
                 <a
                     role={'button'}
                     tabIndex={0}
-                    onClick={() => this.doGenerateExample(Examples.CLANGD_CONTEXTS)}
-                    onKeyDown={(e: React.KeyboardEvent) => this.doGenerateExampleEnter(e, Examples.CLANGD_CONTEXTS)}>
+                    onClick={() => this.doGenerateExample(CdtCloudBlueprintExamples.CLANGD_CONTEXTS)}
+                    onKeyDown={(e: React.KeyboardEvent) => this.doGenerateExampleEnter(e, CdtCloudBlueprintExamples.CLANGD_CONTEXTS)}>
                     {nls.localizeByDefault('Clangd contexts')}
                 </a>
             </div>

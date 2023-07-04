@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2022 STMicroelectronics and others.
+ * Copyright (C) 2023 STMicroelectronics and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -14,17 +14,11 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { ConnectionHandler, JsonRpcConnectionHandler, bindContributionProvider } from '@theia/core';
+import { CommandContribution } from '@theia/core';
 import { ContainerModule } from '@theia/core/shared/inversify';
-import { EXAMPLE_GENERATOR_PATH, ExampleGeneratorService, ExamplesContribution } from '../common/protocol';
-import { ExampleGeneratorServiceImpl } from './example-generator-service';
+import { ExampleGeneratorCommandContribution, GenerateExampleCommandHandler } from './blueprint-examples-frontend-contribution';
 
-export default new ContainerModule((bind, unbind, isBound, rebind) => {
-    bindContributionProvider(bind, ExamplesContribution);
-    bind(ExampleGeneratorService).to(ExampleGeneratorServiceImpl).inSingletonScope();
-    bind(ConnectionHandler).toDynamicValue(ctx =>
-        new JsonRpcConnectionHandler(EXAMPLE_GENERATOR_PATH,
-            () => ctx.container.get<ExampleGeneratorService>(ExampleGeneratorService)
-        )
-    ).inSingletonScope();
+export default new ContainerModule((bind, _unbind, isBound, rebind) => {
+    bind(GenerateExampleCommandHandler).toSelf().inSingletonScope();
+    bind(CommandContribution).to(ExampleGeneratorCommandContribution).inSingletonScope();
 });

@@ -18,7 +18,7 @@ import { Key, KeyCode } from '@theia/core/lib/browser';
 import { nls } from '@theia/core';
 import { WindowService } from '@theia/core/lib/browser/window/window-service';
 import { CommandService } from '@theia/core/lib/common/command';
-import { GenerateExampleCommand, Examples } from '@eclipse-cdt-cloud/blueprint-example-generator/lib/browser';
+import { GenerateExampleCommand, CdtCloudBlueprintExamples } from '@eclipse-cdt-cloud/blueprint-examples/lib/browser';
 import * as React from 'react';
 
 export interface ExternalBrowserLinkProps {
@@ -71,13 +71,13 @@ export function renderWhatIs(windowService: WindowService, commandService: Comma
             <a
                 role={'button'}
                 tabIndex={0}
-                onClick={() => generateExample(commandService, Examples.EXAMPLE_TRACES)}>
+                onClick={() => generateExample(commandService, CdtCloudBlueprintExamples.EXAMPLE_TRACES)}>
                 {nls.localizeByDefault('Generate example traces')}
             </a> {' '} and open them with Trace Compass Cloud.</div>
     </div>;
 }
 
-function generateExample(commandService: CommandService, exampleId?: Examples): void {
+function generateExample(commandService: CommandService, exampleId?: string): void {
     commandService.executeCommand(GenerateExampleCommand.id, exampleId);
 }
 

@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2022 STMicroelectronics and others.
+ * Copyright (C) 2023 STMicroelectronics and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -14,13 +14,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { WebSocketConnectionProvider } from '@theia/core/lib/browser';
-import { ContainerModule } from '@theia/core/shared/inversify';
-import { EXAMPLE_GENERATOR_PATH, ExampleGeneratorService } from '../common/protocol';
-
-export default new ContainerModule((bind, _unbind, isBound, rebind) => {
-    bind(ExampleGeneratorService).toDynamicValue(ctx => {
-        const connection = ctx.container.get(WebSocketConnectionProvider);
-        return connection.createProxy<ExampleGeneratorService>(EXAMPLE_GENERATOR_PATH);
-    }).inSingletonScope();
-});
+export enum CdtCloudBlueprintExamples {
+    CMAKE_EXAMPLE = 'cmake-example',
+    EXAMPLE_TRACES = 'example-traces',
+    CLANGD_CONTEXTS = 'clangd-contexts'
+}
