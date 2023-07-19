@@ -14,11 +14,11 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
+import { Example, ExampleOptions, ExamplesContribution } from '@eclipse-cdt-cloud/blueprint-example-generator/lib/node';
 import { URI } from '@theia/core';
 import { injectable } from '@theia/core/shared/inversify';
 import { PanelKind, RevealKind } from '@theia/task/lib/common';
 import { CdtCloudBlueprintExamples } from '../common/cdt-blueprint-examples';
-import { ExamplesContribution, Example } from '@eclipse-cdt-cloud/blueprint-example-generator/lib/node';
 
 @injectable()
 export class CdtCloudBlueprintExamplesContribution implements ExamplesContribution {
@@ -28,15 +28,16 @@ export class CdtCloudBlueprintExamplesContribution implements ExamplesContributi
             label: 'CMake example',
             welcomeFile: 'CMAKE_EXAMPLE_README.md',
             resourcesPath: new URI(module.path).resolve('../../resources/cmake-example').normalizePath().toString(),
-            launches: [{
+            launches: (options: ExampleOptions) => [{
                 'type': 'gdb',
                 'request': 'launch',
-                'name': 'Debug Example C++',
-                'program': '${targetFolder}/Example',
-                'initCommands': ['tbreak main']
+                'name': `Debug Example C++ (${options.targetFolderName})`,
+                'program': `\${workspaceFolder}/${options.targetFolderName}/Example`,
+                'initCommands': ['tbreak main'],
+                'preLaunchTask': `Binary build (${options.targetFolderName})`
             }],
-            tasks: [{
-                'label': 'Binary build',
+            tasks: (options: ExampleOptions) => [{
+                'label': `Binary build (${options.targetFolderName})`,
                 'type': 'shell',
                 'command': 'cmake . && make',
                 'group': {
@@ -44,14 +45,15 @@ export class CdtCloudBlueprintExamplesContribution implements ExamplesContributi
                     'isDefault': true
                 },
                 'options': {
-                    'cwd': '${targetFolder}'
+                    'cwd': `\${workspaceFolder}/${options.targetFolderName}`
                 },
                 'problemMatcher': []
             },
             {
-                'label': 'Launch Example C++',
+                'label': `Launch Example C++ (${options.targetFolderName})`,
                 'type': 'shell',
                 'command': './Example',
+                'dependsOn': [ `Binary build (${options.targetFolderName})` ],
                 'presentation': {
                     'echo': true,
                     'reveal': RevealKind.Always,
@@ -61,7 +63,7 @@ export class CdtCloudBlueprintExamplesContribution implements ExamplesContributi
                     'clear': true
                 },
                 'options': {
-                    'cwd': '${targetFolder}'
+                    'cwd': `\${workspaceFolder}/${options.targetFolderName}`
                 },
                 'problemMatcher': []
             }]

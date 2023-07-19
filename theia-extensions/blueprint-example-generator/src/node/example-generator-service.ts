@@ -34,8 +34,9 @@ export class ExampleGeneratorServiceImpl implements ExampleGeneratorService {
         return contributions.flatMap(contribution => contribution.examples);
     }
 
-    async generateExample(example: Example, target: string, folderName?: string): Promise<void> {
-        const exampleUri = new URI(example.resourcesPath);
+    async generateExample(example: Example, target: string, folderName: string): Promise<void> {
+        const resolvedExample = (await this.getExamples()).find(e => e.id === example.id) ?? example;
+        const exampleUri = new URI(resolvedExample.resourcesPath);
         const examplePath = FileUri.fsPath(exampleUri);
         if (!examplePath || !fs.existsSync(examplePath)) {
             throw new Error(`Could not find resources of example in ${examplePath}`);
@@ -44,12 +45,12 @@ export class ExampleGeneratorServiceImpl implements ExampleGeneratorService {
         const targetUri = new URI(target);
         this.copyFiles(targetUri, examplePath);
 
-        if (example.tasks || example.launches) {
+        if (resolvedExample.tasks || resolvedExample.launches) {
             const workspaceRoot = folderName ? targetUri.parent : targetUri;
             const configFolder = FileUri.fsPath(workspaceRoot.resolve('.theia'));
             fs.ensureDirSync(configFolder);
-            this.createOrAmendTasksJson(example, workspaceRoot, folderName);
-            this.createOrAmendLaunchJson(example, workspaceRoot, folderName);
+            this.createOrAmendTasksJson(resolvedExample, workspaceRoot, folderName);
+            this.createOrAmendLaunchJson(resolvedExample, workspaceRoot, folderName);
         }
     }
 
@@ -58,7 +59,7 @@ export class ExampleGeneratorServiceImpl implements ExampleGeneratorService {
         fs.copySync(examplePath, targetPath, { recursive: true, errorOnExist: true });
     }
 
-    protected createOrAmendTasksJson(example: Example, workspaceRoot: URI, folderName?: string): void {
+    protected createOrAmendTasksJson(example: Example, workspaceRoot: URI, targetFolderName: string): void {
         if (example.tasks) {
             const tasksJsonPath = FileUri.fsPath(workspaceRoot.resolve('.theia/tasks.json'));
             if (!fs.existsSync(tasksJsonPath)) {
@@ -69,17 +70,14 @@ export class ExampleGeneratorServiceImpl implements ExampleGeneratorService {
             }
             const tasksJson = JSON.parse(fs.readFileSync(tasksJsonPath).toString());
             const existingTaskConfigurations = tasksJson['tasks'] as TaskConfiguration[];
-            const newTasks = example.tasks && folderName ? example.tasks.map(task => ({
-                ...task,
-                'label': task.label + ' (' + folderName + ')'
-            })) : example.tasks;
+            const targetFolder = FileUri.fsPath(workspaceRoot.resolve(targetFolderName));
+            const newTasks = example.tasks({targetFolderName, targetFolder});
             tasksJson['tasks'] = [...existingTaskConfigurations, ...newTasks];
-            const newTasksJsonContent = this.resolveVariablesAndSerialize(tasksJson, folderName);
-            fs.writeFileSync(tasksJsonPath, newTasksJsonContent);
+            fs.writeFileSync(tasksJsonPath, JSON.stringify(tasksJson, undefined, 2));
         }
     }
 
-    protected createOrAmendLaunchJson(example: Example, workspaceRoot: URI, folderName?: string): void {
+    protected createOrAmendLaunchJson(example: Example, workspaceRoot: URI, targetFolderName: string): void {
         if (example.launches) {
             const launchJsonPath = FileUri.fsPath(workspaceRoot.resolve('.theia/launch.json'));
             if (!fs.existsSync(launchJsonPath)) {
@@ -90,18 +88,11 @@ export class ExampleGeneratorServiceImpl implements ExampleGeneratorService {
             }
             const launchJson = JSON.parse(fs.readFileSync(launchJsonPath).toString());
             const existingLaunchConfigurations = launchJson['configurations'] as DebugConfiguration[];
-            const newLaunchConfigs = example.launches && folderName ? example.launches.map(launchConfig => ({
-                ...launchConfig,
-                'name': launchConfig.name + ' (' + folderName + ')'
-            })) : example.launches;
+            const targetFolder = FileUri.fsPath(workspaceRoot.resolve(targetFolderName));
+            const newLaunchConfigs = example.launches({targetFolderName, targetFolder});
             launchJson['configurations'] = [...existingLaunchConfigurations, ...newLaunchConfigs];
-            const newLaunchJsonContent = this.resolveVariablesAndSerialize(launchJson, folderName);
-            fs.writeFileSync(launchJsonPath, newLaunchJsonContent);
+            fs.writeFileSync(launchJsonPath, JSON.stringify(launchJson, undefined, 2));
         }
     }
 
-    protected resolveVariablesAndSerialize(jsonObject: object, folderName?: string): string {
-        const postFix = folderName ? `/${folderName}` : '';
-        return JSON.stringify(jsonObject, undefined, 2).replace(/\$\{targetFolder\}/g, '${workspaceFolder}' + postFix);
-    }
 }

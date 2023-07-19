@@ -20,13 +20,20 @@ import { TaskCustomization } from '@theia/task/lib/common/task-protocol';
 export const ExampleGeneratorService = Symbol('ExampleGeneratorService');
 export const EXAMPLE_GENERATOR_PATH = '/services/example-generator';
 
+export interface ExampleOptions {
+    /** The full path of the selected target folder. */
+    targetFolder: string;
+    /** The name of the target folder. */
+    targetFolderName: string;
+}
+
 export interface Example {
     id: string;
     label: string;
     resourcesPath: string;
     welcomeFile?: string;
-    tasks?: TaskCustomization[];
-    launches?: DebugConfiguration[];
+    tasks?: (options: ExampleOptions) => TaskCustomization[];
+    launches?: (options: ExampleOptions) => DebugConfiguration[];
 }
 
 /**
@@ -41,9 +48,9 @@ export interface ExampleGeneratorService {
      * Generates the specified `example` into the specified folder `targetPath`.
      * @param example the example to generate.
      * @param targetPath URI of the folder into which the example shall be generated.
-     * @param targetFolderName The user-specified name of the target folder or `undefined`.
+     * @param targetFolderName The user-specified name of the target folder.
      */
-    generateExample(example: Example, targetPath: string, targetFolderName?: string): Promise<void>
+    generateExample(example: Example, targetPath: string, targetFolderName: string): Promise<void>
 }
 
 export const ExamplesContribution = Symbol('ExamplesContribution');
