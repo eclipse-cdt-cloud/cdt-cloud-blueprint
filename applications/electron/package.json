@@ -95,7 +95,7 @@
     "cdt-cloud-blueprint-product": "1.38.0",
     "cdt-cloud-blueprint-launcher": "1.38.0",
     "theia-traceviewer": "0.2.0-next.20230619144800.297af68.0",
-    "@eclipse-cdt-cloud/blueprint-example-generator": "1.38.0"
+    "@eclipse-cdt-cloud/blueprint-examples": "1.38.0"
   },
   "devDependencies": {
     "@theia/cli": "1.38.0",

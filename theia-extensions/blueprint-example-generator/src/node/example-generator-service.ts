@@ -14,53 +14,85 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
+import { ContributionProvider } from '@theia/core';
 import URI from '@theia/core/lib/common/uri';
 import { FileUri } from '@theia/core/lib/node/file-uri';
-import { injectable } from '@theia/core/shared/inversify';
+import { inject, injectable, named } from '@theia/core/shared/inversify';
 import * as fs from 'fs-extra';
-import { ExampleGeneratorService, Examples } from '../common/protocol';
-
-const EXAMPLE_DIRECTORY = 'resources';
+import { Example, ExamplesContribution, ExampleGeneratorService } from '../common/protocol';
+import { TaskConfiguration } from '@theia/task/lib/common';
+import { DebugConfiguration } from '@theia/debug/lib/common/debug-configuration';
 
 @injectable()
 export class ExampleGeneratorServiceImpl implements ExampleGeneratorService {
 
-    async generateExample(exampleId: string, targetFolderUri: string): Promise<string | undefined> {
-        const examplesUri = new URI(module.path).resolve(`../../${EXAMPLE_DIRECTORY}`).normalizePath();
-        const examplesPath = FileUri.fsPath(examplesUri);
-        if (!examplesPath || !fs.existsSync(examplesPath)) {
-            throw new Error('Could not find examples folder');
-        }
+    @inject(ContributionProvider) @named(ExamplesContribution)
+    protected readonly examplesProvider: ContributionProvider<ExamplesContribution>;
 
-        const exampleUri = examplesUri.resolve(exampleId);
-        const examplePath = FileUri.fsPath(exampleUri);
-        if (!examplePath || !fs.existsSync(examplePath)) {
-            throw new Error(`Could not find files in ${examplePath}`);
-        }
-
-        const targetUri = new URI(targetFolderUri);
-        const targetPath = FileUri.fsPath(targetUri);
-        fs.copySync(examplePath, targetPath, { recursive: true, errorOnExist: true });
-
-        const fileToBeOpened = this.getFileToBeOpened(exampleId);
-        if (fileToBeOpened) {
-            return FileUri.fsPath(targetUri.resolve(fileToBeOpened));
-        }
-
-        return undefined;
+    async getExamples(): Promise<Example[]> {
+        const contributions = this.examplesProvider.getContributions();
+        return contributions.flatMap(contribution => contribution.examples);
     }
 
-    protected getFileToBeOpened(exampleId: string): string | undefined {
-        if (exampleId === Examples.CMAKE_EXAMPLE) {
-            return 'CMAKE_EXAMPLE_README.md';
+    async generateExample(example: Example, target: string, folderName: string): Promise<void> {
+        const resolvedExample = (await this.getExamples()).find(e => e.id === example.id) ?? example;
+        const exampleUri = new URI(resolvedExample.resourcesPath);
+        const examplePath = FileUri.fsPath(exampleUri);
+        if (!examplePath || !fs.existsSync(examplePath)) {
+            throw new Error(`Could not find resources of example in ${examplePath}`);
         }
-        if (exampleId === Examples.CLANGD_CONTEXTS) {
-            return 'CLANGD_CONTEXTS_README.md';
+
+        const targetUri = new URI(target);
+        this.copyFiles(targetUri, examplePath);
+
+        if (resolvedExample.tasks || resolvedExample.launches) {
+            const workspaceRoot = folderName ? targetUri.parent : targetUri;
+            const configFolder = FileUri.fsPath(workspaceRoot.resolve('.theia'));
+            fs.ensureDirSync(configFolder);
+            this.createOrAmendTasksJson(resolvedExample, workspaceRoot, folderName);
+            this.createOrAmendLaunchJson(resolvedExample, workspaceRoot, folderName);
         }
-        if (exampleId === Examples.EXAMPLE_TRACES) {
-            return 'EXAMPLE_TRACES_README.md';
+    }
+
+    protected copyFiles(targetUri: URI, examplePath: string): void {
+        const targetPath = FileUri.fsPath(targetUri);
+        fs.copySync(examplePath, targetPath, { recursive: true, errorOnExist: true });
+    }
+
+    protected createOrAmendTasksJson(example: Example, workspaceRoot: URI, targetFolderName: string): void {
+        if (example.tasks) {
+            const tasksJsonPath = FileUri.fsPath(workspaceRoot.resolve('.theia/tasks.json'));
+            if (!fs.existsSync(tasksJsonPath)) {
+                fs.writeFileSync(tasksJsonPath, `{
+                    "version": "2.0.0",
+                    "tasks": []
+                }`);
+            }
+            const tasksJson = JSON.parse(fs.readFileSync(tasksJsonPath).toString());
+            const existingTaskConfigurations = tasksJson['tasks'] as TaskConfiguration[];
+            const targetFolder = FileUri.fsPath(workspaceRoot.resolve(targetFolderName));
+            const newTasks = example.tasks({targetFolderName, targetFolder});
+            tasksJson['tasks'] = [...existingTaskConfigurations, ...newTasks];
+            fs.writeFileSync(tasksJsonPath, JSON.stringify(tasksJson, undefined, 2));
         }
-        return undefined;
+    }
+
+    protected createOrAmendLaunchJson(example: Example, workspaceRoot: URI, targetFolderName: string): void {
+        if (example.launches) {
+            const launchJsonPath = FileUri.fsPath(workspaceRoot.resolve('.theia/launch.json'));
+            if (!fs.existsSync(launchJsonPath)) {
+                fs.writeFileSync(launchJsonPath, `{
+                    "version": "2.0.0",
+                    "configurations": []
+                }`);
+            }
+            const launchJson = JSON.parse(fs.readFileSync(launchJsonPath).toString());
+            const existingLaunchConfigurations = launchJson['configurations'] as DebugConfiguration[];
+            const targetFolder = FileUri.fsPath(workspaceRoot.resolve(targetFolderName));
+            const newLaunchConfigs = example.launches({targetFolderName, targetFolder});
+            launchJson['configurations'] = [...existingLaunchConfigurations, ...newLaunchConfigs];
+            fs.writeFileSync(launchJsonPath, JSON.stringify(launchJson, undefined, 2));
+        }
     }
 
 }
