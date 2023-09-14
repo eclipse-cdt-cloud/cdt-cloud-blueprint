@@ -1,12 +1,12 @@
 {
   "private": true,
-  "name": "cdt-cloud-blueprint-updater",
+  "name": "cdt-cloud-blueprint-updater-ext",
   "version": "1.38.0",
   "description": "CDT Cloud Blueprint Updater",
   "dependencies": {
-    "@theia/core": "1.38.0",
-    "@theia/output": "1.38.0",
-    "@theia/preferences": "1.38.0",
+    "@theia/core": "1.40.0",
+    "@theia/output": "1.40.0",
+    "@theia/preferences": "1.40.0",
     "electron-log": "^4.3.0",
     "electron-updater": "5.3.0",
     "fs-extra": "^10.0.0",
@@ -40,7 +40,6 @@
     "src"
   ],
   "scripts": {
-    "prepare": "yarn clean && yarn build",
     "clean": "rimraf lib *.tsbuildinfo",
     "build": "tsc -b",
     "lint": "eslint --ext js,jsx,ts,tsx src",

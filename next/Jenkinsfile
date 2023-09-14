@@ -167,6 +167,7 @@ def buildNext(boolean runTests, int sleepBetweenRetries) {
 
     echo "Upgrading versions"
     sh "yarn upgrade"
+    sh "git clean -xfd"
     try {
         sh(script: 'yarn --force')
     } catch(error) {
@@ -178,6 +179,8 @@ def buildNext(boolean runTests, int sleepBetweenRetries) {
     }
 
     sh "rm -rf ./${distFolder}"
+    sh "yarn build"
+    sh "yarn download:plugins"
     sshagent(['projects-storage.eclipse.org-bot-ssh']) {
         sh "yarn electron package:preview"
     }

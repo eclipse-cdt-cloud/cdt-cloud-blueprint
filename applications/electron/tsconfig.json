@@ -3,15 +3,17 @@
     "include": [],
     "compilerOptions": {
       "composite": true,
-      "esModuleInterop": true,
+      "esModuleInterop": true
     },
     "references": [
       {
-        "path": "../../theia-extensions/theia-blueprint-product"
+        "path": "../../theia-extensions/launcher"
       },
       {
-        "path": "../../theia-extensions/theia-blueprint-updater"
+        "path": "../../theia-extensions/product"
+      },
+      {
+        "path": "../../theia-extensions/updater"
       }
     ]
-  }
-  
+}

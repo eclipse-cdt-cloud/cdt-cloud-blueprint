@@ -14,10 +14,12 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { ElectronMainApplication, ElectronMainApplicationContribution } from '@theia/core/lib/electron-main/electron-main-application';
-import { injectable } from '@theia/core/shared/inversify';
-import * as path from 'path';
 import * as os from 'os';
+import * as path from 'path';
+
+import { ElectronMainApplication, ElectronMainApplicationContribution } from '@theia/core/lib/electron-main/electron-main-application';
+
+import { injectable } from '@theia/core/shared/inversify';
 
 @injectable()
 export class IconContribution implements ElectronMainApplicationContribution {
