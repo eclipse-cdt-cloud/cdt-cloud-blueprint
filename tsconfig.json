@@ -3,7 +3,8 @@
   "include": [],
   "compilerOptions": {
     "composite": true,
-    "allowJs": true
+    "allowJs": true,
+    "esModuleInterop": true
   },
   "references": [
     {

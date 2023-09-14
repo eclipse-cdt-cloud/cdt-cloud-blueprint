@@ -17,8 +17,15 @@
     "yarn": ">=1.7.0 <2",
     "node": ">=12.14.1"
   },
+  "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/material": "^5.10.14",
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6"
+  },
   "devDependencies": {
-    "@theia/cli": "1.38.0",
+    "@theia/cli": "1.40.0",
     "@types/request": "^2.0.3",
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/eslint-plugin-tslint": "^4.25.0",
@@ -49,13 +56,13 @@
     "clean": "lerna run clean && rimraf node_modules",
     "build": "yarn build:extensions && yarn build:applications",
     "build:dev": "yarn build:extensions && yarn build:applications:dev",
-    "build:applications": "yarn build:extensions && lerna run --scope=\"blueprint*app\" build:prod --concurrency 1",
-    "build:applications:dev": "yarn build:extensions && lerna run --scope=\"blueprint*app\" build --concurrency 1",
-    "build:extensions": "lerna run --scope=\"blueprint*ext\" build",
+    "build:applications": "yarn build:extensions && lerna run --scope=\"cdt-cloud-blueprint*app\" build:prod --concurrency 1",
+    "build:applications:dev": "yarn build:extensions && lerna run --scope=\"cdt-cloud-blueprint*app\" build --concurrency 1",
+    "build:extensions": "lerna run --scope=\"cdt-cloud-blueprint*ext\" --scope=\"@eclipse-cdt-cloud/*\" build",
     "download:plugins": "theia download:plugins --rate-limit=15 --parallel=false --ignore-errors",
-    "package:applications": "lerna run --scope=\"blueprint*app\" package --concurrency 1",
-    "package:applications:preview": "lerna run --scope=\"blueprint*app\" package:preview --concurrency 1",
-    "package:applications:prod": "lerna run --scope=\"blueprint*app\" package:prod --concurrency 1",
+    "package:applications": "yarn tracecompass-server:download && lerna run --scope=\"cdt-cloud-blueprint*app\" package --concurrency 1",
+    "package:applications:preview": "yarn tracecompass-server:download && lerna run --scope=\"cdt-cloud-blueprint*app\" package:preview --concurrency 1",
+    "package:applications:prod": "yarn tracecompass-server:download && lerna run --scope=\"cdt-cloud-blueprint*app\" package:prod --concurrency 1",
     "watch": "lerna run --parallel watch",
     "test": "lerna run test",
     "electron": "yarn --cwd applications/electron",
@@ -69,9 +76,12 @@
   },
   "theiaPluginsDir": "plugins",
   "theiaPlugins": {
-    "vscode-builtin-extensions-pack": "https://open-vsx.org/api/eclipse-theia/builtin-extension-pack/1.77.0/file/eclipse-theia.builtin-extension-pack-1.77.0.vsix",
-    "vscjava.vscode-java-pack": "https://open-vsx.org/api/vscjava/vscode-java-pack/0.25.11/file/vscjava.vscode-java-pack-0.25.11.vsix",
-    "vscjava.vscode-java-dependency": "https://open-vsx.org/api/vscjava/vscode-java-dependency/0.21.2/file/vscjava.vscode-java-dependency-0.21.2.vsix"
+      "eclipse-theia.builtin-extension-pack": "https://open-vsx.org/api/eclipse-theia/builtin-extension-pack/1.77.0/file/eclipse-theia.builtin-extension-pack-1.77.0.vsix",
+      "cdt-gdb-vscode": "https://open-vsx.org/api/eclipse-cdt/cdt-gdb-vscode/0.0.99/file/eclipse-cdt.cdt-gdb-vscode-0.0.99.vsix",
+      "vscode-builtin-cpp": "https://open-vsx.org/api/vscode/cpp/1.77.0/file/vscode.cpp-1.77.0.vsix",
+      "vscode-clangd": "https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd/0.1.24/file/llvm-vs-code-extensions.vscode-clangd-0.1.24.vsix",
+      "vscode-cmake": "https://open-vsx.org/api/ms-vscode/cmake-tools/1.14.33/file/ms-vscode.cmake-tools-1.14.33.vsix",
+      "cdtcloud-clangd-contexts": "https://github.com/eclipse-cdt-cloud/clangd-contexts/releases/download/v0.8.0/cdtcloud-clangd-contexts-ext-0.8.0.vsix"
   },
   "theiaPluginsExcludeIds": [
     "ms-vscode.js-debug-companion",
@@ -89,12 +99,12 @@
   ],
   "resolutions": {
     "@types/puppeteer": "^5.4.0",
-    "**/@theia/application-package": "1.38.0",
-    "**/@theia/core": "1.38.0",
-    "**/@theia/editor": "1.38.0",
-    "**/@theia/filesystem": "1.38.0",
-    "**/@theia/request": "1.38.0",
-    "**/@theia/variable-resolver": "1.38.0",
+    "**/@theia/application-package": "1.40.0",
+    "**/@theia/core": "1.40.0",
+    "**/@theia/editor": "1.40.0",
+    "**/@theia/filesystem": "1.40.0",
+    "**/@theia/request": "1.40.0",
+    "**/@theia/variable-resolver": "1.40.0",
     "@yarnpkg/parsers": "3.0.0-rc.44",
     "**/msgpackr": "1.8.3",
     "**/multer": "1.4.4-lts.1"

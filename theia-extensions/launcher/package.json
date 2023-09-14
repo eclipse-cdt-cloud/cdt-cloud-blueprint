@@ -1,6 +1,6 @@
 {
   "name": "cdt-cloud-blueprint-launcher-ext",
-  "version": "1.38.0",
+  "version": "1.40.0",
   "keywords": [
     "theia-extension"
   ],
@@ -18,8 +18,8 @@
     "src"
   ],
   "dependencies": {
-    "@theia/core": "1.38.0",
-    "@theia/plugin-ext": "1.38.0",
+    "@theia/core": "1.40.0",
+    "@theia/plugin-ext": "1.40.0",
     "body-parser": "^1.17.2",
     "fs-extra": "^4.0.2",
     "@vscode/sudo-prompt": "9.3.1"
