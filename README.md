@@ -129,7 +129,7 @@ docker build -t cdt-cloud-blueprint:latest -f dockerfile/Dockerfile .
 To start the created image run:
 
 ```sh
-docker run -it -p 0.0.0.0:3000:3000 -p 0.0.0.0:8080:8080 cdt-cloud-blueprint:latest
+docker run -it -p 0.0.0.0:3000:3000 cdt-cloud-blueprint:latest
 ```
 
 ### Running Browser app

@@ -50,7 +50,6 @@ ENV THEIA_WEBVIEW_ENDPOINT {{hostname}}
 WORKDIR /home/theia
 COPY --from=build-stage --chown=theia:theia /home/theia /home/theia
 EXPOSE 3000
-EXPOSE 8080
 ENV SHELL=/bin/bash \
     THEIA_DEFAULT_PLUGINS=local-dir:/home/theia/cdt-cloud-blueprint/plugins
 ENV USE_LOCAL_GIT true
