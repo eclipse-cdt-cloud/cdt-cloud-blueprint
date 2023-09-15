@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "1.40.0",
+  "version": "1.40.1",
   "license": "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0",
   "author": {
     "name": "CDT Cloud"
@@ -25,7 +25,7 @@
     "@types/react-dom": "^18.0.6"
   },
   "devDependencies": {
-    "@theia/cli": "1.40.0",
+    "@theia/cli": "1.40.1",
     "@types/request": "^2.0.3",
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/eslint-plugin-tslint": "^4.25.0",
@@ -99,12 +99,12 @@
   ],
   "resolutions": {
     "@types/puppeteer": "^5.4.0",
-    "**/@theia/application-package": "1.40.0",
-    "**/@theia/core": "1.40.0",
-    "**/@theia/editor": "1.40.0",
-    "**/@theia/filesystem": "1.40.0",
-    "**/@theia/request": "1.40.0",
-    "**/@theia/variable-resolver": "1.40.0",
+    "**/@theia/application-package": "1.40.1",
+    "**/@theia/core": "1.40.1",
+    "**/@theia/editor": "1.40.1",
+    "**/@theia/filesystem": "1.40.1",
+    "**/@theia/request": "1.40.1",
+    "**/@theia/variable-resolver": "1.40.1",
     "@yarnpkg/parsers": "3.0.0-rc.44",
     "**/msgpackr": "1.8.3",
     "**/multer": "1.4.4-lts.1"
