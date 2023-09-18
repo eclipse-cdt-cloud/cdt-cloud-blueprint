@@ -11,23 +11,23 @@ function getBinaryPath() {
     case 'linux':
       return path.join(
         distFolder,
-        "linux-unpacked",
-        "cdt-cloud-blueprint"
+        'linux-unpacked',
+        'cdt-cloud-blueprint'
       );
     case 'win32':
       return path.join(
         distFolder,
-        "win-unpacked",
-        "CDTCloudBlueprint.exe"
+        'win-unpacked',
+        'CDTCloudBlueprint.exe'
       );
     case 'darwin':
       return path.join(
         distFolder,
-        "mac",
-        "CDTCloudBlueprint.app",
-        "Contents",
-        "MacOS",
-        "CDTCloudBlueprint"
+        'mac',
+        'CDTCloudBlueprint.app',
+        'Contents',
+        'MacOS',
+        'CDTCloudBlueprint'
       );
     default:
       return undefined;
@@ -40,7 +40,7 @@ function getBinaryPath() {
 // sometimes MacOS also uses Control. This is not handled, here
 function macSafeKeyCombo(keys) {
   if (os.platform() === 'darwin' && keys.includes('Control')) {
-    // Puppeteer calls the Command key "Meta"
+    // Puppeteer calls the Command key 'Meta'
     return keys.map(k => k === 'Control' ? 'Meta' : k);
   }
   return keys;
@@ -129,9 +129,9 @@ describe('Theia App', function () {
     );
 
     // Exemplary check a few extensions
-    expect(extensionNames).to.include("cdt-gdb-vscode");
-    expect(extensionNames).to.include("C/C++ Language Basics (built-in)");
-    expect(extensionNames).to.include("clangd");
-    expect(extensionNames).to.include("CMake");
+    expect(extensionNames).to.include('cdt-gdb-vscode');
+    expect(extensionNames).to.include('C/C++ Language Basics (built-in)');
+    expect(extensionNames).to.include('clangd');
+    expect(extensionNames).to.include('CMake');
   });
 });

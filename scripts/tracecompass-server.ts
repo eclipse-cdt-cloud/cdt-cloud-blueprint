@@ -21,14 +21,14 @@ const LOCAL_BINARY_PATH = `${LOCAL_DOWNLOAD_TARGET_PATH}trace-compass-server/tra
 
 execute().then(() => runTraceCompassServer());
 
-async function runTraceCompassServer() {
-    console.log("Starting trace compass server...");
+async function runTraceCompassServer(): Promise<void> {
+    console.log('Starting trace compass server...');
     const traceCompassServceProc = exec(`${LOCAL_BINARY_PATH}`);
-    traceCompassServceProc.on('close', (code, _) => console.log("Trace Compass Server stopped with " + code));
+    traceCompassServceProc.on('close', (code, _) => console.log('Trace Compass Server stopped with ' + code));
     if (traceCompassServceProc.stdout) {
-        traceCompassServceProc.stdout.on('data', (data) => console.log(data));
+        traceCompassServceProc.stdout.on('data', data => console.log(data));
     }
     if (traceCompassServceProc.stderr) {
-        traceCompassServceProc.stderr.on('data', (data) => console.error(data));
+        traceCompassServceProc.stderr.on('data', data => console.error(data));
     }
 }

@@ -43,5 +43,5 @@ async function execute(): Promise<void> {
     rmSync(blockMapFile, {
         force: true,
     });
-    await executeAppBuilderAsJson<BlockMapDataHolder>(["blockmap", "--input", executablePath, "--output", blockMapFile])
+    await executeAppBuilderAsJson<BlockMapDataHolder>(['blockmap', '--input', executablePath, '--output', blockMapFile]);
 }
