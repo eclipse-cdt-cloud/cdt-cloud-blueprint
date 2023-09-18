@@ -12,7 +12,7 @@ function getBinaryPath() {
       return path.join(
         distFolder,
         'linux-unpacked',
-        'cdt-cloud-blueprint'
+        'cdt-cloud-blueprint-app'
       );
     case 'win32':
       return path.join(
@@ -54,6 +54,8 @@ describe('Theia App', function () {
     if (!binary) {
       throw new Error('Tests are not supported for this platform.');
     }
+
+    console.log(binary);
 
     // Start app and store connection in context (this)
     this.browser = await remote({
