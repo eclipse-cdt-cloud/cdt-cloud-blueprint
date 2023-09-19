@@ -20,6 +20,9 @@ files:
   - src-gen
   - lib
   - resources/icons/WindowIcon/512-512.png
+  - resources/clangd-contexts
+  - resources/cmake-example
+  - resources/example-traces
   - scripts
   - "!**node_modules/**"
 extraResources:

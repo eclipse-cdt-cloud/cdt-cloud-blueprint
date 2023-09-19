@@ -13,4 +13,8 @@
 tracecompass-server
 nohup.out
 
+applications/**/resources/clangd-contexts
+applications/**/resources/cmake-example
+applications/**/resources/example-traces
+
 **/workspace
