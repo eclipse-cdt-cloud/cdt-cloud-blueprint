@@ -13,16 +13,16 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-import * as cliProgress from "cli-progress";
-import * as fs from "fs-extra";
-import * as request from "request";
-import * as tar from "tar-fs";
-import gunzip from "gunzip-maybe";
+import * as cliProgress from 'cli-progress';
+import * as fs from 'fs-extra';
+import * as request from 'request';
+import * as tar from 'tar-fs';
+import gunzip from 'gunzip-maybe';
 
-const LOCAL_DOWNLOAD_TARGET_PATH = "./tracecompass-server/";
-const LOCAL_DOWNLOAD_TARGET_FILENAME = "trace-server.tar.gz";
+const LOCAL_DOWNLOAD_TARGET_PATH = './tracecompass-server/';
+const LOCAL_DOWNLOAD_TARGET_FILENAME = 'trace-server.tar.gz';
 const DOWNLOAD_URL =
-  "https://download.eclipse.org/tracecompass.incubator/trace-server/rcp/trace-compass-server-latest-linux.gtk.x86_64.tar.gz";
+  'https://download.eclipse.org/tracecompass.incubator/trace-server/rcp/trace-compass-server-latest-linux.gtk.x86_64.tar.gz';
 
 execute();
 
@@ -45,38 +45,38 @@ async function clean(): Promise<void> {
 }
 
 function download(url: string, localTargetPath: string): Promise<void> {
-  console.log("Downloading trace compass server...");
-  const progress = new cliProgress.SingleBar({ format: "{bar} {percentage}%" });
+  console.log('Downloading trace compass server...');
+  const progress = new cliProgress.SingleBar({ format: '{bar} {percentage}%' });
   const targetFile = fs.createWriteStream(localTargetPath);
   return new Promise<void>((resolve, reject) => {
     let receivedBytes = 0;
     request
       .get(url)
-      .on("response", (response) => {
+      .on('response', response => {
         if (response.statusCode !== 200) {
           return reject(response);
         }
-        const totalBytes = response.headers["content-length"];
+        const totalBytes = response.headers['content-length'];
         progress.start(totalBytes ? +totalBytes : 1000000, 0);
       })
-      .on("data", (chunk) => {
+      .on('data', chunk => {
         receivedBytes += chunk.length;
         progress.update(receivedBytes);
       })
       .pipe(targetFile)
-      .on("error", (err) => {
+      .on('error', err => {
         fs.unlink(localTargetPath);
         progress.stop();
         return reject(err);
       });
 
-    targetFile.on("error", (err) => {
+    targetFile.on('error', err => {
       progress.stop();
       fs.unlink(localTargetPath);
       return reject(err);
     });
 
-    targetFile.on("finish", () => {
+    targetFile.on('finish', () => {
       progress.stop();
       targetFile.close();
       return resolve();
@@ -84,14 +84,14 @@ function download(url: string, localTargetPath: string): Promise<void> {
   });
 }
 
-function extract(archivePath: string) {
-  console.log("Extracting trace compass server...");
+function extract(archivePath: string): Promise<void> {
+  console.log('Extracting trace compass server...');
   return new Promise<void>((resolve, reject) => {
-    const extract = fs
+    const fsExtract = fs
       .createReadStream(archivePath)
       .pipe(gunzip())
       .pipe(tar.extract(LOCAL_DOWNLOAD_TARGET_PATH));
-    extract.on("finish", () => resolve());
-    extract.on("error", (e) => reject(e));
+    fsExtract.on('finish', () => resolve());
+    fsExtract.on('error', e => reject(e));
   });
 }

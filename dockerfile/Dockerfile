@@ -2,7 +2,10 @@ FROM node:16-bullseye as build-stage
 RUN apt-get update && apt-get install -y libxkbfile-dev libsecret-1-dev
 COPY . /home/theia/cdt-cloud-blueprint
 WORKDIR /home/theia/cdt-cloud-blueprint
-RUN yarn
+RUN yarn --pure-lockfile && \
+    yarn build:extensions && \
+    yarn download:plugins && \
+    yarn docker build
 RUN yarn tracecompass-server:download
 
 FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:0-16-bullseye as production-stage
@@ -47,9 +50,8 @@ ENV THEIA_WEBVIEW_ENDPOINT {{hostname}}
 WORKDIR /home/theia
 COPY --from=build-stage --chown=theia:theia /home/theia /home/theia
 EXPOSE 3000
-EXPOSE 8080
 ENV SHELL=/bin/bash \
-    THEIA_DEFAULT_PLUGINS=local-dir:/home/theia/cdt-cloud-blueprint/applications/docker/plugins
+    THEIA_DEFAULT_PLUGINS=local-dir:/home/theia/cdt-cloud-blueprint/plugins
 ENV USE_LOCAL_GIT true
 USER theia
 

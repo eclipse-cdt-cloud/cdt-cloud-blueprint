@@ -6,7 +6,10 @@
     },
     "references": [
       {
-        "path": "../../theia-extensions/theia-blueprint-product"
+        "path": "../../theia-extensions/launcher"
+      },
+      {
+        "path": "../../theia-extensions/product"
       }
     ]
   }

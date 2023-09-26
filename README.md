@@ -47,27 +47,43 @@ Documentation on how to package Theia as a Desktop Product may be found [here](h
 
 - Root level configures mono-repo build with lerna
 - `applications` groups the different app targets
-  - `browser` contains a browser based version of CDT Cloud Blueprint that may be packaged as a Docker image
-  - `electron` contains app to package, packaging configuration, and E2E tests for the Electron target.
-- `theia-extensions` groups the various custom theia extensions for CDT Cloud Blueprint
-  - `theia-blueprint-product` contains a Theia extension contributing the product branding (about dialogue and welcome page).
-  - `theia-blueprint-updater` contains a Theia extension contributing the update mechanism and corresponding UI elements (based on the Electron updater).
+  - `browser` contains a browser based version of Eclipse Theia Blueprint that may be packaged as a Docker image
+  - `electron` contains the electron app to package, packaging configuration, and E2E tests for the electron target.
+- `theia-extensions` groups the various custom theia extensions for Blueprint
+  - `product` contains a Theia extension contributing the product branding (about dialogue and welcome page).
+  - `updater` contains a Theia extension contributing the update mechanism and corresponding UI elements (based on the electron updater).
+  - `launcher` contains a Theia extension contributing, for AppImage applications, the option to create a script that allows to start blueprint from the command line by calling the 'theia' command.
 
 ### Build
 
+For development and casual testing of Blueprint, one can build it in "dev" mode. This permits building Blueprint on systems with less resources, like a Raspberry Pi 4B with 4GB of RAM.
+
 ```sh
-yarn
+# Build "dev" version of the Blueprint app. Its quicker, uses less resources, 
+# but the front end app is not "minified"
+yarn && yarn build:dev && yarn download:plugins
 ```
 
-### Package the Electron Application
+Production Blueprint applications:
 
 ```sh
+# Build production version of the Blueprint app
+yarn && yarn build && yarn download:plugins
+```
+
+### Package the Applications
+
+ATM we only produce packages for the Electron application.
+
+```sh
+yarn package:applications
+# or
 yarn electron package
 ```
 
 The packaged application is located in `applications/electron/dist`.
 
-### Create a Preview Electron Application (without packaging it)
+### Create a Preview Electron Electron Application (without packaging it)
 
 ```sh
 yarn electron package:preview
@@ -113,7 +129,7 @@ docker build -t cdt-cloud-blueprint:latest -f dockerfile/Dockerfile .
 To start the created image run:
 
 ```sh
-docker run -it -p 0.0.0.0:3000:3000 -p 0.0.0.0:8080:8080 cdt-cloud-blueprint:latest
+docker run -it -p 0.0.0.0:3000:3000 cdt-cloud-blueprint:latest
 ```
 
 ### Running Browser app
@@ -121,10 +137,6 @@ docker run -it -p 0.0.0.0:3000:3000 -p 0.0.0.0:8080:8080 cdt-cloud-blueprint:lat
 The browser app may be started with
 
 ```sh
-# Download Plugins for browser app
-yarn browser download:plugins
-
-# Start browser app
 yarn browser start
 ```
 

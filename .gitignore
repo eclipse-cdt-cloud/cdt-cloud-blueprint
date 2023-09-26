@@ -5,11 +5,16 @@
 **/lib
 **/src-gen
 **/gen-webpack.config.js
+**/gen-webpack.node.config.js
 **/plugins
 **/tsconfig.tsbuildinfo
 *.log
 
 tracecompass-server
 nohup.out
+
+applications/**/resources/clangd-contexts
+applications/**/resources/cmake-example
+applications/**/resources/example-traces
 
 **/workspace

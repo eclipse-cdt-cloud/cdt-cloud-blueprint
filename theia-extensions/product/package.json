@@ -1,16 +1,15 @@
 {
   "private": true,
-  "name": "cdt-cloud-blueprint-updater",
-  "version": "1.38.0",
-  "description": "CDT Cloud Blueprint Updater",
+  "name": "cdt-cloud-blueprint-product-ext",
+  "version": "1.40.1",
+  "description": "CDT Cloud Blueprint Product Branding",
   "dependencies": {
-    "@theia/core": "1.38.0",
-    "@theia/output": "1.38.0",
-    "@theia/preferences": "1.38.0",
-    "electron-log": "^4.3.0",
-    "electron-updater": "5.3.0",
-    "fs-extra": "^10.0.0",
-    "vscode-uri": "^2.1.1"
+    "@theia/core": "1.40.1",
+    "@theia/getting-started": "1.40.1",
+    "@theia/vsx-registry": "1.40.1",
+    "@theia/workspace": "1.40.1",
+    "@eclipse-cdt-cloud/blueprint-examples": "1.40.1",
+    "inversify": "^6.0.1"
   },
   "devDependencies": {
     "rimraf": "^2.7.1",
@@ -19,8 +18,9 @@
   },
   "theiaExtensions": [
     {
-      "electronMain": "lib/electron-main/update/theia-updater-main-module",
-      "frontendElectron": "lib/electron-browser/theia-updater-frontend-module"
+      "frontend": "lib/browser/theia-blueprint-frontend-module",
+      "electronMain": "lib/electron-main/theia-blueprint-main-module",
+      "backend": "lib/node/theia-blueprint-backend-module"
     }
   ],
   "keywords": [
@@ -40,11 +40,13 @@
     "src"
   ],
   "scripts": {
-    "prepare": "yarn clean && yarn build",
     "clean": "rimraf lib *.tsbuildinfo",
     "build": "tsc -b",
     "lint": "eslint --ext js,jsx,ts,tsx src",
     "lint:fix": "eslint --ext js,jsx,ts,tsx src --fix",
     "update:next": "ts-node ../../scripts/update-theia-to-next.ts"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0"
   }
 }
