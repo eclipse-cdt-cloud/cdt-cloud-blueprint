@@ -261,7 +261,7 @@ spec:
                         container('jnlp') {
                             script {
                                 uploadInstaller('windows')
-                                copyInstallerAndUpdateLatestYml('windows', 'CDTCloudBlueprint', 'exe', 'latest.yml', '1.37.0,1.38.0,1.39.0')
+                                copyInstallerAndUpdateLatestYml('windows', 'CDTCloudBlueprint', 'exe', 'latest.yml', '1.38.0')
                             }
                         }
                     }
@@ -426,8 +426,8 @@ def copyInstallerAndUpdateLatestYml(String platform, String installer, String ex
         if (UPDATABLE_VERSIONS.length() != 0) {
             for (oldVersion in UPDATABLE_VERSIONS.split(",")) {
                 sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-                    sh "ssh genie.theia@projects-storage.eclipse.org rm -f /home/data/httpd/download.eclipse.org/theia/${oldVersion}/${platform}/${yaml}"
-                    sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/${version}/${platform}/${yaml} /home/data/httpd/download.eclipse.org/theia/${oldVersion}/${platform}/${yaml}"
+                    sh "ssh genie.theia@projects-storage.eclipse.org rm -f /home/data/httpd/download.eclipse.org/theia/cdt-cloud/${oldVersion}/${platform}/${yaml}"
+                    sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/cdt-cloud/${version}/${platform}/${yaml} /home/data/httpd/download.eclipse.org/theia/cdt-cloud/${oldVersion}/${platform}/${yaml}"
                 }
             }
         } else {
