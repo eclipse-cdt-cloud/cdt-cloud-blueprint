@@ -79,10 +79,10 @@
   "theiaPluginsDir": "plugins",
   "theiaPlugins": {
       "eclipse-theia.builtin-extension-pack": "https://open-vsx.org/api/eclipse-theia/builtin-extension-pack/1.77.0/file/eclipse-theia.builtin-extension-pack-1.77.0.vsix",
-      "cdt-gdb-vscode": "https://open-vsx.org/api/eclipse-cdt/cdt-gdb-vscode/0.0.99/file/eclipse-cdt.cdt-gdb-vscode-0.0.99.vsix",
-      "vscode-builtin-cpp": "https://open-vsx.org/api/vscode/cpp/1.77.0/file/vscode.cpp-1.77.0.vsix",
-      "vscode-clangd": "https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd/0.1.24/file/llvm-vs-code-extensions.vscode-clangd-0.1.24.vsix",
-      "vscode-cmake": "https://open-vsx.org/api/ms-vscode/cmake-tools/1.14.33/file/ms-vscode.cmake-tools-1.14.33.vsix",
+      "cdt-gdb-vscode": "https://open-vsx.org/api/eclipse-cdt/cdt-gdb-vscode/0.0.108/file/eclipse-cdt.cdt-gdb-vscode-0.0.108.vsix",
+      "vscode-builtin-cpp": "https://open-vsx.org/api/vscode/cpp/1.79.0/file/vscode.cpp-1.79.0.vsix",
+      "vscode-clangd": "https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd/0.1.25/file/llvm-vs-code-extensions.vscode-clangd-0.1.25.vsix",
+      "vscode-cmake": "https://open-vsx.org/api/ms-vscode/cmake-tools/1.16.32/file/ms-vscode.cmake-tools-1.16.32.vsix",
       "cdtcloud-clangd-contexts": "https://github.com/eclipse-cdt-cloud/clangd-contexts/releases/download/v0.8.0/cdtcloud-clangd-contexts-ext-0.8.0.vsix"
   },
   "theiaPluginsExcludeIds": [
