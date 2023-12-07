@@ -101,12 +101,12 @@
   ],
   "resolutions": {
     "@types/puppeteer": "^5.4.0",
-    "**/@theia/application-package": "1.40.1",
-    "**/@theia/core": "1.40.1",
-    "**/@theia/editor": "1.40.1",
-    "**/@theia/filesystem": "1.40.1",
-    "**/@theia/request": "1.40.1",
-    "**/@theia/variable-resolver": "1.40.1",
+    "**/@theia/application-package": "1.43.0",
+    "**/@theia/core": "1.43.0",
+    "**/@theia/editor": "1.43.0",
+    "**/@theia/filesystem": "1.43.0",
+    "**/@theia/request": "1.43.0",
+    "**/@theia/variable-resolver": "1.43.0",
     "@yarnpkg/parsers": "3.0.0-rc.44",
     "**/msgpackr": "1.8.3",
     "**/multer": "1.4.4-lts.1"
