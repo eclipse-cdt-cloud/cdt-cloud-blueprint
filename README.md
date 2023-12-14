@@ -123,7 +123,7 @@ Now you can make changes to the source code and rebuild with `yarn` or run `yarn
 To build a fully functioning Docker image run:
 
 ```sh
-docker build -t cdt-cloud-blueprint:latest -f dockerfile/Dockerfile .
+docker build -t cdt-cloud-blueprint:latest .
 ```
 
 To start the created image run:
