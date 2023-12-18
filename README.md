@@ -56,67 +56,92 @@ Documentation on how to package Theia as a Desktop Product may be found [here](h
 
 ### Build
 
+#### Downloading dependencies
+
+To prepare the workspace the dependencies, plugins and the trace-compass server need to be downloaded.
+
+```sh
+yarn
+```
+
+```sh
+yarn download:plugins
+```
+
+```sh
+yarn tracecompass-server:download
+```
+
+#### Build all applications
+
+Build the sources and all three application (browser, docker and electron).
+
 For development and casual testing of Blueprint, one can build it in "dev" mode. This permits building Blueprint on systems with less resources, like a Raspberry Pi 4B with 4GB of RAM.
 
 ```sh
 # Build "dev" version of the Blueprint app. Its quicker, uses less resources, 
 # but the front end app is not "minified"
-yarn && yarn build:dev && yarn download:plugins
+yarn build:dev
 ```
 
 Production Blueprint applications:
 
 ```sh
 # Build production version of the Blueprint app
-yarn && yarn build && yarn download:plugins
+yarn build
 ```
 
-### Package the Applications
+#### Build & run electron application
+
+```sh
+yarn build:extensions
+yarn electron build
+```
+
+The electron app may be started with
+
+```sh
+yarn electron start
+```
+
+##### Package the electron application
 
 ATM we only produce packages for the Electron application.
 
 ```sh
+yarn build:extensions
 yarn package:applications
-# or
+# or (if the trace-compass server was already downloaded)
 yarn electron package
 ```
 
 The packaged application is located in `applications/electron/dist`.
 
-### Create a Preview Electron Electron Application (without packaging it)
+##### Create a Preview Electron Application (without packaging it)
 
 ```sh
+yarn build:extensions
+yarn package:applications:preview
+# or (if the trace-compass server was already downloaded)
 yarn electron package:preview
 ```
 
 The packaged application is located in `applications/electron/dist`.
 
-### Workspace and example files
-
-- To use the trace view, download and start the [TraceCompassServer](https://download.eclipse.org/tracecompass.incubator/trace-server/rcp/)
-- Example traces can be found here: [TraceCompassTutorialTraces](https://github.com/tuxology/tracevizlab/blob/master/labs/TraceCompassTutorialTraces.tgz)
-- An example workspace including a trace can be found [here](https://github.com/eclipsesource/cdtcloud-alpha/tree/master/example/workspace)
-- Clangd contexts also provides an example workspace, see [here](https://github.com/eclipse-cdt-cloud/clangd-contexts/tree/main/examples/clangd-workspace).
-
-### Running E2E Tests
-
-The E2E tests basic UI tests of the actual application.
-This is done based on the preview of the packaged application.
+#### Build & run browser application
 
 ```sh
-yarn electron package:preview
-yarn electron test
+yarn build:extensions
+yarn browser build
 ```
 
-### Docker based development
+The browser app may be started with
 
-1. Install the [Remote Dev extension pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) in VS Code
-2. Open this repository in VS Code
-3. In the notification that should appear: confirm to open this folder in the remote container instead
-4. Once VS Code is opened in the container and the `Configuring Dev Container` task is finished, run `yarn browser start` in the container's terminal to start the CDT Cloud blueprint backend.
-5. Once CDT Cloud blueprint is up, it should be running on 127.0.0.1:3000 and can be accessed from the host.
+```sh
+yarn browser start
+```
 
-Now you can make changes to the source code and rebuild with `yarn` or run `yarn watch` before the changes. After a browser refresh, your changes should get effective.
+The application is then available at <http://localhost:3000/>
 
 #### Build & run Docker image
 
@@ -132,15 +157,34 @@ To start the created image run:
 docker run -it -p 0.0.0.0:3000:3000 cdt-cloud-blueprint:latest
 ```
 
-### Running Browser app
+The application is then available at <http://localhost:3000/>
 
-The browser app may be started with
+### Docker based development
+
+1. Install the [Remote Dev extension pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) in VS Code
+2. Open this repository in VS Code
+3. In the notification that should appear: confirm to open this folder in the remote container instead
+4. Once VS Code is opened in the container and the `Configuring Dev Container` task is finished, run `yarn browser start` in the container's terminal to start the CDT Cloud blueprint backend.
+5. Once CDT Cloud blueprint is up, it should be running on 127.0.0.1:3000 and can be accessed from the host.
+
+Now you can make changes to the source code and rebuild with `yarn build:extensions && yarn browser build` or run `yarn watch` before the changes. After a browser refresh, your changes should get effective.
+
+#### Running E2E Tests
+
+The E2E tests basic UI tests of the actual application.
+This is done based on the preview of the packaged application.
 
 ```sh
-yarn browser start
+yarn electron package:preview
+yarn electron test
 ```
 
-and connect to <http://localhost:3000/>
+### Workspace and example files
+
+- To use the trace view, download and start the [TraceCompassServer](https://download.eclipse.org/tracecompass.incubator/trace-server/rcp/)
+- Example traces can be found here: [TraceCompassTutorialTraces](https://github.com/tuxology/tracevizlab/blob/master/labs/TraceCompassTutorialTraces.tgz)
+- An example workspace including a trace can be found [here](https://github.com/eclipsesource/cdtcloud-alpha/tree/master/example/workspace)
+- Clangd contexts also provides an example workspace, see [here](https://github.com/eclipse-cdt-cloud/clangd-contexts/tree/main/examples/clangd-workspace).
 
 ### Troubleshooting
 
