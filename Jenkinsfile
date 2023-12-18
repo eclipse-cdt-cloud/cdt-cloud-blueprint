@@ -261,7 +261,7 @@ spec:
                         container('jnlp') {
                             script {
                                 uploadInstaller('windows')
-                                copyInstallerAndUpdateLatestYml('windows', 'CDTCloudBlueprint', 'exe', 'latest.yml', '1.43.1')
+                                copyInstallerAndUpdateLatestYml('windows', 'CDTCloudBlueprint', 'exe', 'latest.yml', '1.40.1')
                             }
                         }
                     }
