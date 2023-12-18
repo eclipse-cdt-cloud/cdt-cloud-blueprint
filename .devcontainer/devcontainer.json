@@ -1,43 +1,33 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
-// https://github.com/microsoft/vscode-dev-containers/tree/v0.231.5/containers/typescript-node
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
 {
 	"name": "Node.js & TypeScript",
 	"build": {
-		"dockerfile": "Dockerfile.dev",
-		// Update 'VARIANT' to pick a Node version: 16, 14, 12.
-		// Append -bullseye or -buster to pin to an OS version.
-		// Use -bullseye variants on local on arm64/Apple Silicon.
-		"args": { 
-			"VARIANT": "12-bullseye"
-		}
+		// Sets the run context to one level up instead of the .devcontainer folder.
+		"context": "..",
+		// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
+		"dockerfile": "../Dockerfile.dev"
 	},
-
-	// Set *default* container specific settings.json values on container create.
-	"settings": {},
-
-
-	// Add the IDs of extensions you want installed when the container is created.
-	"extensions": [
-		"dbaeumer.vscode-eslint"
-	],
-
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
-
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "yarn install",
-
-	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	// Uncomment the next line to run commands after the container is created.
+	"postCreateCommand": "yarn && yarn build:extensions && yarn browser build",
+	// Configure tool-specific properties.
+	// "customizations": {},
+	// Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
 	"remoteUser": "node",
-
-	// Happens after updateContentCommand and once the dev container has been assigned to a user for the first time.
-	"postCreateCommand": "yarn",
-
 	"portsAttributes": {
-		"3000": { "label": "Theia Backend", "onAutoForward": "openBrowserOnce" },
-		"8080": { "label": "Trace Compass Server", "onAutoForward": "silent" }
+		"3000": {
+			"label": "Theia Backend",
+			"onAutoForward": "openBrowserOnce"
+		},
+		"8080": {
+			"label": "Trace Compass Server",
+			"onAutoForward": "silent"
+		}
 	},
-
 	// Runs each time the container is successfully started
 	// Starts the trace compass server. Downloads the server if not yet available.
 	"postStartCommand": "nohup bash -c 'yarn tracecompass-server:start &'"
