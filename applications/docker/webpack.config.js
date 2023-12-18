@@ -3,7 +3,7 @@
  * To reset delete this file and rerun theia build again.
  */
 // @ts-check
-const config = require('./gen-webpack.config.js');
+const configs = require('./gen-webpack.config.js');
 const backend = require('./gen-webpack.node.config.js');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const RemovePlugin = require('remove-files-webpack-plugin')
@@ -50,9 +50,9 @@ const plugins = [
     })
 ]
 
-config[0].plugins.push(...plugins);
+configs[0].plugins.push(...plugins);
 
 module.exports = [
-    ...config,
+    ...configs,
     backend.config
 ];
