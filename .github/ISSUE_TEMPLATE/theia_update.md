@@ -1,10 +1,10 @@
 ---
 name: CDT Cloud Blueprint update
-about: Update CDT Cloud Blueprint to latest Theia Blueprint release
+about: Update CDT Cloud Blueprint to latest Theia Community release
 ---
 
 <!-- Please replace the version below with the desired version. -->
-# Update Theia to 1.XX.X
+Update and release aligned with Theia XX
 
 ## Required Steps
 
@@ -25,6 +25,8 @@ Deploy to try.theia-cloud.io:
 - [ ] Push built docker image to registry
 - [ ] Update [deployment file](https://github.com/eclipsesource/theia-cloud/blob/main/demo/k8s/appdefinitions/cdt.yaml) to use newly pushed docker image
 - [ ] Apply the [deployment file](https://github.com/eclipsesource/theia-cloud/blob/main/demo/k8s/appdefinitions/cdt.yaml) to the cluster
-- [ ] Verify that updated CDT Cloud Blueprint online is available and works
+- [ ] Verify that updated CDT Cloud Blueprint Online is available and works
+
+Release announcement:
 
 - [ ] Announce release on the [cdt-cloud-dev](https://accounts.eclipse.org/mailing-list/cdt-cloud-dev) mailing list
