@@ -27,4 +27,4 @@ Deploy to try.theia-cloud.io:
 - [ ] Apply the [deployment file](https://github.com/eclipsesource/theia-cloud/blob/main/demo/k8s/appdefinitions/cdt.yaml) to the cluster
 - [ ] Verify that updated CDT Cloud Blueprint online is available and works
 
-- [ ]Announce release on the [cdt-cloud-dev](https://accounts.eclipse.org/mailing-list/cdt-cloud-dev) mailing list
+- [ ] Announce release on the [cdt-cloud-dev](https://accounts.eclipse.org/mailing-list/cdt-cloud-dev) mailing list
