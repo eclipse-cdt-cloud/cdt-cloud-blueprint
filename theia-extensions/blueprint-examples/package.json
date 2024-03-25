@@ -1,16 +1,16 @@
 {
   "name": "@eclipse-cdt-cloud/blueprint-examples",
-  "version": "1.43.1",
+  "version": "1.45.1",
   "description": "Extension for generating examples in CDT Cloud Blueprint",
   "dependencies": {
-    "@theia/core": "1.43.1",
-    "@theia/workspace": "1.43.1",
-    "@theia/navigator": "1.43.1",
-    "@theia/task": "1.43.1",
-    "@theia/debug": "1.43.1",
-    "@theia/filesystem": "1.43.1",
-    "@theia/editor": "1.43.1",
-    "@eclipse-cdt-cloud/blueprint-example-generator": "1.43.1",
+    "@theia/core": "1.45.1",
+    "@theia/workspace": "1.45.1",
+    "@theia/navigator": "1.45.1",
+    "@theia/task": "1.45.1",
+    "@theia/debug": "1.45.1",
+    "@theia/filesystem": "1.45.1",
+    "@theia/editor": "1.45.1",
+    "@eclipse-cdt-cloud/blueprint-example-generator": "1.45.1",
     "inversify": "^6.0.1"
   },
   "devDependencies": {

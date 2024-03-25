@@ -1,10 +1,10 @@
 {
   "name": "cdt-cloud-blueprint-launcher-ext",
-  "version": "1.43.1",
+  "version": "1.45.1",
   "keywords": [
     "theia-extension"
   ],
-  "license": "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/eclipse-theia/theia-blueprint.git"
@@ -18,8 +18,8 @@
     "src"
   ],
   "dependencies": {
-    "@theia/core": "1.43.1",
-    "@theia/plugin-ext": "1.43.1",
+    "@theia/core": "1.45.1",
+    "@theia/plugin-ext": "1.45.1",
     "body-parser": "^1.17.2",
     "fs-extra": "^4.0.2",
     "@vscode/sudo-prompt": "9.3.1"

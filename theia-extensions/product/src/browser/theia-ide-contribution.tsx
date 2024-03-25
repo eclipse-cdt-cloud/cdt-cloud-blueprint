@@ -2,16 +2,9 @@
  * Copyright (C) 2021 Ericsson and others.
  *
  * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v. 2.0 which is available at
- * http://www.eclipse.org/legal/epl-2.0.
+ * terms of the MIT License, which is available in the project root.
  *
- * This Source Code may also be made available under the following Secondary
- * Licenses when the conditions for such availability set forth in the Eclipse
- * Public License v. 2.0 are satisfied: GNU General Public License, version 2
- * with the GNU Classpath Exception which is available at
- * https://www.gnu.org/software/classpath/license.html.
- *
- * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
+ * SPDX-License-Identifier: MIT
  ********************************************************************************/
 
 import { inject, injectable } from '@theia/core/shared/inversify';
@@ -38,7 +31,7 @@ export namespace BlueprintCommands {
 }
 
 @injectable()
-export class TheiaBlueprintContribution implements CommandContribution, MenuContribution {
+export class TheiaIDEContribution implements CommandContribution, MenuContribution {
 
     @inject(WindowService)
     protected readonly windowService: WindowService;
@@ -48,10 +41,10 @@ export class TheiaBlueprintContribution implements CommandContribution, MenuCont
 
     registerCommands(commandRegistry: CommandRegistry): void {
         commandRegistry.registerCommand(BlueprintCommands.REPORT_ISSUE, {
-            execute: () => this.windowService.openNewWindow(TheiaBlueprintContribution.REPORT_ISSUE_URL, { external: true })
+            execute: () => this.windowService.openNewWindow(TheiaIDEContribution.REPORT_ISSUE_URL, { external: true })
         });
         commandRegistry.registerCommand(BlueprintCommands.DOCUMENTATION, {
-            execute: () => this.windowService.openNewWindow(TheiaBlueprintContribution.DOCUMENTATION_URL, { external: true })
+            execute: () => this.windowService.openNewWindow(TheiaIDEContribution.DOCUMENTATION_URL, { external: true })
         });
     }
 

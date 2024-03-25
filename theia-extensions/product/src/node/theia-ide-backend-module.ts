@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2022 EclipseSource and others.
+ * Copyright (C) 2021 Ericsson and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the MIT License, which is available in the project root.
@@ -8,10 +8,9 @@
  ********************************************************************************/
 
 import { ContainerModule } from '@theia/core/shared/inversify';
-import { TheiaLauncherServiceEndpoint } from './launcher-endpoint';
-import { BackendApplicationContribution } from '@theia/core/lib/node/backend-application';
+import { EnvVariablesServer } from '@theia/core/lib/common/env-variables';
+import { TheiaIDEEnvVariableServer } from './theia-ide-variables-server';
 
-export default new ContainerModule(bind => {
-    bind(TheiaLauncherServiceEndpoint).toSelf().inSingletonScope();
-    bind(BackendApplicationContribution).toService(TheiaLauncherServiceEndpoint);
+export default new ContainerModule((bind, unbind, isBound, rebind) => {
+    rebind(EnvVariablesServer).to(TheiaIDEEnvVariableServer).inSingletonScope();
 });
