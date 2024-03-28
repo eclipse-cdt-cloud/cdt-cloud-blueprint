@@ -25,15 +25,15 @@ pipeline {
         disableConcurrentBuilds()
     }
     environment {
-        THEIA_IDE_JENKINS_CI = 'true'
+        BLUEPRINT_JENKINS_CI = 'true'
 
         // to save time and resources, we skip some release-related steps
         // when not in the process of releasing. e.g. signing/notarizing the
         // installers. It can sometimes be necessary to run these steps, e.g.
         // when troubleshooting. Set the variable below to 'true' to do so.
         // We will still stop short of publishing anything.
-        THEIA_IDE_JENKINS_RELEASE_DRYRUN = 'false'
-        // THEIA_IDE_JENKINS_RELEASE_DRYRUN = 'true'
+        BLUEPRINT_JENKINS_RELEASE_DRYRUN = 'false'
+        // BLUEPRINT_JENKINS_RELEASE_DRYRUN = 'true'
     }
     stages {
         stage('Build') {
@@ -53,7 +53,7 @@ pipeline {
                         env.BRANCH_NAME ==~ /PR-(\d)+/
                     }
                     expression {
-                        env.THEIA_IDE_JENKINS_RELEASE_DRYRUN == 'true'
+                        env.BLUEPRINT_JENKINS_RELEASE_DRYRUN == 'true'
                     }
                 }
             }
@@ -174,7 +174,7 @@ spec:
                         env.CHANGE_TITLE ==~ /$jenkinsRelatedRegex/
                     }
                     expression {
-                        env.THEIA_IDE_JENKINS_RELEASE_DRYRUN == 'true'
+                        env.BLUEPRINT_JENKINS_RELEASE_DRYRUN == 'true'
                     }
                 }
             }
@@ -443,7 +443,7 @@ def isReleaseBranch() {
 }
 
 def isDryRunRelease() {
-    return env.THEIA_IDE_JENKINS_RELEASE_DRYRUN == 'true'
+    return env.BLUEPRINT_JENKINS_RELEASE_DRYRUN == 'true'
 }
 
 def isRelease() {
