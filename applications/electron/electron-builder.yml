@@ -30,7 +30,7 @@ extraResources:
     to: app/plugins
 
 win:
-  icon: resources/icons/WindowsLauncherIcon/TheiaBluePrint.ico
+  icon: resources/icons/WindowsLauncherIcon/TheiaIDE.ico
   target:
     - nsis
   publish:
@@ -65,14 +65,14 @@ nsis:
   menuCategory: true
   oneClick: false
   perMachine: false
-  installerHeaderIcon: resources/icons/WindowsLauncherIcon/TheiaBluePrint.ico
-  installerIcon: resources/icons/WindowsLauncherIcon/TheiaBluePrint.ico
-  uninstallerIcon: resources/icons/WindowsLauncherIcon/TheiaBluePrint.ico
+  installerHeaderIcon: resources/icons/WindowsLauncherIcon/TheiaIDE.ico
+  installerIcon: resources/icons/WindowsLauncherIcon/TheiaIDE.ico
+  uninstallerIcon: resources/icons/WindowsLauncherIcon/TheiaIDE.ico
   installerSidebar: resources/icons/InstallerSidebarImage/164-314Windows.bmp
   uninstallerSidebar: resources/icons/InstallerSidebarImage/164-314Windows.bmp
   allowToChangeInstallationDirectory: true
   runAfterFinish: false
-  artifactName: ${productName}.${ext}
+  artifactName: ${productName}Setup.${ext}
   license: LICENSE
 dmg:
   artifactName: ${productName}.${ext}

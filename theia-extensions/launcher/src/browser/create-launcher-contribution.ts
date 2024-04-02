@@ -2,16 +2,9 @@
  * Copyright (C) 2022 EclipseSource and others.
  *
  * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v. 2.0 which is available at
- * http://www.eclipse.org/legal/epl-2.0.
+ * terms of the MIT License, which is available in the project root.
  *
- * This Source Code may also be made available under the following Secondary
- * Licenses when the conditions for such availability set forth in the Eclipse
- * Public License v. 2.0 are satisfied: GNU General Public License, version 2
- * with the GNU Classpath Exception which is available at
- * https://www.gnu.org/software/classpath/license.html.
- *
- * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
+ * SPDX-License-Identifier: MIT
  ********************************************************************************/
 
 import { ConfirmDialog, Dialog, FrontendApplication, FrontendApplicationContribution, StorageService } from '@theia/core/lib/browser';
@@ -36,7 +29,7 @@ export class CreateLauncherCommandContribution implements FrontendApplicationCon
             if (!initialized) {
                 const messageContainer = document.createElement('div');
                 // eslint-disable-next-line max-len
-                messageContainer.textContent = nls.localizeByDefault("Would you like to install a shell command that launches the application?\nYou will be able to run Theia Blueprint from the command line by typing 'theia'.");
+                messageContainer.textContent = nls.localizeByDefault("Would you like to install a shell command that launches the application?\nYou will be able to run CDT Cloud Blueprint from the command line by typing 'theia'.");
                 messageContainer.setAttribute('style', 'white-space: pre-line');
                 const details = document.createElement('p');
                 details.textContent = 'Administrator privileges are required, you will need to enter your password next.';

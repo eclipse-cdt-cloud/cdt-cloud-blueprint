@@ -1,14 +1,14 @@
 {
   "private": true,
   "name": "cdt-cloud-blueprint-product-ext",
-  "version": "1.43.1",
+  "version": "1.45.1",
   "description": "CDT Cloud Blueprint Product Branding",
   "dependencies": {
-    "@theia/core": "1.43.1",
-    "@theia/getting-started": "1.43.1",
-    "@theia/vsx-registry": "1.43.1",
-    "@theia/workspace": "1.43.1",
-    "@eclipse-cdt-cloud/blueprint-examples": "1.43.1",
+    "@theia/core": "1.45.1",
+    "@theia/getting-started": "1.45.1",
+    "@theia/vsx-registry": "1.45.1",
+    "@theia/workspace": "1.45.1",
+    "@eclipse-cdt-cloud/blueprint-examples": "1.45.1",
     "inversify": "^6.0.1"
   },
   "devDependencies": {
@@ -18,15 +18,15 @@
   },
   "theiaExtensions": [
     {
-      "frontend": "lib/browser/theia-blueprint-frontend-module",
-      "electronMain": "lib/electron-main/theia-blueprint-main-module",
-      "backend": "lib/node/theia-blueprint-backend-module"
+      "frontend": "lib/browser/theia-ide-frontend-module",
+      "electronMain": "lib/electron-main/theia-ide-main-module",
+      "backend": "lib/node/theia-ide-backend-module"
     }
   ],
   "keywords": [
     "theia-extension"
   ],
-  "license": "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/eclipse-cdt-cloud/cdt-cloud-blueprint.git"
