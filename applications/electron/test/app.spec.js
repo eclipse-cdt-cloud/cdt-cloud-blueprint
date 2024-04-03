@@ -18,7 +18,7 @@ function getBinaryPath() {
       return path.join(
         distFolder,
         'win-unpacked',
-        'CDTCloudBlueprint.exe'
+        'CDTCloudBlueprintSetup.exe'
       );
     case 'darwin':
       return path.join(
