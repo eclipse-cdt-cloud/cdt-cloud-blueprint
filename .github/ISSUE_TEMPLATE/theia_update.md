@@ -13,19 +13,19 @@ Update and release aligned with Theia XX
 - [ ] Update all consumed Theia extensions and VSCode extensions
 - [ ] Test packaged Electron Blueprint locally
 - [ ] Test Browser variant locally
-- [ ] Test packaged Electron Blueprint locally
+- [ ] Test Docker variant locally
 
 After Merge
 
 - [ ] Verify that [Jenkins pipeline](https://ci.eclipse.org/theia/job/TheiaCDTCloud/job/master/) completed successfully
-- [ ] Download a previous release and check that update to latest version completes successfully
+- [ ] [Download a previous release](https://download.eclipse.org/theia/cdt-cloud/) and check that update to latest version completes successfully
 
 Deploy to try.theia-cloud.io:
 
-- [ ] Push built docker image to registry
-- [ ] Update [deployment file](https://github.com/eclipsesource/theia-cloud/blob/main/demo/k8s/appdefinitions/cdt.yaml) to use newly pushed docker image
-- [ ] Apply the [deployment file](https://github.com/eclipsesource/theia-cloud/blob/main/demo/k8s/appdefinitions/cdt.yaml) to the cluster
-- [ ] Verify that updated CDT Cloud Blueprint Online is available and works
+- [ ] Push docker image with version tag to registry via [GH action](https://github.com/eclipse-cdt-cloud/cdt-cloud-blueprint/actions/workflows/publish-image.yml)
+- [ ] Update [deployment file](https://github.com/eclipsesource/try-theia-cloud-deployment/blob/main/resources/appdefinitions/cdt.yaml) to use newly pushed docker image
+- [ ] Apply the [deployment file](https://github.com/eclipsesource/try-theia-cloud-deployment/blob/main/resources/appdefinitions/cdt.yaml) to the cluster
+- [ ] Verify that updated [CDT Cloud Blueprint Try Online](https://try.theia-cloud.io/?appDef=cdt-cloud-demo) is available and works
 
 Release announcement:
 
