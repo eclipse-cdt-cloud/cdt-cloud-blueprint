@@ -254,14 +254,14 @@ spec:
                             withCredentials([string(credentialsId: "github-bot-token", variable: 'GITHUB_TOKEN')]) {
                                 script {
                                     signInstaller('exe', 'windows')
-                                    updateMetadata('CDTCloudBlueprint.exe', 'latest.yml', 'windows', 1200)
+                                    updateMetadata('CDTCloudBlueprintSetup.exe', 'latest.yml', 'windows', 1200)
                                 }
                             }
                         }
                         container('jnlp') {
                             script {
                                 uploadInstaller('windows')
-                                copyInstallerAndUpdateLatestYml('windows', 'CDTCloudBlueprint', 'exe', 'latest.yml', '1.40.1')
+                                copyInstallerAndUpdateLatestYml('windows', 'CDTCloudBlueprintSetup', 'exe', 'latest.yml', '1.40.1')
                             }
                         }
                     }
