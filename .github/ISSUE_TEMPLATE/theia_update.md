@@ -14,6 +14,7 @@ Update and release aligned with Theia XX
 - [ ] Test packaged Electron Blueprint locally
 - [ ] Test Browser variant locally
 - [ ] Test Docker variant locally
+- [ ] Run E2E tests locally (https://github.com/eclipse-cdt-cloud/cdt-cloud-blueprint?tab=readme-ov-file#running-e2e-tests)
 
 After Merge
 
