@@ -1,14 +1,14 @@
 {
   "private": true,
   "name": "cdt-cloud-blueprint-product-ext",
-  "version": "1.45.1",
+  "version": "1.49.101",
   "description": "CDT Cloud Blueprint Product Branding",
   "dependencies": {
-    "@theia/core": "1.45.1",
-    "@theia/getting-started": "1.45.1",
-    "@theia/vsx-registry": "1.45.1",
-    "@theia/workspace": "1.45.1",
-    "@eclipse-cdt-cloud/blueprint-examples": "1.45.1",
+    "@theia/core": "1.49.1",
+    "@theia/getting-started": "1.49.1",
+    "@theia/vsx-registry": "1.49.1",
+    "@theia/workspace": "1.49.1",
+    "@eclipse-cdt-cloud/blueprint-examples": "1.49.101",
     "inversify": "^6.0.1"
   },
   "devDependencies": {
@@ -44,7 +44,8 @@
     "build": "tsc -b",
     "lint": "eslint --ext js,jsx,ts,tsx src",
     "lint:fix": "eslint --ext js,jsx,ts,tsx src --fix",
-    "update:next": "ts-node ../../scripts/update-theia-to-next.ts"
+    "update:theia": "ts-node ../../scripts/update-theia-version.ts",
+    "update:next": "ts-node ../../scripts/update-theia-version.ts next"
   },
   "peerDependencies": {
     "react": "^16.8.0"
