@@ -1,4 +1,6 @@
-FROM node:16-bullseye as build-stage
+# We still want Ubuntu 20.04 LTS compatibility, which is based on bullseye
+# -> buster is old enough
+FROM node:20.11.1-buster AS build-stage
 RUN apt-get update && apt-get install -y libxkbfile-dev libsecret-1-dev
 COPY . /home/theia/cdt-cloud-blueprint
 WORKDIR /home/theia/cdt-cloud-blueprint
@@ -8,7 +10,7 @@ RUN yarn --pure-lockfile && \
     yarn docker build
 RUN yarn tracecompass-server:download
 
-FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:0-16-bullseye as production-stage
+FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:0-20-bullseye AS production-stage
 
 RUN adduser --system --group theia
 
@@ -45,14 +47,14 @@ RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-14 100
 ENV CMAKE_C_COMPILER=clang-14
 ENV CMAKE_CXX_COMPILER=clang++-14
 
-ENV HOME /home/theia
-ENV THEIA_WEBVIEW_ENDPOINT {{hostname}}
+ENV HOME=/home/theia
+ENV THEIA_WEBVIEW_ENDPOINT={{hostname}}
 WORKDIR /home/theia
 COPY --from=build-stage --chown=theia:theia /home/theia /home/theia
 EXPOSE 3000
 ENV SHELL=/bin/bash \
     THEIA_DEFAULT_PLUGINS=local-dir:/home/theia/cdt-cloud-blueprint/plugins
-ENV USE_LOCAL_GIT true
+ENV USE_LOCAL_GIT=true
 USER theia
 
 WORKDIR /home/theia/cdt-cloud-blueprint

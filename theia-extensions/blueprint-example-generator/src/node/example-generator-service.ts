@@ -16,7 +16,7 @@
 
 import { ContributionProvider } from '@theia/core';
 import URI from '@theia/core/lib/common/uri';
-import { FileUri } from '@theia/core/lib/node/file-uri';
+import { FileUri } from '@theia/core/lib/common/file-uri';
 import { inject, injectable, named } from '@theia/core/shared/inversify';
 import * as fs from 'fs-extra';
 import { Example, ExamplesContribution, ExampleGeneratorService } from '../common/protocol';

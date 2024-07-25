@@ -35,6 +35,14 @@ const plugins = [
             }
         ]
     }),
+    new CopyWebpackPlugin({
+        patterns: [
+            {
+                context: path.resolve('.', '..', '..', 'applications', 'browser', 'ico'),
+                from: '**'
+            }
+        ]
+    }),
     new RemovePlugin({
         after: {
             test: [

@@ -136,10 +136,10 @@ spec:
                     agent {
                         label 'windows'
                     }
-                    steps {
-                        script {
-                            sh "npm config set msvs_version 2017"
-                            sh "npx node-gyp@9.4.0 install 14.20.0"
+                    steps {                 
+                        nodejs(nodeJSInstallationName: 'node_20.x') {
+                            sh "node --version"
+                            sh "npx node-gyp@9.4.1 install 20.11.1"
 
                             // analyze memory usage
                             bat "wmic ComputerSystem get TotalPhysicalMemory"
@@ -261,7 +261,7 @@ spec:
                         container('jnlp') {
                             script {
                                 uploadInstaller('windows')
-                                copyInstallerAndUpdateLatestYml('windows', 'CDTCloudBlueprintSetup', 'exe', 'latest.yml', '1.40.1')
+                                copyInstallerAndUpdateLatestYml('windows', 'CDTCloudBlueprintSetup', 'exe', 'latest.yml', '1.40.1,1.43.1,1.45.1')
                             }
                         }
                     }

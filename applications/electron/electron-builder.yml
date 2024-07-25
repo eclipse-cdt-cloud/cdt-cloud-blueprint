@@ -23,6 +23,7 @@ files:
   - resources/clangd-contexts
   - resources/cmake-example
   - resources/example-traces
+  - resources/CDTCloudBlueprintSplash.svg
   - scripts
   - "!**node_modules/**"
 extraResources:
