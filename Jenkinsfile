@@ -34,6 +34,8 @@ pipeline {
         // We will still stop short of publishing anything.
         BLUEPRINT_JENKINS_RELEASE_DRYRUN = 'false'
         // BLUEPRINT_JENKINS_RELEASE_DRYRUN = 'true'
+
+        NODE_OPTIONS = '--max_old_space_size=4096'
     }
     stages {
         stage('Build') {
@@ -287,7 +289,6 @@ def buildInstaller(int sleepBetweenRetries) {
     }
 
     sh 'node --version'
-    sh 'export NODE_OPTIONS=--max_old_space_size=4096'
     sh 'printenv && yarn cache dir'
     try {
         sh(script: buildPackageCmd)
@@ -378,7 +379,6 @@ def updateMetadata(String executable, String yaml, String platform, int sleepBet
 
     int maxRetry = 4
     try {
-        sh "export NODE_OPTIONS=--max_old_space_size=4096"
         // make sure the npm dependencies are available to the update scripts
         sh "yarn install --force"
         sh "yarn electron update:blockmap -e ${executable}"
