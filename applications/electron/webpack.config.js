@@ -9,6 +9,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const RemovePlugin = require('remove-files-webpack-plugin')
 const path = require('path');
 const resolvePackagePath = require('resolve-package-path');
+const TerserPlugin = require('terser-webpack-plugin');
 
 /**
  * Expose bundled modules on window.theia.moduleName namespace, e.g.
@@ -51,6 +52,26 @@ const plugins = [
 ]
 
 configs[0].plugins.push(...plugins);
+
+if (nodeConfig.config.optimization) {
+    nodeConfig.config.optimization.minimizer = [
+        new TerserPlugin({
+            parallel: false,
+            exclude: /^(lib|builtins)\//
+        })
+    ];
+}
+
+for (const config of configs) {
+    config.optimization = {
+        minimizer: [
+            new TerserPlugin({
+                parallel: false
+            })
+        ]
+    };
+}
+
 
 module.exports = [
     ...configs,
