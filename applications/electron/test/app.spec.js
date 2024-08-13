@@ -33,7 +33,7 @@ function getElectronMainJS() {
         return path.join(
         distFolder,
         'mac',
-        'TheiaIDE.app',
+        'CDTCloudBlueprint.app',
         'Contents',
         'Resources',
         'app',
@@ -91,7 +91,7 @@ function getBinaryPath() {
       return path.join(
         distFolder,
         'win-unpacked',
-        'CDTCloudBlueprintSetup.exe'
+        'CDTCloudBlueprint.exe'
       );
     case 'darwin':
       return path.join(
