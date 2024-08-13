@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/tslint/config */
 /********************************************************************************
  * Copyright (C) 2022 EclipseSource and others.
  *
