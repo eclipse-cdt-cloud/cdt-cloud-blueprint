@@ -34,7 +34,8 @@
       "config": {
         "warnOnPotentiallyInsecureHostPattern": false,
         "startupTimeout": -1,
-        "resolveSystemPlugins": false
+        "resolveSystemPlugins": false,
+        "configurationFolder": ".theia-ide"
       }
     },
     "generator": {
