@@ -256,10 +256,10 @@ export class TheiaIDEGettingStartedWidget extends GettingStartedWidget {
         return <div className='gs-section'>
             <div className='flex-grid'>
                 <div className='col'>
-                    <h3 className='gs-section-header'> 🚀 AI Support in the Theia IDE is available! [Experimental] ✨</h3>
+                    <h3 className='gs-section-header'> 🚀 AI Support in CDT Cloud Blueprint is available! [Experimental] ✨</h3>
 
                     <div className='gs-action-container'>
-                        Theia IDE now contains experimental AI support, which offers early access to cutting-edge AI capabilities within your IDE.
+                    CDT Cloud Blueprint now contains experimental AI support, which offers early access to cutting-edge AI capabilities within your IDE.
                         <br />
                         Please note that these features are disabled by default, ensuring that users can opt-in at their discretion.
                         For those who choose to enable AI support, it is important to be aware that these experimental features may generate continuous

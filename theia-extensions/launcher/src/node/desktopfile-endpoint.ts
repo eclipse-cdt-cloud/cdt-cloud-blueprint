@@ -93,11 +93,11 @@ export class TheiaDesktopFileServiceEndpoint implements BackendApplicationContri
 
         const createOrUpdate = request.body.create;
         if (createOrUpdate) {
-            const imagePath = path.join(process.env.HOME!, '.local', 'share', 'applications', 'theia-ide-electron-app.png');
+            const imagePath = path.join(process.env.HOME!, '.local', 'share', 'applications', 'cdt-cloud-blueprint-app.png');
             if (!fs.existsSync(imagePath)) {
                 const appDir = process.env.APPDIR;
                 if (appDir !== undefined) {
-                    const unpackedImagePath = path.join(appDir, 'theia-ide-electron-app.png');
+                    const unpackedImagePath = path.join(appDir, 'cdt-cloud-blueprint-app.png');
                     if (fs.existsSync(unpackedImagePath)) {
                         fs.copyFileSync(unpackedImagePath, imagePath);
                     } else {
@@ -108,10 +108,10 @@ export class TheiaDesktopFileServiceEndpoint implements BackendApplicationContri
                 }
             }
 
-            const desktopFilePath = path.join(process.env.HOME!, '.local', 'share', 'applications', 'theia-ide-launcher.desktop');
+            const desktopFilePath = path.join(process.env.HOME!, '.local', 'share', 'applications', 'cdt-cloud-blueprint-launcher.desktop');
             fs.outputFileSync(desktopFilePath, this.getDesktopFileContents(process.env.APPIMAGE!, imagePath));
 
-            const desktopURLFilePath = path.join(process.env.HOME!, '.local', 'share', 'applications', 'theia-ide-launcher-url.desktop');
+            const desktopURLFilePath = path.join(process.env.HOME!, '.local', 'share', 'applications', 'cdt-cloud-blueprint-launcher-url.desktop');
             fs.outputFileSync(desktopURLFilePath, this.getDesktopURLFileContents(process.env.APPIMAGE!, imagePath));
 
             appImageInformation.appImage = process.env.APPIMAGE!;
@@ -126,26 +126,26 @@ export class TheiaDesktopFileServiceEndpoint implements BackendApplicationContri
 
     protected getDesktopFileContents(appImagePath: string, imagePath: string): string {
         return `[Desktop Entry]
-Name=Theia IDE
+Name=CDT Cloud Blueprint
 Exec=${appImagePath} %U
 Terminal=false
 Type=Application
 Icon=${imagePath}
-StartupWMClass=Theia IDE
-Comment=Eclipse Theia IDE product
+StartupWMClass=CDT Cloud Blueprint
+Comment=Eclipse CDT Cloud Blueprint product
 Categories=Development;`;
     }
 
     protected getDesktopURLFileContents(appImagePath: string, imagePath: string): string {
         return `[Desktop Entry]
-Name=Theia IDE - URL Handler
+Name=CDT Cloud Blueprint - URL Handler
 Exec=${appImagePath} --open-url %U
 Terminal=false
 Type=Application
 NoDisplay=true
 Icon=${imagePath}
 MimeType=x-scheme-handler/theia;
-Comment=Eclipse Theia IDE product
+Comment=Eclipse CDT Cloud Blueprint product
 Categories=Development;`;
     }
 }

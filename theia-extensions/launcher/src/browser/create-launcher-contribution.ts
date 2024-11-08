@@ -55,7 +55,7 @@ export class CreateLauncherCommandContribution implements FrontendApplicationCon
             if (!initialized) {
                 const messageContainer = document.createElement('div');
                 // eslint-disable-next-line max-len
-                messageContainer.textContent = nls.localizeByDefault('Would you like to create a .desktop file for the Theia IDE?\nThis will make it easier to open the Theia IDE directly\nfrom your applications menu and enables further features.');
+                messageContainer.textContent = nls.localizeByDefault('Would you like to create a .desktop file for CDT Cloud Blueprint?\nThis will make it easier to open CDT Cloud Blueprint directly\nfrom your applications menu and enables further features.');
                 messageContainer.setAttribute('style', 'white-space: pre-line');
                 const dialog = new ConfirmDialog({
                     title: nls.localizeByDefault('Create .desktop file'),

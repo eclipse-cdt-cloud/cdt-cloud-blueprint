@@ -12,7 +12,7 @@ import URI from '@theia/core/lib/common/uri';
 
 export async function getStorageFilePath(envServer: EnvVariablesServer, fileName: string): Promise<string> {
     const configDirUri = await envServer.getConfigDirUri();
-    const globalStorageFolderUri = new URI(configDirUri).resolve('globalStorage/theia-ide-launcher/' + fileName);
+    const globalStorageFolderUri = new URI(configDirUri).resolve('globalStorage/cdt-cloud-blueprint-launcher/' + fileName);
     const globalStorageFolderFsPath = globalStorageFolderUri.path.fsPath();
     return globalStorageFolderFsPath;
 }
