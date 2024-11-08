@@ -34,7 +34,8 @@ pipeline {
         // We will still stop short of publishing anything.
         BLUEPRINT_JENKINS_RELEASE_DRYRUN = 'false'
         // BLUEPRINT_JENKINS_RELEASE_DRYRUN = 'true'
-
+        msvs_version = '2019'
+        GYP_MSVS_VERSION = '2019'
         NODE_OPTIONS = '--max_old_space_size=4096'
     }
     stages {
@@ -263,7 +264,7 @@ spec:
                         container('jnlp') {
                             script {
                                 uploadInstaller('windows')
-                                copyInstallerAndUpdateLatestYml('windows', 'CDTCloudBlueprintSetup', 'exe', 'latest.yml', '1.40.1,1.43.1,1.45.1')
+                                copyInstallerAndUpdateLatestYml('windows', 'CDTCloudBlueprintSetup', 'exe', 'latest.yml', '1.40.1,1.43.1,1.45.1,1.49.101')
                             }
                         }
                     }
@@ -274,11 +275,11 @@ spec:
 }
 
 def buildInstaller(int sleepBetweenRetries) {
-    int maxRetry = 3
+    int maxRetry = 1
     String buildPackageCmd
 
     checkout scm
-    
+
     // only build the Electron app for now
     buildPackageCmd = 'yarn --frozen-lockfile --force && \
         yarn build:extensions && yarn electron build'
