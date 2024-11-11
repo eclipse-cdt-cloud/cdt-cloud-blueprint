@@ -7,35 +7,27 @@
  * SPDX-License-Identifier: MIT
  ********************************************************************************/
 
-import { Key, KeyCode } from '@theia/core/lib/browser';
 import { nls } from '@theia/core';
 import { WindowService } from '@theia/core/lib/browser/window/window-service';
 import { CommandService } from '@theia/core/lib/common/command';
 import { GenerateExampleCommand, CdtCloudBlueprintExamples } from '@eclipse-cdt-cloud/blueprint-examples/lib/browser';
 import * as React from 'react';
 
-export interface ExternalBrowserLinkProps {
+export interface BrowserLinkProps {
     text: string;
     url: string;
     windowService: WindowService;
 }
 
-function ExternalBrowserLink(props: ExternalBrowserLinkProps): JSX.Element {
+function BrowserLink(props: BrowserLinkProps): JSX.Element {
     return <a
         role={'button'}
         tabIndex={0}
-        onClick={() => openExternalLink(props.url, props.windowService)}
-        onKeyDown={(e: React.KeyboardEvent) => {
-            if (Key.ENTER.keyCode === KeyCode.createKeyCode(e.nativeEvent).key?.keyCode) {
-                openExternalLink(props.url, props.windowService);
-            }
-        }}>
+        href={props.url}
+        target='_blank'
+        >
         {props.text}
     </a>;
-}
-
-function openExternalLink(url: string, windowService: WindowService): void {
-    windowService.openNewWindow(url, { external: true });
 }
 
 export function renderWhatIs(windowService: WindowService, commandService: CommandService): React.ReactNode {
@@ -95,7 +87,7 @@ export function renderSupport(windowService: WindowService): React.ReactNode {
         <div >
             Professional support, implementation services, consulting and training for building tools like this instance of CDT Cloud Blueprint and for
             building other tools based on Eclipse Theia is available by selected companies as listed on
-            the <ExternalBrowserLink text="CDT Cloud support page" url="https://www.eclipse.org/cdt-cloud/support/" windowService={windowService} ></ExternalBrowserLink>.
+            the <BrowserLink text="CDT Cloud support page" url="https://www.eclipse.org/cdt-cloud/support/" windowService={windowService} ></BrowserLink>.
         </div>
     </div>;
 }
@@ -108,11 +100,11 @@ export function renderTickets(windowService: WindowService): React.ReactNode {
         <div >
             CDT Cloud Blueprint is part of the CDT Cloud project, which hosts components and best practices for building
             customizable web-based C/C++ tools. For more information on CDT Cloud visit us
-            on <ExternalBrowserLink text="our webpage" url="https://www.eclipse.org/cdt-cloud"
-                windowService={windowService} ></ExternalBrowserLink> or
-            on <ExternalBrowserLink text="Github" url="https://github.com/eclipse-cdt-cloud/cdt-cloud"
-                windowService={windowService} ></ExternalBrowserLink> and <ExternalBrowserLink text="get in touch"
-                    url="https://www.eclipse.org/cdt-cloud/contact" windowService={windowService} ></ExternalBrowserLink> to
+            on <BrowserLink text="our webpage" url="https://www.eclipse.org/cdt-cloud"
+                windowService={windowService} ></BrowserLink> or
+            on <BrowserLink text="Github" url="https://github.com/eclipse-cdt-cloud/cdt-cloud"
+                windowService={windowService} ></BrowserLink> and <BrowserLink text="get in touch"
+                    url="https://www.eclipse.org/cdt-cloud/contact" windowService={windowService} ></BrowserLink> to
             discuss ideas, request features, report bugs, or to get support for building your custom C/C++ tool.
         </div>
     </div>;
@@ -125,23 +117,23 @@ export function renderSourceCode(windowService: WindowService): React.ReactNode 
         </h3>
         <div >
             The source code of CDT Cloud Blueprint is available
-            on <ExternalBrowserLink text="Github" url="https://github.com/eclipse-cdt-cloud/cdt-cloud-blueprint"
-                windowService={windowService} ></ExternalBrowserLink>.
+            on <BrowserLink text="Github" url="https://github.com/eclipse-cdt-cloud/cdt-cloud-blueprint"
+                windowService={windowService} ></BrowserLink>.
         </div>
         <div >
             CDT Cloud Blueprint bundles the following CDT Cloud open-source components:
             <ul>
                 <li>
-                    <ExternalBrowserLink text="CDT GDB Debug Adapter" url="https://github.com/eclipse-cdt-cloud/cdt-gdb-adapter"
-                        windowService={windowService} ></ExternalBrowserLink>
+                    <BrowserLink text="CDT GDB Debug Adapter" url="https://github.com/eclipse-cdt-cloud/cdt-gdb-adapter"
+                        windowService={windowService} ></BrowserLink>
                 </li>
                 <li>
-                    <ExternalBrowserLink text="Clangd Contexts" url="https://github.com/eclipse-cdt-cloud/clangd-contexts"
-                        windowService={windowService} ></ExternalBrowserLink>
+                    <BrowserLink text="Clangd Contexts" url="https://github.com/eclipse-cdt-cloud/clangd-contexts"
+                        windowService={windowService} ></BrowserLink>
                 </li>
                 <li>
-                    <ExternalBrowserLink text="Trace Compass Cloud" url="https://github.com/eclipse-cdt-cloud/theia-trace-extension"
-                        windowService={windowService} ></ExternalBrowserLink>
+                    <BrowserLink text="Trace Compass Cloud" url="https://github.com/eclipse-cdt-cloud/theia-trace-extension"
+                        windowService={windowService} ></BrowserLink>
                 </li>
             </ul>
         </div>
