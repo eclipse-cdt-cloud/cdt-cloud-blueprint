@@ -40,6 +40,7 @@ const signFile = file => {
 };
 
 exports.default = async function (context) {
+    await afterPackHook(context);
     const running_ci = process.env.THEIA_IDE_JENKINS_CI === 'true';
     const releaseDryRun = process.env.THEIA_IDE_JENKINS_RELEASE_DRYRUN === 'true';
     const branch = process.env.BRANCH_NAME;
@@ -89,4 +90,30 @@ exports.default = async function (context) {
         stdio: 'inherit',
         encoding: 'utf-8'
     });
+};
+
+// taken and modified from: https://github.com/gergof/electron-builder-sandbox-fix/blob/a2251d7d8f22be807d2142da0cf768c78d4cfb0a/lib/index.js
+const afterPackHook = async params => {
+    if (params.electronPlatformName !== 'linux') {
+        // this fix is only required on linux
+        return;
+    }
+    const executable = path.join(
+        params.appOutDir,
+        params.packager.executableName
+    );
+
+    const loaderScript = `#!/usr/bin/env bash
+set -u
+SCRIPT_DIR="$( cd "$( dirname "\${BASH_SOURCE[0]}" )" && pwd )"
+exec "$SCRIPT_DIR/${params.packager.executableName}.bin" "--no-sandbox" "$@"
+`;
+
+    try {
+        await fs.promises.rename(executable, executable + '.bin');
+        await fs.promises.writeFile(executable, loaderScript);
+        await fs.promises.chmod(executable, 0o755);
+    } catch (e) {
+        throw new Error('Failed to create loader for sandbox fix:\n' + e);
+    }
 };
