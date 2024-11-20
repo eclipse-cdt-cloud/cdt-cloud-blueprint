@@ -53,6 +53,11 @@ const plugins = [
 
 configs[0].plugins.push(...plugins);
 
+/** 
+ * Do no run TerserPlugin with parallel: true
+ * Each spawned node may take the full memory configured via NODE_OPTIONS / --max_old_space_size
+ * In total this may lead to OOM issues
+ */ 
 if (nodeConfig.config.optimization) {
     nodeConfig.config.optimization.minimizer = [
         new TerserPlugin({
@@ -61,7 +66,6 @@ if (nodeConfig.config.optimization) {
         })
     ];
 }
-
 for (const config of configs) {
     config.optimization = {
         minimizer: [
@@ -71,7 +75,6 @@ for (const config of configs) {
         ]
     };
 }
-
 
 module.exports = [
     ...configs,

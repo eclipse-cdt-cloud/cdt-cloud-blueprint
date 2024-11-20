@@ -35,7 +35,7 @@ See [this milestone for release 1.0](https://github.com/eclipse-cdt-cloud/cdt-cl
 
 ## Development
 
-CDT Cloud Blueprint is based on [Eclipse Theia Blueprint](https://github.com/eclipse-theia/theia-blueprint).
+CDT Cloud Blueprint is based on the [Eclipse Theia IDE](https://github.com/eclipse-theia/theia-ide).
 
 ### Requirements
 
