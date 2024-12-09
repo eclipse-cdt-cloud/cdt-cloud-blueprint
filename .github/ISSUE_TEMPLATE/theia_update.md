@@ -24,8 +24,8 @@ After Merge
 Deploy to try.theia-cloud.io:
 
 - [ ] Push docker image with version tag to registry via [GH action](https://github.com/eclipse-cdt-cloud/cdt-cloud-blueprint/actions/workflows/publish-image.yml)
-- [ ] Update [deployment file](https://github.com/eclipsesource/try-theia-cloud-deployment/blob/main/resources/appdefinitions/cdt.yaml) to use newly pushed docker image
-- [ ] Apply the [deployment file](https://github.com/eclipsesource/try-theia-cloud-deployment/blob/main/resources/appdefinitions/cdt.yaml) to the cluster
+- [ ] Update [deployment file](https://github.com/eclipsesource/try-theia-cloud-deployment/blob/main/resources/appdefinitions/cdt.yaml) to use newly pushed docker image and open a PR
+- [ ] Once the PR is merged the updated [deployment file](https://github.com/eclipsesource/try-theia-cloud-deployment/blob/main/resources/appdefinitions/cdt.yaml) should automatically be applied to the cluster using [this workflow](https://github.com/eclipsesource/try-theia-cloud-deployment/actions/workflows/apply-cdt-app-definition.yaml)
 - [ ] Verify that updated [CDT Cloud Blueprint Try Online](https://try.theia-cloud.io/?appDef=cdt-cloud-demo) is available and works
 
 Release announcement:
