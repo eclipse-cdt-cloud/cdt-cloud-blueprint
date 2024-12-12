@@ -22,11 +22,6 @@ pipeline {
                                 defaultValue: 'latest', 
                                 name: 'VERSION', 
                                 trim: true
-                            ),
-                            string(
-                                defaultValue: '1.44.0,1.45.0', 
-                                name: 'TOUPDATE', 
-                                trim: true
                             )
                         ])
                     ])
@@ -43,7 +38,9 @@ pipeline {
                     promote('windows', params.VERSION)
 
                     // update latest.yaml on windows for differential updater
-                    updateLatestYaml('windows', params.VERSION, 'TheiaIDESetup', 'exe', 'latest.yml', params.TOUPDATE)
+                    def updatableVersions = getUpdatableVersions(params.VERSION)
+                    echo 'updatableVersions: ' + updatableVersions
+                    updateLatestYaml('windows', params.VERSION, 'TheiaIDESetup', 'exe', 'latest.yml', updatableVersions)
                 }
             }
         }
@@ -74,4 +71,27 @@ def updateLatestYaml(String platform, String version, String installer, String e
     } else {
         echo "No updateable versions"
     }
+}
+
+/**
+ * List all directories in the ide directory. 
+ * Only takes the ones with a version identifier name. 
+ * Only take version numbers lower than the current version. 
+ */
+def getUpdatableVersions(String currentVersion) {
+    def versions = ''
+    
+    sshagent(['projects-storage.eclipse.org-bot-ssh']) {
+        versions = sh(
+            script: """
+            ssh genie.theia@projects-storage.eclipse.org "cd /home/data/httpd/download.eclipse.org/theia/ide/ && \
+            find . -maxdepth 1 -type d -regex '.*/[0-9]+\\.[0-9]+\\.[0-9]+' -exec basename {} \\; | sort -V | awk -v curVer='${currentVersion}' '{
+                if (\\\$1 != curVer && \\\$1 < curVer) print \\\$1
+            }' | paste -sd ','"
+            """,
+            returnStdout: true
+        ).trim()
+    }
+    
+    return versions
 }
