@@ -21,7 +21,7 @@ jenkinsRelatedRegex = "(?i).*jenkins.*"
 pipeline {
     agent none
     options {
-        timeout(time: 3, unit: 'HOURS')
+        timeout(time: 4, unit: 'HOURS')
         disableConcurrentBuilds()
     }
     environment {
