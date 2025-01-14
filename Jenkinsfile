@@ -193,15 +193,74 @@ spec:
                     }
                 }
                 stage('Sign, Notarize and Upload Mac') {
-                    agent any
+                    agent {
+                        kubernetes {
+                            yaml """
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: theia-dev
+    image: eclipsetheia/theia-blueprint:builder
+    imagePullPolicy: Always
+    command:
+    - cat
+    tty: true
+    resources:
+      limits:
+        memory: "8Gi"
+        cpu: "2"
+      requests:
+        memory: "8Gi"
+        cpu: "2"
+    volumeMounts:
+    - name: global-cache
+      mountPath: /.cache
+    - name: global-yarn
+      mountPath: /.yarn      
+    - name: global-npm
+      mountPath: /.npm      
+    - name: electron-cache
+      mountPath: /.electron-gyp
+  - name: jnlp
+    volumeMounts:
+    - name: volume-known-hosts
+      mountPath: /home/jenkins/.ssh
+  volumes:
+  - name: global-cache
+    emptyDir: {}
+  - name: global-yarn
+    emptyDir: {}
+  - name: global-npm
+    emptyDir: {}
+  - name: electron-cache
+    emptyDir: {}
+  - name: volume-known-hosts
+    configMap:
+      name: known-hosts
+"""
+                        }
+                    }
                     steps {
                         unstash 'mac'
-                        script {
-                            signInstaller('zip', 'mac')
-                            signInstaller('dmg', 'mac')
-                            notarizeInstaller('zip')
-                            notarizeInstaller('dmg')
-                            uploadInstaller('macos')
+                        container('theia-dev') {
+                            withCredentials([string(credentialsId: "github-bot-token", variable: 'GITHUB_TOKEN')]) {
+                                script {
+                                    def packageJSON = readJSON file: "package.json"
+                                    String version = "${packageJSON.version}"
+                                    signInstaller('zip', 'mac')
+                                    signInstaller('dmg', 'mac')
+                                    notarizeInstaller('zip')
+                                    notarizeInstaller('dmg')
+                                    updateMetadata('TheiaIDE-' + version + '-mac.zip', 'latest-mac.yml', 'macos', false, '.zip', 1200)
+                                    updateMetadata('TheiaIDE.dmg', 'latest-mac.yml', 'macos', false, '.dmg', 1200)
+                                }
+                            }
+                        }
+                        container('jnlp') {
+                            script {
+                                uploadInstaller('macos')
+                            }
                         }
                     }
                 }
@@ -260,7 +319,7 @@ spec:
                             withCredentials([string(credentialsId: "github-bot-token", variable: 'GITHUB_TOKEN')]) {
                                 script {
                                     signInstaller('exe', 'windows')
-                                    updateMetadata('TheiaIDESetup.exe', 'latest.yml', 'windows', 1200)
+                                    updateMetadata('TheiaIDESetup.exe', 'latest.yml', 'windows', true, '.exe', 1200)
                                 }
                             }
                         }
@@ -378,7 +437,7 @@ def notarizeInstaller(String ext) {
     }
 }
 
-def updateMetadata(String executable, String yaml, String platform, int sleepBetweenRetries) {
+def updateMetadata(String executable, String yaml, String platform, Boolean updatePaths, String fileExtension, int sleepBetweenRetries) {
     if (!isRelease()) {
         echo "This is not a release, so skipping updating metadata for branch ${env.BRANCH_NAME}"
         return
@@ -389,14 +448,14 @@ def updateMetadata(String executable, String yaml, String platform, int sleepBet
         // make sure the npm dependencies are available to the update scripts
         sh "yarn install --force"
         sh "yarn electron update:blockmap -e ${executable}"
-        sh "yarn electron update:checksum -e ${executable} -y ${yaml} -p ${platform}"
+        sh "yarn electron update:checksum -e ${executable} -y ${yaml} -p ${platform} -u ${updatePaths} -f ${fileExtension}"
     } catch (error) {
         retry(maxRetry) {
             sleep(sleepBetweenRetries)
             echo "yarn failed - Retrying"
             sh "yarn install --force"
             sh "yarn electron update:blockmap -e ${executable}"
-            sh "yarn electron update:checksum -e ${executable} -y ${yaml} -p ${platform}"
+        sh "yarn electron update:checksum -e ${executable} -y ${yaml} -p ${platform} -u ${updatePaths} -f ${fileExtension}"
         }
     }
 }

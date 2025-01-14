@@ -17,6 +17,8 @@ const argv = yargs(hideBin(process.argv))
     .option('executable', { alias: 'e', type: 'string', default: 'TheiaIDE.AppImage', description: 'The executable for which the checksum needs to be updated' })
     .option('yaml', { alias: 'y', type: 'string', default: 'latest-linux.yml', description: 'The yaml file where the checksum needs to be updated' })
     .option('platform', { alias: 'p', type: 'string', default: 'linux', description: 'The OS platform' })
+    .option('updatepaths', { alias: 'u', type: 'boolean', default: true, description: 'Whether to update the paths from absolute to relative' })
+    .option('fileextension', { alias: 'f', type: 'string', default: '.AppImage', description: 'Only paths/urls with this extension will be updated' })
     .version(false)
     .wrap(120)
     .parseSync();
@@ -27,6 +29,8 @@ async function execute(): Promise<void> {
     const executable = argv.executable;
     const yaml = argv.yaml;
     const platform = argv.platform;
+    const updatePaths = argv.updatepaths;
+    const fileExtension = argv.fileextension;
 
     const executablePath = path.resolve(
         __dirname,
@@ -40,24 +44,36 @@ async function execute(): Promise<void> {
         yaml
     );
 
-    console.log('Exe: ' + executablePath + '; Yaml: ' + yamlPath + '; Platform: ' + platform);
+    console.log(`Exe: ${executablePath}; Yaml: ${yamlPath}; Platform: ${platform}; Update Paths: ${updatePaths}; File Extension: ${fileExtension}`);
 
     const hash = await hashFile(executablePath, 'sha512', 'base64', {});
     const size = fs.statSync(executablePath).size;
 
     const yamlContents: string = fs.readFileSync(yamlPath, { encoding: 'utf8' });
+    console.log(`Initial Yaml Contents: ${yamlContents}`);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const latestYaml: any = jsyaml.safeLoad(yamlContents);
-    latestYaml.sha512 = hash;
-    latestYaml.path = updatedPath(latestYaml.path, latestYaml.version, platform);
+
+    if (latestYaml.path.endsWith(fileExtension)) {
+        latestYaml.sha512 = hash;
+        if (updatePaths) {
+            latestYaml.path = updatedPath(latestYaml.path, latestYaml.version, platform);
+        }
+    }
+
     for (const file of latestYaml.files) {
-        file.sha512 = hash;
-        file.size = size;
-        file.url = updatedPath(file.url, latestYaml.version, platform);
+        if (file.url.endsWith(fileExtension)) {
+            file.sha512 = hash;
+            file.size = size;
+            if (updatePaths) {
+                file.url = updatedPath(file.url, latestYaml.version, platform);
+            }
+        }
     }
 
     // line width -1 to avoid adding >- on long strings like a hash
     const newYamlContents = jsyaml.dump(latestYaml, { lineWidth: -1 });
+    console.log(`New Yaml Contents: ${newYamlContents}`);
     fs.writeFileSync(yamlPath, newYamlContents);
 }
 

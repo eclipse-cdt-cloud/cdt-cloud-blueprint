@@ -33,6 +33,9 @@ async function execute(): Promise<void> {
         executable
     );
     const blockMapFile = `${executablePath}${BLOCK_MAP_FILE_SUFFIX}`;
+
+    console.log(`Exe: ${executablePath}; Blockmap: ${blockMapFile}`);
+
     rmSync(blockMapFile, {
         force: true,
     });
