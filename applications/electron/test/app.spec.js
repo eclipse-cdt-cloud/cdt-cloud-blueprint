@@ -213,7 +213,7 @@ describe('Theia App', function () {
     );
 
     // Exemplary check a few extensions
-    expect(extensionNames).to.include('cdt-gdb-vscode');
+    expect(extensionNames).to.include('CDT GDB Debug Adapter Extension');
     expect(extensionNames).to.include('C/C++ Language Basics (built-in)');
     expect(extensionNames).to.include('clangd');
     expect(extensionNames).to.include('CMake');
