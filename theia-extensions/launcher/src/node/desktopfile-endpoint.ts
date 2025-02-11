@@ -131,7 +131,7 @@ Exec=${appImagePath} %U
 Terminal=false
 Type=Application
 Icon=${imagePath}
-StartupWMClass=CDTCloudBlueprint
+StartupWMClass=CDT Cloud Blueprint
 Comment=Eclipse CDT Cloud Blueprint product
 Categories=Development;`;
     }

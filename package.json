@@ -80,9 +80,9 @@
   "theiaPluginsDir": "plugins",
   "theiaPlugins": {
     "eclipse-theia.builtin-extension-pack": "https://open-vsx.org/api/eclipse-theia/builtin-extension-pack/1.88.1/file/eclipse-theia.builtin-extension-pack-1.88.1.vsix",
-    "cdt-gdb-vscode": "https://open-vsx.org/api/eclipse-cdt/cdt-gdb-vscode/0.0.108/file/eclipse-cdt.cdt-gdb-vscode-0.0.108.vsix",
+    "cdt-gdb-vscode": "https://open-vsx.org/api/eclipse-cdt/cdt-gdb-vscode/2.0.1/file/eclipse-cdt.cdt-gdb-vscode-2.0.1.vsix",
     "vscode-builtin-cpp": "https://open-vsx.org/api/vscode/cpp/1.88.1/file/vscode.cpp-1.88.1.vsix",
-    "vscode-clangd": "https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd/0.1.29/file/llvm-vs-code-extensions.vscode-clangd-0.1.29.vsix",
+    "vscode-clangd": "https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd/0.1.33/file/llvm-vs-code-extensions.vscode-clangd-0.1.33.vsix",
     "vscode-cmake": "https://open-vsx.org/api/ms-vscode/cmake-tools/1.19.52/file/ms-vscode.cmake-tools-1.19.52.vsix",
     "cdtcloud-clangd-contexts": "https://github.com/eclipse-cdt-cloud/clangd-contexts/releases/download/v0.8.0/cdtcloud-clangd-contexts-ext-0.8.0.vsix"
   },
