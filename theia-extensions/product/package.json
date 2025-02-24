@@ -1,14 +1,14 @@
 {
   "private": true,
   "name": "cdt-cloud-blueprint-product-ext",
-  "version": "1.52.0",
+  "version": "1.55.0",
   "description": "CDT Cloud Blueprint Product Branding",
   "dependencies": {
-    "@theia/core": "1.52.0",
-    "@theia/getting-started": "1.52.0",
-    "@theia/vsx-registry": "1.52.0",
-    "@theia/workspace": "1.52.0",
-    "@eclipse-cdt-cloud/blueprint-examples": "1.52.0",
+    "@theia/core": "1.55.0",
+    "@theia/getting-started": "1.55.0",
+    "@theia/vsx-registry": "1.55.0",
+    "@theia/workspace": "1.55.0",
+    "@eclipse-cdt-cloud/blueprint-examples": "1.55.0",
     "inversify": "^6.0.1"
   },
   "devDependencies": {
@@ -19,8 +19,7 @@
   "theiaExtensions": [
     {
       "frontend": "lib/browser/theia-ide-frontend-module",
-      "electronMain": "lib/electron-main/theia-ide-main-module",
-      "backend": "lib/node/theia-ide-backend-module"
+      "electronMain": "lib/electron-main/theia-ide-main-module"
     }
   ],
   "keywords": [
