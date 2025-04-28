@@ -62,7 +62,10 @@ if (nodeConfig.config.optimization) {
     nodeConfig.config.optimization.minimizer = [
         new TerserPlugin({
             parallel: false,
-            exclude: /^(lib|builtins)\//
+            exclude: /^(lib|builtins)\//,
+            terserOptions: {
+                keep_classnames: /AbortSignal/
+            }
         })
     ];
 }
