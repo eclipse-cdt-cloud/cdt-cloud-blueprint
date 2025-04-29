@@ -447,9 +447,16 @@ def buildInstaller(int sleepBetweenRetries) {
 
     checkout scm
 
-    // only build the Electron app for now
     buildPackageCmd = 'yarn --frozen-lockfile --force && \
-        yarn build:extensions && yarn electron build'
+        yarn build:extensions'
+
+    if (isRelease()) {
+        // download tracecompass server for releases
+        buildPackageCmd += ' && yarn tracecompass-server:download'
+    }
+
+    // only build the Electron app for now
+    buildPackageCmd += ' && yarn electron build'
 
     if (isRelease()) {
         // when not a release, build dev to save time
