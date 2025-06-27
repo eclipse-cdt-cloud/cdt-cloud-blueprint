@@ -125,8 +125,10 @@ spec:
                         label 'macos'
                     }
                     steps {
-                        script {
-                            buildInstaller(60)
+                        nodejs(nodeJSInstallationName: 'node_22.x') {
+                            script {
+                                buildInstaller(60)
+                            }
                         }
                         stash includes: "${toStash}", name: 'mac'
                     }
@@ -141,9 +143,9 @@ spec:
                         label 'windows'
                     }
                     steps {                 
-                        nodejs(nodeJSInstallationName: 'node_20.x') {
+                        nodejs(nodeJSInstallationName: 'node_22.x') {
                             sh "node --version"
-                            sh "npx node-gyp@9.4.1 install 20.11.1"
+                            sh "npx node-gyp@9.4.1 install 22.15.1"
 
                             // analyze memory usage
                             bat "wmic ComputerSystem get TotalPhysicalMemory"
@@ -262,36 +264,38 @@ spec:
                             }
                             steps {
                                 unstash 'mac2'
-                                script {
-                                    def packageJSON = readJSON file: "package.json"
-                                    String version = "${packageJSON.version}"
+                                nodejs(nodeJSInstallationName: 'node_22.x') {
+                                    script {
+                                        def packageJSON = readJSON file: "package.json"
+                                        String version = "${packageJSON.version}"
 
-                                    def notarizedDmg = "${distFolder}/CDTCloudBlueprint.dmg"
+                                        def notarizedDmg = "${distFolder}/CDTCloudBlueprint.dmg"
 
-                                    // We'll mount and then copy the .app out of the DMG
-                                    def mountPoint = "${distFolder}/CDTCloudBlueprint-mount"
-                                    def extractedFolder = "${distFolder}/CDTCloudBlueprint-extracted"
-                                    def rezippedFile = "${distFolder}/CDTCloudBlueprint-rezipped.zip"
-                                    def finalZip = "${distFolder}/CDTCloudBlueprint-${version}-mac.zip"
-                                    sh "rm -rf \"${extractedFolder}\" \"${mountPoint}\""
-                                    sh "mkdir -p \"${extractedFolder}\" \"${mountPoint}\""
-                                    sh "hdiutil attach \"${notarizedDmg}\" -mountpoint \"${mountPoint}\""
+                                        // We'll mount and then copy the .app out of the DMG
+                                        def mountPoint = "${distFolder}/CDTCloudBlueprint-mount"
+                                        def extractedFolder = "${distFolder}/CDTCloudBlueprint-extracted"
+                                        def rezippedFile = "${distFolder}/CDTCloudBlueprint-rezipped.zip"
+                                        def finalZip = "${distFolder}/CDTCloudBlueprint-${version}-mac.zip"
+                                        sh "rm -rf \"${extractedFolder}\" \"${mountPoint}\""
+                                        sh "mkdir -p \"${extractedFolder}\" \"${mountPoint}\""
+                                        sh "hdiutil attach \"${notarizedDmg}\" -mountpoint \"${mountPoint}\""
 
-                                    // Copy the .app from the DMG to a folder we can zip
-                                    sh "ditto \"${mountPoint}/CDTCloudBlueprint.app\" \"${extractedFolder}/CDTCloudBlueprint.app\""
+                                        // Copy the .app from the DMG to a folder we can zip
+                                        sh "ditto \"${mountPoint}/CDTCloudBlueprint.app\" \"${extractedFolder}/CDTCloudBlueprint.app\""
 
-                                    // Unmount the DMG
-                                    sh "hdiutil detach \"${mountPoint}\""
+                                        // Unmount the DMG
+                                        sh "hdiutil detach \"${mountPoint}\""
 
-                                    // Zip with ditto
-                                    sh "ditto -c -k \"${extractedFolder}\" \"${rezippedFile}\""
+                                        // Zip with ditto
+                                        sh "ditto -c -k \"${extractedFolder}\" \"${rezippedFile}\""
 
-                                    // Replace the old zip with the newly created one
-                                    sh "rm -f \"${finalZip}\""
-                                    sh "mv \"${rezippedFile}\" \"${finalZip}\""
+                                        // Replace the old zip with the newly created one
+                                        sh "rm -f \"${finalZip}\""
+                                        sh "mv \"${rezippedFile}\" \"${finalZip}\""
 
-                                    // Cleanup
-                                    sh "rm -rf \"${extractedFolder}\" \"${mountPoint}\""
+                                        // Cleanup
+                                        sh "rm -rf \"${extractedFolder}\" \"${mountPoint}\""
+                                    }
                                 }
                                 stash includes: "${toStash}", name: 'mac3'
                             }
@@ -447,7 +451,7 @@ def buildInstaller(int sleepBetweenRetries) {
 
     checkout scm
 
-    buildPackageCmd = 'yarn --frozen-lockfile --force && \
+    buildPackageCmd = 'yarn --network-timeout 100000 --frozen-lockfile --force && \
         yarn build:extensions'
 
     if (isRelease()) {
