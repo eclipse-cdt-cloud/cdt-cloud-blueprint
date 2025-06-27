@@ -126,6 +126,20 @@ spec:
                     }
                     steps {
                         script {
+                            sh '''
+                            echo $NVM_DIR
+                            ls -l /Users
+                            ls -l "/Users/administrator/.nvm/"
+                            cat "/Users/administrator/.nvm/nvm.sh" | head -20
+                            '''
+                            sh '''
+                            bash -c "
+                            export NVM_DIR=\\"$HOME/.nvm\\"
+                            [ -s \\"/Users/administrator/.nvm/nvm.sh\\" ] && . \\"/Users/administrator/.nvm/nvm.sh\\"
+                            type nvm
+                            nvm install 22.15.1
+                            "
+                            '''
                             buildInstaller(60)
                         }
                         stash includes: "${toStash}", name: 'mac'
@@ -141,9 +155,9 @@ spec:
                         label 'windows'
                     }
                     steps {                 
-                        nodejs(nodeJSInstallationName: 'node_20.x') {
+                        nodejs(nodeJSInstallationName: 'node_22.x') {
                             sh "node --version"
-                            sh "npx node-gyp@9.4.1 install 20.11.1"
+                            sh "npx node-gyp@9.4.1 install 22.15.1"
 
                             // analyze memory usage
                             bat "wmic ComputerSystem get TotalPhysicalMemory"
@@ -263,6 +277,12 @@ spec:
                             steps {
                                 unstash 'mac2'
                                 script {
+                                    sh '''
+                                    export NVM_DIR="$HOME/.nvm"
+                                    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+                                    nvm install 22.15.1
+                                    '''
+                                    
                                     def packageJSON = readJSON file: "package.json"
                                     String version = "${packageJSON.version}"
 
