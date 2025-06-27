@@ -1,7 +1,11 @@
-# We still want Ubuntu 20.04 LTS compatibility, which is based on bullseye
-# -> buster is old enough
-FROM node:20.11.1-buster AS build-stage
-RUN apt-get update && apt-get install -y libxkbfile-dev libsecret-1-dev
+FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:0-20-bullseye AS build-stage
+RUN apt-get update && apt-get install -y libxkbfile-dev \
+    libsecret-1-dev \
+    python3 \
+    make \
+    g++ \
+    build-essential \
+    curl
 COPY . /home/theia/cdt-cloud-blueprint
 WORKDIR /home/theia/cdt-cloud-blueprint
 RUN yarn --pure-lockfile && \

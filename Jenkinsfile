@@ -21,7 +21,7 @@ jenkinsRelatedRegex = "(?i).*jenkins.*"
 pipeline {
     agent none
     options {
-        timeout(time: 3, unit: 'HOURS')
+        timeout(time: 5, unit: 'HOURS')
         disableConcurrentBuilds()
     }
     environment {
@@ -193,13 +193,176 @@ spec:
                     }
                 }
                 stage('Sign, Notarize and Upload Mac') {
-                    agent any
-                    steps {
-                        unstash 'mac'
-                        script {
-                            signInstaller('dmg', 'mac')
-                            notarizeInstaller('dmg')
-                            uploadInstaller('macos')
+                    stages {
+                        stage('Sign and Notarize Mac') {
+                            agent {
+                                kubernetes {
+                                    yaml """
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: theia-dev
+    image: eclipsetheia/theia-blueprint:builder
+    imagePullPolicy: Always
+    command:
+    - cat
+    tty: true
+    resources:
+      limits:
+        memory: "8Gi"
+        cpu: "2"
+      requests:
+        memory: "8Gi"
+        cpu: "2"
+    volumeMounts:
+    - name: global-cache
+      mountPath: /.cache
+    - name: global-yarn
+      mountPath: /.yarn      
+    - name: global-npm
+      mountPath: /.npm      
+    - name: electron-cache
+      mountPath: /.electron-gyp
+  - name: jnlp
+    volumeMounts:
+    - name: volume-known-hosts
+      mountPath: /home/jenkins/.ssh
+  volumes:
+  - name: global-cache
+    emptyDir: {}
+  - name: global-yarn
+    emptyDir: {}
+  - name: global-npm
+    emptyDir: {}
+  - name: electron-cache
+    emptyDir: {}
+  - name: volume-known-hosts
+    configMap:
+      name: known-hosts
+"""
+                                }
+                            }
+                            steps {
+                                unstash 'mac'
+                                container('theia-dev') {
+                                    withCredentials([string(credentialsId: "github-bot-token", variable: 'GITHUB_TOKEN')]) {
+                                        script {
+                                            signInstaller('dmg', 'mac')
+                                            notarizeInstaller('dmg')
+                                        }
+                                    }
+                                }
+                                stash includes: "${toStash}", name: 'mac2'
+                            }
+                        }
+                        stage('Recreate Zip with Ditto for correct file permissions') {
+                            agent {
+                                label 'macos'
+                            }
+                            steps {
+                                unstash 'mac2'
+                                script {
+                                    def packageJSON = readJSON file: "package.json"
+                                    String version = "${packageJSON.version}"
+
+                                    def notarizedDmg = "${distFolder}/CDTCloudBlueprint.dmg"
+
+                                    // We'll mount and then copy the .app out of the DMG
+                                    def mountPoint = "${distFolder}/CDTCloudBlueprint-mount"
+                                    def extractedFolder = "${distFolder}/CDTCloudBlueprint-extracted"
+                                    def rezippedFile = "${distFolder}/CDTCloudBlueprint-rezipped.zip"
+                                    def finalZip = "${distFolder}/CDTCloudBlueprint-${version}-mac.zip"
+                                    sh "rm -rf \"${extractedFolder}\" \"${mountPoint}\""
+                                    sh "mkdir -p \"${extractedFolder}\" \"${mountPoint}\""
+                                    sh "hdiutil attach \"${notarizedDmg}\" -mountpoint \"${mountPoint}\""
+
+                                    // Copy the .app from the DMG to a folder we can zip
+                                    sh "ditto \"${mountPoint}/CDTCloudBlueprint.app\" \"${extractedFolder}/CDTCloudBlueprint.app\""
+
+                                    // Unmount the DMG
+                                    sh "hdiutil detach \"${mountPoint}\""
+
+                                    // Zip with ditto
+                                    sh "ditto -c -k \"${extractedFolder}\" \"${rezippedFile}\""
+
+                                    // Replace the old zip with the newly created one
+                                    sh "rm -f \"${finalZip}\""
+                                    sh "mv \"${rezippedFile}\" \"${finalZip}\""
+
+                                    // Cleanup
+                                    sh "rm -rf \"${extractedFolder}\" \"${mountPoint}\""
+                                }
+                                stash includes: "${toStash}", name: 'mac3'
+                            }
+                        }
+                        stage('Update Metadata and Upload Mac') {
+                            agent {
+                                kubernetes {
+                                    yaml """
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: theia-dev
+    image: eclipsetheia/theia-blueprint:builder
+    imagePullPolicy: Always
+    command:
+    - cat
+    tty: true
+    resources:
+      limits:
+        memory: "8Gi"
+        cpu: "2"
+      requests:
+        memory: "8Gi"
+        cpu: "2"
+    volumeMounts:
+    - name: global-cache
+      mountPath: /.cache
+    - name: global-yarn
+      mountPath: /.yarn      
+    - name: global-npm
+      mountPath: /.npm      
+    - name: electron-cache
+      mountPath: /.electron-gyp
+  - name: jnlp
+    volumeMounts:
+    - name: volume-known-hosts
+      mountPath: /home/jenkins/.ssh
+  volumes:
+  - name: global-cache
+    emptyDir: {}
+  - name: global-yarn
+    emptyDir: {}
+  - name: global-npm
+    emptyDir: {}
+  - name: electron-cache
+    emptyDir: {}
+  - name: volume-known-hosts
+    configMap:
+      name: known-hosts
+"""
+                                }
+                            }
+                            steps {
+                                unstash 'mac3'
+                                container('theia-dev') {
+                                    withCredentials([string(credentialsId: "github-bot-token", variable: 'GITHUB_TOKEN')]) {
+                                        script {
+                                            def packageJSON = readJSON file: "package.json"
+                                            String version = "${packageJSON.version}"
+                                            updateMetadata('CDTCloudBlueprint-' + version + '-mac.zip', 'latest-mac.yml', 'macos', false, '.zip', 1200)
+                                            updateMetadata('CDTCloudBlueprint.dmg', 'latest-mac.yml', 'macos', false, '.dmg', 1200)
+                                        }
+                                    }
+                                }
+                                container('jnlp') {
+                                    script {
+                                        uploadInstaller('macos')
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -258,7 +421,7 @@ spec:
                             withCredentials([string(credentialsId: "github-bot-token", variable: 'GITHUB_TOKEN')]) {
                                 script {
                                     signInstaller('exe', 'windows')
-                                    updateMetadata('CDTCloudBlueprintSetup.exe', 'latest.yml', 'windows', 1200)
+                                    updateMetadata('CDTCloudBlueprintSetup.exe', 'latest.yml', 'windows', true, '.exe', 1200)
                                 }
                             }
                         }
@@ -284,9 +447,16 @@ def buildInstaller(int sleepBetweenRetries) {
 
     checkout scm
 
-    // only build the Electron app for now
     buildPackageCmd = 'yarn --frozen-lockfile --force && \
-        yarn build:extensions && yarn electron build'
+        yarn build:extensions'
+
+    if (isRelease()) {
+        // download tracecompass server for releases
+        buildPackageCmd += ' && yarn tracecompass-server:download'
+    }
+
+    // only build the Electron app for now
+    buildPackageCmd += ' && yarn electron build'
 
     if (isRelease()) {
         // when not a release, build dev to save time
@@ -376,7 +546,7 @@ def notarizeInstaller(String ext) {
     }
 }
 
-def updateMetadata(String executable, String yaml, String platform, int sleepBetweenRetries) {
+def updateMetadata(String executable, String yaml, String platform, Boolean updatePaths, String fileExtension, int sleepBetweenRetries) {
     if (!isRelease()) {
         echo "This is not a release, so skipping updating metadata for branch ${env.BRANCH_NAME}"
         return
@@ -387,14 +557,14 @@ def updateMetadata(String executable, String yaml, String platform, int sleepBet
         // make sure the npm dependencies are available to the update scripts
         sh "yarn install --force"
         sh "yarn electron update:blockmap -e ${executable}"
-        sh "yarn electron update:checksum -e ${executable} -y ${yaml} -p ${platform}"
+        sh "yarn electron update:checksum -e ${executable} -y ${yaml} -p ${platform} -u ${updatePaths} -f ${fileExtension}"
     } catch (error) {
         retry(maxRetry) {
             sleep(sleepBetweenRetries)
             echo "yarn failed - Retrying"
             sh "yarn install --force"
             sh "yarn electron update:blockmap -e ${executable}"
-            sh "yarn electron update:checksum -e ${executable} -y ${yaml} -p ${platform}"
+        sh "yarn electron update:checksum -e ${executable} -y ${yaml} -p ${platform} -u ${updatePaths} -f ${fileExtension}"
         }
     }
 }
