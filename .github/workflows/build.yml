@@ -9,7 +9,8 @@ on:
     branches:
       - master
   schedule:
-    - cron: '0 4 * * *' # Runs every day at 4am: https://docs.github.com/en/actions/reference/events-that-trigger-workflows#scheduled-events-schedule
+    - cron: '0 4 * * 0'
+
 
 jobs:
 
@@ -19,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2019, ubuntu-22.04, macos-13]
+        os: [windows-2022, ubuntu-22.04, macos-13, macos-14] # macOS-13 is for x64, macOS-14 is for arm64
         node: ['20.x']
 
     runs-on: ${{ matrix.os }}
@@ -42,7 +43,8 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Build and package
+      - name: Build and package (Windows, Linux)
+        if: runner.os == 'Windows' || runner.os == 'Linux'
         shell: bash
         run: |
           yarn --skip-integrity-check --network-timeout 100000
@@ -52,6 +54,36 @@ jobs:
         env:
           NODE_OPTIONS: --max_old_space_size=4096
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # https://github.com/microsoft/vscode-ripgrep/issues/9
+
+      - name: Update electron-builder.yml for macOS-14
+        if: matrix.os == 'macos-14'
+        run: |
+          sed -i '' 's|https://download.eclipse.org/theia/cdt-cloud/latest/macos|https://download.eclipse.org/theia/cdt-cloud/latest/macos-arm|g' applications/electron/electron-builder.yml
+
+      - name: Build and package (Mac)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          yarn --skip-integrity-check --network-timeout 100000
+          yarn build:extensions
+          yarn download:plugins
+          yarn tracecompass-server:download
+          yarn electron build
+          yarn electron package
+        env:
+          NODE_OPTIONS: --max_old_space_size=4096
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # https://github.com/microsoft/vscode-ripgrep/issues/9
+
+      - name: Upload Mac Dist Files
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 #4.6.1
+        with:
+          name: ${{ matrix.os == 'macos-13' && 'mac-x64' || matrix.os == 'macos-14' && 'mac-arm64'}}
+          path: |
+            applications/electron/dist/**
+            !applications/electron/dist/mac/**
+            !applications/electron/dist/mac-arm64/**
+          retention-days: 1
 
       - name: Test (Linux)
         if: matrix.tests != 'skip' && runner.os == 'Linux'

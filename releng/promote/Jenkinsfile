@@ -1,0 +1,98 @@
+/**
+ * This Jenkinsfile promotes a given version of the Theia IDE from /theia/ide-preview to /theia/ide
+ */
+
+/* groovylint-disable NestedBlockDepth */
+import groovy.json.JsonSlurper
+
+pipeline {
+    agent none
+    options {
+        timeout(time: 3, unit: 'HOURS')
+        disableConcurrentBuilds()
+    }
+    stages {
+
+       stage('Setup parameters') {
+            steps {
+                script { 
+                    properties([
+                        parameters([
+                            string(
+                                defaultValue: 'latest', 
+                                name: 'VERSION', 
+                                trim: true
+                            )
+                        ])
+                    ])
+                }
+            }
+       }
+
+        stage('Promote') {
+            agent any
+            steps {
+                script {
+                    promote('linux', params.VERSION)
+                    promote('macos', params.VERSION)
+                    promote('macos-arm', params.VERSION)
+                    promote('windows', params.VERSION)
+
+                    // update latest.yaml on windows for differential updater
+                    def updatableVersions = getUpdatableVersions(params.VERSION)
+                    echo 'updatableVersions: ' + updatableVersions
+                    updateLatestYaml('windows', params.VERSION, 'TheiaIDESetup', 'exe', 'latest.yml', updatableVersions)
+                }
+            }
+        }
+    }
+}
+
+def promote(String platform, String version) {
+    sshagent(['projects-storage.eclipse.org-bot-ssh']) {
+        sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/ide/${version}/${platform}"
+        sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/ide/${version}/${platform}"
+        sh "ssh genie.theia@projects-storage.eclipse.org cp -a /home/data/httpd/download.eclipse.org/theia/ide-preview/${version}/${platform}/. /home/data/httpd/download.eclipse.org/theia/ide/${version}/${platform}/"
+
+        sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/ide/latest/${platform}"
+        sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/ide/latest/${platform}"
+        sh "ssh genie.theia@projects-storage.eclipse.org cp -a /home/data/httpd/download.eclipse.org/theia/ide-preview/${version}/${platform}/. /home/data/httpd/download.eclipse.org/theia/ide/latest/${platform}/"
+    }
+}
+
+// copies updated (checksum, link to latest version) metadata yaml to older versions
+def updateLatestYaml(String platform, String version, String installer, String extension, String yaml, String UPDATABLE_VERSIONS) {
+    if (UPDATABLE_VERSIONS.length() != 0) {
+        for (oldVersion in UPDATABLE_VERSIONS.split(",")) {
+            sshagent(['projects-storage.eclipse.org-bot-ssh']) {
+                sh "ssh genie.theia@projects-storage.eclipse.org rm -f /home/data/httpd/download.eclipse.org/theia/ide/${oldVersion}/${platform}/${yaml}"
+                sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/ide/${version}/${platform}/${yaml} /home/data/httpd/download.eclipse.org/theia/ide/${oldVersion}/${platform}/${yaml}"
+            }
+        }
+    } else {
+        echo "No updateable versions"
+    }
+}
+
+/**
+ * List all directories in the ide directory. 
+ * Only takes the ones with a version identifier name. 
+ * Only take version numbers lower than the current version. 
+ */
+def getUpdatableVersions(String currentVersion) {
+    def versions = ''
+    
+    sshagent(['projects-storage.eclipse.org-bot-ssh']) {
+        versions = sh(
+            script: """
+            ssh genie.theia@projects-storage.eclipse.org "cd /home/data/httpd/download.eclipse.org/theia/ide/ && \
+            find . -maxdepth 1 -type d -regex '.*/[0-9]+\\.[0-9]+\\.[0-9]+' -exec basename {} \\; | sort -V | awk -v curVer='${currentVersion}' '{
+                if (\\\$1 != curVer && \\\$1 < curVer) print \\\$1
+            }' | paste -sd ','"
+            """,
+            returnStdout: true
+        ).trim()
+    }
+    
+    return versions
+}

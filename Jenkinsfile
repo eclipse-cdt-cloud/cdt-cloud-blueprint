@@ -9,6 +9,8 @@ releaseBranch = "master"
 distFolder = "applications/electron/dist"
 
 toStashDist = "${distFolder}/**"
+toStashDistMac = "${distFolder}/mac-x64/**"
+toStashDistMacArm = "${distFolder}/mac-arm64/**"
 toStashDistInstallers = "${distFolder}/*"
 // default folder to stash
 toStash = toStashDistInstallers
@@ -121,16 +123,19 @@ spec:
                     }
                 }
                 stage('Create Mac Installer') {
+                    options {
+                        skipDefaultCheckout true
+                    }
                     agent {
                         label 'macos'
                     }
                     steps {
                         nodejs(nodeJSInstallationName: 'node_22.x') {
                             script {
-                                buildInstaller(60)
+                                createMacInstaller()
                             }
                         }
-                        stash includes: "${toStash}", name: 'mac'
+                        stash includes: "${toStashDist}", name: 'mac'
                     }
                     post {
                         failure {
@@ -145,7 +150,7 @@ spec:
                     options {
                         skipDefaultCheckout true
                     }
-                    steps {
+                    steps {   
                         script {
                             // Pre-cleanup: Remove all potentially problematic directories from previous builds
                             bat """
@@ -186,7 +191,7 @@ spec:
                             
                             // Now do the regular checkout - this should work without issues
                             checkout scm
-                        }
+                        }              
                         nodejs(nodeJSInstallationName: 'node_22.x') {
                             sh "node --version"
                             sh "npx node-gyp@9.4.1 install 22.15.1"
@@ -294,12 +299,15 @@ spec:
                                 container('theia-dev') {
                                     withCredentials([string(credentialsId: "github-bot-token", variable: 'GITHUB_TOKEN')]) {
                                         script {
-                                            signInstaller('dmg', 'mac')
-                                            notarizeInstaller('dmg')
+                                            signInstaller('dmg', 'mac', 'mac-x64')
+                                            notarizeInstaller('dmg', 'mac-x64')
+                                            signInstaller('dmg', 'mac', 'mac-arm64')
+                                            notarizeInstaller('dmg', 'mac-arm64')
                                         }
                                     }
                                 }
-                                stash includes: "${toStash}", name: 'mac2'
+                                stash includes: "${toStashDistMac}", name: 'mac2'
+                                stash includes: "${toStashDistMacArm}", name: 'mac2-arm'
                             }
                         }
                         stage('Recreate Zip with Ditto for correct file permissions') {
@@ -308,40 +316,54 @@ spec:
                             }
                             steps {
                                 unstash 'mac2'
+                                unstash 'mac2-arm'
                                 nodejs(nodeJSInstallationName: 'node_22.x') {
                                     script {
                                         def packageJSON = readJSON file: "package.json"
                                         String version = "${packageJSON.version}"
 
-                                        def notarizedDmg = "${distFolder}/CDTCloudBlueprint.dmg"
+                                        def architectures = ['mac-x64', 'mac-arm64']
+                                        architectures.each { arch -> 
 
-                                        // We'll mount and then copy the .app out of the DMG
-                                        def mountPoint = "${distFolder}/CDTCloudBlueprint-mount"
-                                        def extractedFolder = "${distFolder}/CDTCloudBlueprint-extracted"
-                                        def rezippedFile = "${distFolder}/CDTCloudBlueprint-rezipped.zip"
-                                        def finalZip = "${distFolder}/CDTCloudBlueprint-${version}-mac.zip"
-                                        sh "rm -rf \"${extractedFolder}\" \"${mountPoint}\""
-                                        sh "mkdir -p \"${extractedFolder}\" \"${mountPoint}\""
-                                        sh "hdiutil attach \"${notarizedDmg}\" -mountpoint \"${mountPoint}\""
+                                            String targetFolder = "${distFolder}/${arch}"
+                                            def notarizedDmg = "${targetFolder}/CDTCloudBlueprint.dmg"
 
-                                        // Copy the .app from the DMG to a folder we can zip
-                                        sh "ditto \"${mountPoint}/CDTCloudBlueprint.app\" \"${extractedFolder}/CDTCloudBlueprint.app\""
+                                            // We'll mount and then copy the .app out of the DMG
+                                            def mountPoint = "${targetFolder}/CDTCloudBlueprint-mount"
+                                            def extractedFolder = "${targetFolder}/CDTCloudBlueprint-extracted"
+                                            def rezippedFile = "${targetFolder}/CDTCloudBlueprint-rezipped.zip"
+                                            def archSuffix = arch == 'mac-arm64' ? '-arm64' : ''
+                                            def finalZip = "${targetFolder}/CDTCloudBlueprint-${version}${archSuffix}-mac.zip"
+                                            sh "rm -rf \"${extractedFolder}\" \"${mountPoint}\""
+                                            sh "mkdir -p \"${extractedFolder}\" \"${mountPoint}\""
+                                            sh "hdiutil attach \"${notarizedDmg}\" -mountpoint \"${mountPoint}\""
 
-                                        // Unmount the DMG
-                                        sh "hdiutil detach \"${mountPoint}\""
+                                            sleep 5
+                                            sh "ls -al ${mountPoint}"
+                                            sh "ls -al ${mountPoint}/CDTCloudBlueprint.app"
 
-                                        // Zip with ditto
-                                        sh "ditto -c -k \"${extractedFolder}\" \"${rezippedFile}\""
+                                            // Copy the .app from the DMG to a folder we can zip
+                                            sh "ditto \"${mountPoint}/CDTCloudBlueprint.app\" \"${extractedFolder}/CDTCloudBlueprint.app\""
 
-                                        // Replace the old zip with the newly created one
-                                        sh "rm -f \"${finalZip}\""
-                                        sh "mv \"${rezippedFile}\" \"${finalZip}\""
+                                            // Unmount the DMG
+                                            sh "hdiutil detach \"${mountPoint}\""
 
-                                        // Cleanup
-                                        sh "rm -rf \"${extractedFolder}\" \"${mountPoint}\""
+                                            // Zip with ditto
+                                            sh "ditto -c -k \"${extractedFolder}\" \"${rezippedFile}\""
+
+                                            // Replace the old zip with the newly created one
+                                            sh "rm -f \"${finalZip}\""
+                                            sh "mv \"${rezippedFile}\" \"${finalZip}\""
+
+                                            // Cleanup
+                                            sh "rm -rf \"${extractedFolder}\" \"${mountPoint}\""
+                                        }
+
+
                                     }
                                 }
-                                stash includes: "${toStash}", name: 'mac3'
+                                stash includes: "${toStashDistMac}", name: 'mac3'
+                                stash includes: "${toStashDistMacArm}", name: 'mac3-arm'
                             }
                         }
                         stage('Update Metadata and Upload Mac') {
@@ -400,14 +422,82 @@ spec:
                                         script {
                                             def packageJSON = readJSON file: "package.json"
                                             String version = "${packageJSON.version}"
-                                            updateMetadata('CDTCloudBlueprint-' + version + '-mac.zip', 'latest-mac.yml', 'macos', false, '.zip', 1200)
-                                            updateMetadata('CDTCloudBlueprint.dmg', 'latest-mac.yml', 'macos', false, '.dmg', 1200)
+                                            updateMetadata('mac-x64/CDTCloudBlueprint-' + version + '-mac.zip', 'mac-x64/latest-mac.yml', 'macos', false, '.zip', 1200)
+                                            updateMetadata('mac-x64/CDTCloudBlueprint.dmg', 'mac-x64/latest-mac.yml', 'macos', false, '.dmg', 1200)
                                         }
                                     }
                                 }
                                 container('jnlp') {
                                     script {
-                                        uploadInstaller('macos')
+                                        uploadInstaller('macos', 'mac-x64')
+                                    }
+                                }
+                            }
+                        }
+                        stage('Update Metadata and Upload Mac-Arm') {
+                            agent {
+                                kubernetes {
+                                    yaml """
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: theia-dev
+    image: eclipsetheia/theia-blueprint:builder
+    imagePullPolicy: Always
+    command:
+    - cat
+    tty: true
+    resources:
+      limits:
+        memory: "8Gi"
+        cpu: "2"
+      requests:
+        memory: "8Gi"
+        cpu: "2"
+    volumeMounts:
+    - name: global-cache
+      mountPath: /.cache
+    - name: global-yarn
+      mountPath: /.yarn      
+    - name: global-npm
+      mountPath: /.npm      
+    - name: electron-cache
+      mountPath: /.electron-gyp
+  - name: jnlp
+    volumeMounts:
+    - name: volume-known-hosts
+      mountPath: /home/jenkins/.ssh
+  volumes:
+  - name: global-cache
+    emptyDir: {}
+  - name: global-yarn
+    emptyDir: {}
+  - name: global-npm
+    emptyDir: {}
+  - name: electron-cache
+    emptyDir: {}
+  - name: volume-known-hosts
+    configMap:
+      name: known-hosts
+"""
+                                }
+                            }
+                            steps {
+                                unstash 'mac3-arm'
+                                container('theia-dev') {
+                                    withCredentials([string(credentialsId: "github-bot-token", variable: 'GITHUB_TOKEN')]) {
+                                        script {
+                                            def packageJSON = readJSON file: "package.json"
+                                            String version = "${packageJSON.version}"
+                                            updateMetadata('mac-arm64/CDTCloudBlueprint-' + version + '-arm64-mac.zip', 'mac-arm64/latest-mac.yml', 'macos-arm', false, '.zip', 1200)
+                                            updateMetadata('mac-arm64/CDTCloudBlueprint.dmg', 'mac-arm64/latest-mac.yml', 'macos-arm', false, '.dmg', 1200)
+                                        }
+                                    }
+                                }
+                                container('jnlp') {
+                                    script {
+                                        uploadInstaller('macos-arm', 'mac-arm64')
                                     }
                                 }
                             }
@@ -489,6 +579,104 @@ spec:
     }
 }
 
+def detachVolume(String mountpoint) {
+    try {
+        sh "hdiutil detach \"${mountpoint}\" -force"
+    } catch (Exception ex) {
+        echo "Failed to detach ${mountpoint}: ${ex}"
+    }
+}
+
+def createMacInstaller() {
+    // Step 0: Clean up any previously mounted DMG files and only then checkout scm
+    def pathToMacArm64 = "/${pwd()}/applications/electron/dist/mac-arm64/CDTCloudBlueprint-dmg-mounted"
+    def pathToMacX64 = "/${pwd()}/applications/electron/dist/mac-x64/CDTCloudBlueprint-dmg-mounted"
+    def path2ToMacArm64 = "/${pwd()}/applications/electron/dist/mac-arm64/CDTCloudBlueprint-mount"
+    def path2ToMacX64 = "/${pwd()}/applications/electron/dist/mac-x64/CDTCloudBlueprint-mount"
+    detachVolume(pathToMacArm64)
+    detachVolume(pathToMacX64)
+    detachVolume(path2ToMacArm64)
+    detachVolume(path2ToMacX64)
+    checkout scm
+
+    // Step 1: Ensure the directory exists
+    sh 'mkdir -p applications/electron/dist'
+
+    // Step 2: Download the zip files
+    sh 'curl -L -o applications/electron/dist/mac-arm64.zip https://github.com/eclipse-cdt-cloud/cdt-cloud-blueprint/releases/download/pre-release-cdt/mac-arm64.zip'
+    sh 'curl -L -o applications/electron/dist/mac-x64.zip https://github.com/eclipse-cdt-cloud/cdt-cloud-blueprint/releases/download/pre-release-cdt/mac-x64.zip'
+
+    // Step 3: Extract the zip files
+    sh 'unzip applications/electron/dist/mac-arm64.zip -d applications/electron/dist/mac-arm64'
+    sh 'unzip applications/electron/dist/mac-x64.zip -d applications/electron/dist/mac-x64'
+
+    // Step 4: Delete the zip files
+    sh 'rm applications/electron/dist/mac-arm64.zip applications/electron/dist/mac-x64.zip'
+
+    // Step 5: List contents to verify
+    sh 'ls -al applications/electron/dist/mac-arm64 applications/electron/dist/mac-x64'
+
+    // Step 6: Unpack DMG files for signing
+    sh 'rm -rf applications/electron/dist/mac-arm64/CDTCloudBlueprint-dmg-mounted applications/electron/dist/mac-x64/CDTCloudBlueprint-dmg-mounted'
+    sh 'mkdir -p applications/electron/dist/mac-arm64/CDTCloudBlueprint-dmg-mounted applications/electron/dist/mac-x64/CDTCloudBlueprint-dmg-mounted'
+    sh 'hdiutil attach applications/electron/dist/mac-arm64/CDTCloudBlueprint.dmg -mountpoint applications/electron/dist/mac-arm64/CDTCloudBlueprint-dmg-mounted'
+    sh 'hdiutil attach applications/electron/dist/mac-x64/CDTCloudBlueprint.dmg -mountpoint applications/electron/dist/mac-x64/CDTCloudBlueprint-dmg-mounted'
+    sh 'mkdir -p applications/electron/dist/mac-arm64/CDTCloudBlueprint-dmg-layout/.background'
+    sh 'mkdir -p applications/electron/dist/mac-x64/CDTCloudBlueprint-dmg-layout/.background'
+    sh '''
+        if [ -f applications/electron/dist/mac-arm64/CDTCloudBlueprint-dmg-mounted/.DS_Store ]; then
+            cp applications/electron/dist/mac-arm64/CDTCloudBlueprint-dmg-mounted/.DS_Store applications/electron/dist/mac-arm64/CDTCloudBlueprint-dmg-layout/
+        fi
+    '''
+    sh '''
+        if [ -f applications/electron/dist/mac-x64/CDTCloudBlueprint-dmg-mounted/.DS_Store ]; then
+            cp applications/electron/dist/mac-x64/CDTCloudBlueprint-dmg-mounted/.DS_Store applications/electron/dist/mac-x64/CDTCloudBlueprint-dmg-layout/
+        fi
+    '''
+    sh 'cp -R applications/electron/dist/mac-arm64/CDTCloudBlueprint-dmg-mounted/CDTCloudBlueprint.app applications/electron/dist/mac-arm64/CDTCloudBlueprint-dmg-layout/CDTCloudBlueprint.app'
+    sh 'cp -R applications/electron/dist/mac-x64/CDTCloudBlueprint-dmg-mounted/CDTCloudBlueprint.app applications/electron/dist/mac-x64/CDTCloudBlueprint-dmg-layout/CDTCloudBlueprint.app'
+    sh 'ln -s /Applications applications/electron/dist/mac-arm64/CDTCloudBlueprint-dmg-layout/Applications'
+    sh 'ln -s /Applications applications/electron/dist/mac-x64/CDTCloudBlueprint-dmg-layout/Applications'
+    sh 'hdiutil detach applications/electron/dist/mac-arm64/CDTCloudBlueprint-dmg-mounted'
+    sh 'hdiutil detach applications/electron/dist/mac-x64/CDTCloudBlueprint-dmg-mounted'
+    sh 'ls -al applications/electron/dist/mac-arm64/CDTCloudBlueprint-dmg-layout applications/electron/dist/mac-x64/CDTCloudBlueprint-dmg-layout'
+    sh 'ls -al applications/electron/dist/mac-arm64/CDTCloudBlueprint-dmg-layout/CDTCloudBlueprint.app applications/electron/dist/mac-x64/CDTCloudBlueprint-dmg-layout/CDTCloudBlueprint.app'
+
+    // Step 7: Remove quarantine bits from all files
+    sh 'xattr -d -r com.apple.quarantine applications/electron/dist/mac-arm64/CDTCloudBlueprint-dmg-layout || true'
+    sh 'xattr -d -r com.apple.quarantine applications/electron/dist/mac-x64/CDTCloudBlueprint-dmg-layout || true'
+    
+    // Step 8: Sign binaries - only when it's a release
+    if (isRelease()) {
+        sh 'yarn --frozen-lockfile --force'
+        sshagent(['projects-storage.eclipse.org-bot-ssh']) {
+            def appPathArm64 = "/${pwd()}/applications/electron/dist/mac-arm64/CDTCloudBlueprint-dmg-layout/CDTCloudBlueprint.app"
+            def appPathX64 = "/${pwd()}/applications/electron/dist/mac-x64/CDTCloudBlueprint-dmg-layout/CDTCloudBlueprint.app"
+            sh "yarn electron sign:directory -d \"${appPathArm64}\""
+            sh "yarn electron sign:directory -d \"${appPathX64}\""
+        }
+    } else {
+        echo "This is not a release, so skipping binary signing for branch ${env.BRANCH_NAME}"
+    }
+    sh 'ls -al applications/electron/dist/mac-arm64/CDTCloudBlueprint-dmg-layout applications/electron/dist/mac-x64/CDTCloudBlueprint-dmg-layout'
+    sh 'ls -al applications/electron/dist/mac-arm64/CDTCloudBlueprint-dmg-layout/CDTCloudBlueprint.app applications/electron/dist/mac-x64/CDTCloudBlueprint-dmg-layout/CDTCloudBlueprint.app'
+
+    // Step 9: Remove existing DMG files
+    sh 'rm -f applications/electron/dist/mac-arm64/CDTCloudBlueprint.dmg applications/electron/dist/mac-x64/CDTCloudBlueprint.dmg'
+
+    // Step 10: Create the final DMG
+    sh 'hdiutil create -volname CDTCloudBlueprint -srcfolder applications/electron/dist/mac-arm64/CDTCloudBlueprint-dmg-layout -fs HFS+ -format UDZO applications/electron/dist/mac-arm64/CDTCloudBlueprint.dmg'
+    sh 'hdiutil create -volname CDTCloudBlueprint -srcfolder applications/electron/dist/mac-x64/CDTCloudBlueprint-dmg-layout -fs HFS+ -format UDZO applications/electron/dist/mac-x64/CDTCloudBlueprint.dmg'
+
+    // Step 11: Cleanup CDTCloudBlueprint-dmg-layout
+    sh 'rm -rf applications/electron/dist/mac-arm64/CDTCloudBlueprint-dmg-layout applications/electron/dist/mac-x64/CDTCloudBlueprint-dmg-layout'
+
+    // Step 12: Cleanup files we don't require
+    sh 'find applications/electron/dist/mac-arm64 -type f ! -name "CDTCloudBlueprint.dmg" ! -name "latest-mac.yml" -delete'
+    sh 'find applications/electron/dist/mac-x64 -type f ! -name "CDTCloudBlueprint.dmg" ! -name "latest-mac.yml" -delete'
+    sh 'ls -al applications/electron/dist/mac-arm64 applications/electron/dist/mac-x64'
+}
+
 def buildInstaller(int sleepBetweenRetries) {
     int maxRetry = 1
     String buildPackageCmd
@@ -534,13 +722,15 @@ def buildInstaller(int sleepBetweenRetries) {
     }
 }
 
-def signInstaller(String ext, String os) {
+def signInstaller(String ext, String os, String arch = '') {
     if (!isRelease()) {
         echo "This is not a release, so skipping installer signing for branch ${env.BRANCH_NAME}"
         return
     }
 
-    List installers = findFiles(glob: "${distFolder}/*.${ext}")
+    // Adjust the dist folder to include architecture if supplied
+    String targetFolder = arch ? "${distFolder}/${arch}" : distFolder
+    List installers = findFiles(glob: "${targetFolder}/*.${ext}")
 
     // https://wiki.eclipse.org/IT_Infrastructure_Doc#Web_service
     if (os == 'mac') {
@@ -552,22 +742,25 @@ def signInstaller(String ext, String os) {
     }
 
     if (installers.size() == 1) {
-        sh "curl -o ${distFolder}/signed-${installers[0].name} -F file=@${installers[0].path} ${url}"
+        sh "curl -o ${targetFolder}/signed-${installers[0].name} -F file=@${installers[0].path} ${url}"
         sh "rm ${installers[0].path}"
-        sh "mv ${distFolder}/signed-${installers[0].name} ${installers[0].path}"
+        sh "mv ${targetFolder}/signed-${installers[0].name} ${installers[0].path}"
     } else {
         error("Error during signing: installer not found or multiple installers exist: ${installers.size()}")
     }
 }
 
-def notarizeInstaller(String ext) {
+def notarizeInstaller(String ext, String arch = '') {
     if (!isRelease()) {
         echo "This is not a release, so skipping installer notarizing for branch ${env.BRANCH_NAME}"
         return
     }
 
     String service = 'https://cbi.eclipse.org/macos/xcrun'
-    List installers = findFiles(glob: "${distFolder}/*.${ext}")
+
+    // Adjust the dist folder to include architecture if supplied
+    String targetFolder = arch ? "${distFolder}/${arch}" : distFolder
+    List installers = findFiles(glob: "${targetFolder}/*.${ext}")
 
     if (installers.size() == 1) {
         String response = sh(script: "curl -X POST -F file=@${installers[0].path} -F \'options={\"primaryBundleId\": \"cdtcloud.blueprint\", \"staple\": true};type=application/json\' ${service}/notarize", returnStdout: true)
@@ -586,9 +779,9 @@ def notarizeInstaller(String ext) {
             error("Failed to notarize ${installers[0].name}: ${response}")
         }
 
-        sh "curl -o ${distFolder}/stapled-${installers[0].name} ${service}/${uuid}/download"
+        sh "curl -o ${targetFolder}/stapled-${installers[0].name} ${service}/${uuid}/download"
         sh "rm ${installers[0].path}"
-        sh "mv ${distFolder}/stapled-${installers[0].name} ${installers[0].path}"
+        sh "mv ${targetFolder}/stapled-${installers[0].name} ${installers[0].path}"
     } else {
         error("Error during notarization: installer not found or multiple installers exist: ${installers.size()}")
     }
@@ -617,17 +810,18 @@ def updateMetadata(String executable, String yaml, String platform, Boolean upda
     }
 }
 
-def uploadInstaller(String platform) {
+def uploadInstaller(String platform, String arch = '') {
     if (isReleaseBranch()) {
+        String targetFolder = arch ? "${distFolder}/${arch}" : distFolder
         def packageJSON = readJSON file: "package.json"
         String version = "${packageJSON.version}"
         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
             sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/cdt-cloud/${version}/${platform}"
             sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/cdt-cloud/${version}/${platform}"
-            sh "scp ${distFolder}/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/cdt-cloud/${version}/${platform}"
+            sh "scp ${targetFolder}/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/cdt-cloud/${version}/${platform}"
             sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/cdt-cloud/latest/${platform}"
             sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/cdt-cloud/latest/${platform}"
-            sh "scp ${distFolder}/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/cdt-cloud/latest/${platform}"
+            sh "scp ${targetFolder}/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/cdt-cloud/latest/${platform}"
         }
     } else {
         echo "Skipped upload for branch ${env.BRANCH_NAME}"
