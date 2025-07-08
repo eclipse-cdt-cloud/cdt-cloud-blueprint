@@ -142,7 +142,51 @@ spec:
                     agent {
                         label 'windows'
                     }
-                    steps {                 
+                    options {
+                        skipDefaultCheckout true
+                    }
+                    steps {
+                        script {
+                            // Pre-cleanup: Remove all potentially problematic directories from previous builds
+                            bat """
+                                echo "Cleaning up directories that may contain long paths from previous builds"
+                                
+                                if exist "tracecompass-server" (
+                                    echo "Removing tracecompass-server directory"
+                                    rmdir /s /q "tracecompass-server" 2>nul || echo "tracecompass-server removal completed"
+                                )
+                                
+                                if exist "applications\\electron\\dist" (
+                                    echo "Removing applications/electron/dist directory"
+                                    rmdir /s /q "applications\\electron\\dist" 2>nul || echo "electron dist removal completed"
+                                )
+                                
+                                if exist "applications\\electron\\node_modules" (
+                                    echo "Removing applications/electron/node_modules directory"
+                                    rmdir /s /q "applications\\electron\\node_modules" 2>nul || echo "electron node_modules removal completed"
+                                )
+                                
+                                if exist "applications\\browser\\dist" (
+                                    echo "Removing applications/browser/dist directory"
+                                    rmdir /s /q "applications\\browser\\dist" 2>nul || echo "browser dist removal completed"
+                                )
+                                
+                                if exist "applications\\browser\\node_modules" (
+                                    echo "Removing applications/browser/node_modules directory"
+                                    rmdir /s /q "applications\\browser\\node_modules" 2>nul || echo "browser node_modules removal completed"
+                                )
+                                
+                                if exist "node_modules" (
+                                    echo "Removing top-level node_modules directory"
+                                    rmdir /s /q "node_modules" 2>nul || echo "top-level node_modules removal completed"
+                                )
+                                
+                                echo "Cleanup completed"
+                            """
+                            
+                            // Now do the regular checkout - this should work without issues
+                            checkout scm
+                        }
                         nodejs(nodeJSInstallationName: 'node_22.x') {
                             sh "node --version"
                             sh "npx node-gyp@9.4.1 install 22.15.1"
