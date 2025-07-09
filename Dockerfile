@@ -62,5 +62,5 @@ ENV USE_LOCAL_GIT=true
 USER theia
 
 WORKDIR /home/theia/cdt-cloud-blueprint
-ENTRYPOINT [ "node", "/home/theia/cdt-cloud-blueprint/applications/docker/src-gen/backend/main.js", "/home/theia/cdt-cloud-blueprint/applications/docker/workspace" ]
+ENTRYPOINT [ "node", "/home/theia/cdt-cloud-blueprint/applications/docker/lib/backend/main.js", "/home/theia/cdt-cloud-blueprint/applications/docker/workspace" ]
 CMD [ "yarn docker start", "--hostname=0.0.0.0" ]
