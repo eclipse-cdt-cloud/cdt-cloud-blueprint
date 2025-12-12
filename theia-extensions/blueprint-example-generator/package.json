@@ -1,11 +1,11 @@
 {
   "name": "@eclipse-cdt-cloud/blueprint-example-generator",
-  "version": "1.61.1",
+  "version": "1.66.200",
   "description": "Extension for generating examples in CDT Cloud Blueprint",
   "dependencies": {
-    "@theia/core": "1.61.1",
-    "@theia/debug": "1.61.1",
-    "@theia/task": "1.61.1",
+    "@theia/core": "1.66.2",
+    "@theia/debug": "1.66.2",
+    "@theia/task": "1.66.2",
     "fs-extra": "^8.1.0",
     "inversify": "^6.0.1"
   },

@@ -127,18 +127,20 @@ export class TheiaDesktopFileServiceEndpoint implements BackendApplicationContri
     protected getDesktopFileContents(appImagePath: string, imagePath: string): string {
         return `[Desktop Entry]
 Name=CDT Cloud Blueprint
+GenericName=Integrated Development Environment for C
 Exec=${appImagePath} %U
 Terminal=false
 Type=Application
 Icon=${imagePath}
 StartupWMClass=CDT Cloud Blueprint
 Comment=Eclipse CDT Cloud Blueprint product
-Categories=Development;`;
+Categories=Development;IDE;`;
     }
 
     protected getDesktopURLFileContents(appImagePath: string, imagePath: string): string {
         return `[Desktop Entry]
 Name=CDT Cloud Blueprint - URL Handler
+GenericName=Integrated Development Environment for C
 Exec=${appImagePath} --open-url %U
 Terminal=false
 Type=Application
@@ -146,6 +148,6 @@ NoDisplay=true
 Icon=${imagePath}
 MimeType=x-scheme-handler/theia;
 Comment=Eclipse CDT Cloud Blueprint product
-Categories=Development;`;
+Categories=Development;IDE;`;
     }
 }

@@ -1,14 +1,15 @@
 {
   "private": true,
   "name": "cdt-cloud-blueprint-updater-ext",
-  "version": "1.61.1",
+  "version": "1.66.200",
   "description": "CDT Cloud Blueprint Updater",
   "dependencies": {
-    "@theia/core": "1.61.1",
-    "@theia/output": "1.61.1",
-    "@theia/preferences": "1.61.1",
+    "@theia/core": "1.66.2",
+    "@theia/output": "1.66.2",
+    "@theia/preferences": "1.66.2",
+    "builder-util-runtime": "9.3.1",
     "electron-log": "^4.3.0",
-    "electron-updater": "5.3.0",
+    "electron-updater": "6.6.2",
     "fs-extra": "^10.0.0",
     "vscode-uri": "^2.1.1"
   },

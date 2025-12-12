@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "1.61.1",
+  "version": "1.66.200",
   "license": "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0",
   "author": {
     "name": "CDT Cloud"
@@ -15,7 +15,7 @@
   },
   "engines": {
     "yarn": ">=1.7.0 <2",
-    "node": ">=12.14.1"
+    "node": ">=20"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -26,7 +26,8 @@
     "remove-files-webpack-plugin": "^1.5.0"
   },
   "devDependencies": {
-    "@theia/cli": "1.61.1",
+    "@eclipse-dash/nodejs-wrapper": "^0.0.1",
+    "@theia/cli": "1.66.2",
     "@types/request": "^2.0.3",
     "@types/yargs": "17.0.7",
     "@typescript-eslint/eslint-plugin": "^4.25.0",
@@ -48,6 +49,7 @@
     "eslint-plugin-no-unsanitized": "^3.1.5",
     "eslint-plugin-react": "^7.23.2",
     "lerna": "^6.0.1",
+    "node-gyp": "^11.4.0",
     "request": "^2.82.0",
     "rimraf": "^2.7.1",
     "ts-node": "^10.0.0",
@@ -66,7 +68,7 @@
     "package:applications": "yarn tracecompass-server:download && lerna run --scope=\"cdt-cloud-blueprint*app\" package --concurrency 1",
     "package:applications:preview": "yarn tracecompass-server:download && lerna run --scope=\"cdt-cloud-blueprint*app\" package:preview --concurrency 1",
     "package:applications:prod": "yarn tracecompass-server:download && lerna run --scope=\"cdt-cloud-blueprint*app\" package:prod --concurrency 1",
-    "permissions:writeable": "ts-node scripts/make-files-writeable.ts plugins",    
+    "permissions:writeable": "ts-node scripts/make-files-writeable.ts plugins",
     "watch": "lerna run --parallel watch",
     "test": "lerna run test",
     "electron": "yarn --cwd applications/electron",
@@ -82,10 +84,10 @@
   "theiaPluginsDir": "plugins",
   "theiaPlugins": {
     "eclipse-theia.builtin-extension-pack": "https://open-vsx.org/api/eclipse-theia/builtin-extension-pack/1.95.3/file/eclipse-theia.builtin-extension-pack-1.95.3.vsix",
-    "cdt-gdb-vscode": "https://open-vsx.org/api/eclipse-cdt/cdt-gdb-vscode/2.0.5/file/eclipse-cdt.cdt-gdb-vscode-2.0.5.vsix",
+    "cdt-gdb-vscode": "https://open-vsx.org/api/eclipse-cdt/cdt-gdb-vscode/2.6.0/file/eclipse-cdt.cdt-gdb-vscode-2.6.0.vsix",
     "vscode-builtin-cpp": "https://open-vsx.org/api/vscode/cpp/1.95.3/file/vscode.cpp-1.95.3.vsix",
     "vscode-clangd": "https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd/0.2.0/file/llvm-vs-code-extensions.vscode-clangd-0.2.0.vsix",
-    "vscode-cmake": "https://open-vsx.org/api/ms-vscode/cmake-tools/1.20.53/file/ms-vscode.cmake-tools-1.20.53.vsix",
+    "vscode-cmake": "https://open-vsx.org/api/ms-vscode/cmake-tools/1.21.36/file/ms-vscode.cmake-tools-1.21.36.vsix",
     "cdtcloud-clangd-contexts": "https://github.com/eclipse-cdt-cloud/clangd-contexts/releases/download/v0.8.0/cdtcloud-clangd-contexts-ext-0.8.0.vsix"
   },
   "theiaPluginsExcludeIds": [
@@ -104,9 +106,9 @@
     "@types/puppeteer": "^5.4.0",
     "@yarnpkg/parsers": "3.0.0-rc.44",
     "**/multer": "1.4.4-lts.1",
-    "**/nan": "2.20.0",
+    "**/nan": "2.23.0",
     "**/cpu-features": "0.0.9",
     "**/perfect-scrollbar": "1.5.5",
-    "**/node-abi": "3.71.0"
+    "**/node-abi": "4.14.0"
   }
 }

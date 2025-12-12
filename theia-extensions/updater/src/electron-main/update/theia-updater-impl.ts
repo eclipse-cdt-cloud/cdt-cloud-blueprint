@@ -14,6 +14,7 @@ import * as path from 'path';
 import { ElectronMainApplication, ElectronMainApplicationContribution } from '@theia/core/lib/electron-main/electron-main-application';
 import { TheiaUpdater, TheiaUpdaterClient } from '../../common/updater/theia-updater';
 import { injectable } from '@theia/core/shared/inversify';
+import { CancellationToken } from 'builder-util-runtime';
 
 const { autoUpdater } = require('electron-updater');
 
@@ -27,10 +28,11 @@ export class TheiaUpdaterImpl implements TheiaUpdater, ElectronMainApplicationCo
 
     private initialCheck: boolean = true;
     private reportOnFirstRegistration: boolean = false;
+    private cancellationToken: CancellationToken = new CancellationToken();
 
     constructor() {
         autoUpdater.autoDownload = false;
-        autoUpdater.on('update-available', () => {
+        autoUpdater.on('update-available', (info: { version: string }) => {
             const startupCheck = this.initialCheck;
             if (this.initialCheck) {
                 this.initialCheck = false;
@@ -38,7 +40,8 @@ export class TheiaUpdaterImpl implements TheiaUpdater, ElectronMainApplicationCo
                     this.reportOnFirstRegistration = true;
                 }
             }
-            this.clients.forEach(c => c.updateAvailable(true, startupCheck));
+            const updateInfo = { version: info.version };
+            this.clients.forEach(c => c.updateAvailable(true, startupCheck, updateInfo));
         });
         autoUpdater.on('update-not-available', () => {
             if (this.initialCheck) {
@@ -54,6 +57,9 @@ export class TheiaUpdaterImpl implements TheiaUpdater, ElectronMainApplicationCo
         });
 
         autoUpdater.on('error', (err: unknown) => {
+            if (err instanceof Error && err.message.includes('cancelled')) {
+                return;
+            }
             const errorLogPath = autoUpdater.logger.transports.file.getFile().path;
             this.clients.forEach(c => c.reportError({ message: 'An error has occurred while attempting to update.', errorLogPath }));
         });
@@ -67,8 +73,16 @@ export class TheiaUpdaterImpl implements TheiaUpdater, ElectronMainApplicationCo
         autoUpdater.quitAndInstall();
     }
 
+    cancel(): void {
+        autoUpdater.logger.info('Update cancelled by user');
+        this.cancellationToken.cancel();
+        this.clients.forEach(c => c.reportCancelled());
+    }
+
     downloadUpdate(): void {
-        autoUpdater.downloadUpdate();
+        autoUpdater.logger.info('Downloading update');
+        this.cancellationToken = new CancellationToken();
+        autoUpdater.downloadUpdate(this.cancellationToken);
 
         // record download stat, ignore errors
         fs.mkdtemp(path.join(os.tmpdir(), 'cdt-cloud-blueprint-updater-'))

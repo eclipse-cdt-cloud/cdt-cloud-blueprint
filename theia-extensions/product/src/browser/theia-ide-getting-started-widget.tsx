@@ -9,14 +9,14 @@
 
 import * as React from 'react';
 
-import { codicon, Message, PreferenceService } from '@theia/core/lib/browser';
+import { codicon, Message } from '@theia/core/lib/browser';
 import { inject, injectable } from '@theia/core/shared/inversify';
 import { renderCollaboration, renderDocumentation, renderDownloads, renderSourceCode, renderSupport, renderTickets, renderWhatIs, renderWhatIsNot } from './branding-util';
 
 import { GettingStartedWidget } from '@theia/getting-started/lib/browser/getting-started-widget';
 import { VSXEnvironment } from '@theia/vsx-registry/lib/common/vsx-environment';
 import { WindowService } from '@theia/core/lib/browser/window/window-service';
-import { CommandService, nls } from '@theia/core';
+import { CommandService, nls, PreferenceService } from '@theia/core';
 import { GenerateExampleCommand, CdtCloudBlueprintExamples } from '@eclipse-cdt-cloud/blueprint-examples/lib/browser';
 
 @injectable()
