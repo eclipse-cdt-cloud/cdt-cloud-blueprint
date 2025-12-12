@@ -6,8 +6,10 @@ This workspace contains two example traces licensed under [`Creative Commons Att
 
 1. To open a trace a trace server application is required. The Linux version of CDTCloudBlueprint contains the Trace Compass trace server as part of the application image, and it's ready to be used. It requires Java 17 to be installed to run the Trace Compass server. For other platforms, make sure, that the trace server path is set correctly in the Trace Viewer settings (Settings -> Extensions -> Trace Viewer -> Trace Server: Path).
 
-2. Open the trace view (via open command or on the left side of the application)
+2. Press `F1` to show all commands and execute the `Trace Server: Start` command
 
-3. Click on `Open Trace` and select one of the two folders in this workspace
+3. Open the trace view (via open command or on the left side of the application)
 
-4. This should open the trace and present you with options to inspect the traces
+4. Click on `Open Trace` and select one of the two folders in this workspace
+
+5. This should open the trace and present you with options to inspect the traces

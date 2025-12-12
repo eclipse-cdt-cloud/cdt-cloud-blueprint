@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:0-20-bullseye AS build-stage
+FROM mcr.microsoft.com/devcontainers/typescript-node:1-22-bullseye AS build-stage
 RUN apt-get update && apt-get install -y libxkbfile-dev \
     libsecret-1-dev \
     python3 \
@@ -14,7 +14,7 @@ RUN yarn --pure-lockfile && \
     yarn docker build
 RUN yarn tracecompass-server:download
 
-FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:0-20-bullseye AS production-stage
+FROM mcr.microsoft.com/devcontainers/typescript-node:1-22-bullseye AS production-stage
 
 RUN adduser --system --group theia
 
@@ -59,6 +59,7 @@ EXPOSE 3000
 ENV SHELL=/bin/bash \
     THEIA_DEFAULT_PLUGINS=local-dir:/home/theia/cdt-cloud-blueprint/plugins
 ENV USE_LOCAL_GIT=true
+ENV TRACE_SERVER_PATH=/home/theia/cdt-cloud-blueprint/tracecompass-server/trace-compass-server/tracecompass-server
 USER theia
 
 WORKDIR /home/theia/cdt-cloud-blueprint

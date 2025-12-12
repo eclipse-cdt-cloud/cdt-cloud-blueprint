@@ -101,8 +101,8 @@
     "fs-extra": "^9.0.1",
     "cdt-cloud-blueprint-updater-ext": "1.66.200",
     "cdt-cloud-blueprint-product-ext": "1.66.200",
-    "theia-traceviewer": "0.9.1",
-    "@eclipse-cdt-cloud/blueprint-examples": "1.66.200"
+    "@eclipse-cdt-cloud/blueprint-examples": "1.66.200",
+    "@eclipse-cdt-cloud/trace-server-manager": "1.66.200"
   },
   "devDependencies": {
     "@theia/cli": "1.66.2"

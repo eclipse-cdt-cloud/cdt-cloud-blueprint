@@ -88,7 +88,8 @@
     "vscode-builtin-cpp": "https://open-vsx.org/api/vscode/cpp/1.95.3/file/vscode.cpp-1.95.3.vsix",
     "vscode-clangd": "https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd/0.2.0/file/llvm-vs-code-extensions.vscode-clangd-0.2.0.vsix",
     "vscode-cmake": "https://open-vsx.org/api/ms-vscode/cmake-tools/1.21.36/file/ms-vscode.cmake-tools-1.21.36.vsix",
-    "cdtcloud-clangd-contexts": "https://github.com/eclipse-cdt-cloud/clangd-contexts/releases/download/v0.8.0/cdtcloud-clangd-contexts-ext-0.8.0.vsix"
+    "cdtcloud-clangd-contexts": "https://github.com/eclipse-cdt-cloud/clangd-contexts/releases/download/v0.8.0/cdtcloud-clangd-contexts-ext-0.8.0.vsix",
+    "vscode-trace-extension": "https://open-vsx.org/api/eclipse-cdt/vscode-trace-extension/0.8.0/file/eclipse-cdt.vscode-trace-extension-0.8.0.vsix"
   },
   "theiaPluginsExcludeIds": [
     "ms-vscode.js-debug-companion",

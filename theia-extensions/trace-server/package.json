@@ -1,0 +1,45 @@
+{
+  "private": true,
+  "name": "@eclipse-cdt-cloud/trace-server-manager",
+  "version": "1.66.200",
+  "description": "Extension for managing the trace server in CDT Cloud Blueprint",
+  "keywords": [
+    "theia-extension"
+  ],
+  "license": "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eclipse-cdt-cloud/cdt-cloud-blueprint.git"
+  },
+  "bugs": {
+    "url": "https://github.com/eclipse-cdt-cloud/cdt-cloud-blueprint/issues"
+  },
+  "homepage": "https://www.eclipse.org/cdt-cloud/",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "dependencies": {
+    "@theia/core": "1.66.2",
+    "tree-kill": "^1.2.2"
+  },
+  "devDependencies": {
+    "rimraf": "^2.7.1",
+    "typescript": "^4.5.5"
+  },
+  "scripts": {
+    "clean": "rimraf lib *.tsbuildinfo",
+    "build": "tsc -b",
+    "lint": "eslint --ext js,jsx,ts,tsx src",
+    "lint:fix": "eslint --ext js,jsx,ts,tsx src --fix",
+    "watch": "tsc -w",
+    "update:theia": "ts-node ../../scripts/update-theia-version.ts",
+    "update:next": "ts-node ../../scripts/update-theia-version.ts next"
+  },
+  "theiaExtensions": [
+    {
+      "frontend": "lib/browser/trace-server-frontend-module",
+      "backend": "lib/node/trace-server-backend-module"
+    }
+  ]
+}
