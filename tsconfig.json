@@ -17,10 +17,16 @@
       "path": "theia-extensions/updater"
     },
     {
+      "path": "theia-extensions/trace-server"
+    },
+    {
+      "path": "theia-extensions/trace-server-proxy"
+    },
+    {
       "path": "applications/electron"
     },
     {
       "path": "applications/browser"
-    },
+    }
   ]
 }

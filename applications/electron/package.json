@@ -134,7 +134,7 @@
     "cdt-cloud-blueprint-launcher-ext": "1.66.200",
     "@eclipse-cdt-cloud/blueprint-examples": "1.66.200",
     "@eclipse-cdt-cloud/trace-server-manager": "1.66.200"
-    },
+  },
   "devDependencies": {
     "@theia/cli": "1.66.2",
     "@theia/native-webpack-plugin": "1.66.2",

@@ -155,7 +155,7 @@ docker build -t cdt-cloud-blueprint:latest .
 ##### Start Docker image
 
 ```sh
-docker run -it -p 0.0.0.0:3000:3000 cdt-cloud-blueprint:latest
+docker run -it -p 0.0.0.0:3000:3000 -e THEIACLOUD_SESSION_URL=http://localhost:3000/ cdt-cloud-blueprint:latest
 ```
 
 The application will be available at <http://localhost:3000/>

@@ -18,3 +18,4 @@ applications/**/resources/cmake-example
 applications/**/resources/example-traces
 
 **/workspace
+.prompts

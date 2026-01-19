@@ -110,7 +110,11 @@ export class TraceServerServiceImpl implements TraceServerService {
     protected async validateTraceServerPath(traceServerPath: string): Promise<boolean> {
         try {
             const stat = await fs.promises.stat(traceServerPath);
-            return stat.isFile() && (stat.mode & fs.constants.R_OK) !== 0;
+            if (!stat.isFile()) {
+                return false;
+            }
+            await fs.promises.access(traceServerPath, fs.constants.X_OK);
+            return true;
         } catch {
             return false;
         }

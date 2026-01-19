@@ -102,7 +102,8 @@
     "cdt-cloud-blueprint-updater-ext": "1.66.200",
     "cdt-cloud-blueprint-product-ext": "1.66.200",
     "@eclipse-cdt-cloud/blueprint-examples": "1.66.200",
-    "@eclipse-cdt-cloud/trace-server-manager": "1.66.200"
+    "@eclipse-cdt-cloud/trace-server-manager": "1.66.200",
+    "@eclipse-cdt-cloud/trace-server-proxy": "1.66.200"
   },
   "devDependencies": {
     "@theia/cli": "1.66.2"
