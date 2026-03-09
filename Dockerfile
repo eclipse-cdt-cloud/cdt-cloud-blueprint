@@ -12,6 +12,12 @@ RUN yarn --pure-lockfile && \
     yarn build:extensions && \
     yarn download:plugins && \
     yarn docker build
+# Diagnostic logging: instrument the vscode-trace-extension's minified JS to log
+# URL resolution, health checks, and asExternalUri behavior in the browser console.
+# Filter for [TRACE-DEBUG] in dev tools to see the output.
+# Uses a node script to avoid shell escaping issues with $, ||, && in minified JS.
+RUN node /home/theia/cdt-cloud-blueprint/scripts/patch-trace-extension-logging.js \
+    /home/theia/cdt-cloud-blueprint/plugins/vscode-trace-extension/extension/lib/extension.js
 RUN yarn tracecompass-server:download
 
 FROM mcr.microsoft.com/devcontainers/typescript-node:1-22-bullseye AS production-stage
